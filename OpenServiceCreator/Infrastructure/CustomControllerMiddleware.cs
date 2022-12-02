@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -6,6 +7,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AssemblyLoader.Loader;
+using Ionta.OSC.ToolKit.Controllers;
+using Ionta.OSC.ToolKit.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,22 +16,24 @@ namespace OpenServiceCreator.Infrastructure
 {
     public class CustomControllerMiddleware
     {
-        private ControllerInfo[] _info;
-        private readonly AssemblyLoader.Loader.AssemblyManager _manager;
+        private IEnumerable<ControllerInfo> _info;
+        private readonly IAssemblyManager _manager;
         private readonly RequestDelegate _next;
         
-        public CustomControllerMiddleware(RequestDelegate next, AssemblyLoader.Loader.AssemblyManager infoManager)
+        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager)
         {
             _manager = infoManager;
             _next = next;
             infoManager.InitAssembly(Assembly.GetAssembly(GetType()));
-            _info = infoManager.GetCommand().ToArray();
+            _info = infoManager.GetControllers();
+            infoManager.OnChange += LoadControllers;
         }
-        
+        public void LoadControllers(Assembly[] assemblies)
+        {
+            _info = _info.Union(_manager.GetControllers(assemblies));
+        }
         public async Task InvokeAsync(HttpContext context)
         {
-            if (_manager.IsChange) _info = _manager.GetCommand().ToArray();
-            
             foreach (var controller in _info)
             {
                 if(context.Request.Path.Value == null) await SendResult(context,"ok");

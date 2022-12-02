@@ -11,6 +11,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.17" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     </ItemGroup>
 
     <ItemGroup>
@@ -22,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AssemblyLoader\AssemblyLoader.csproj" />
+      <ProjectReference Include="..\Ionta.StoreLoader\Ionta.StoreLoader.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

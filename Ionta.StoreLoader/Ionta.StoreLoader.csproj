@@ -4,12 +4,12 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DebugType>full</DebugType>
-    </PropertyGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\Ionta.OSC.ToolKit\Ionta.OSC.ToolKit.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     </ItemGroup>
 
 </Project>

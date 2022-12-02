@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssemblyLoader.Tests", "Ass
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionta.OSC.ToolKit", "Ionta.OSC.ToolKit\Ionta.OSC.ToolKit.csproj", "{522C10C9-5DD5-413F-8C51-0D8D72B20C78}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionta.StoreLoader", "Ionta.StoreLoader\Ionta.StoreLoader.csproj", "{ED491483-4B30-4168-9FF1-7F1CFCB608E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

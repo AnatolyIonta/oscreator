@@ -1,4 +1,6 @@
 ﻿using AssemblyLoader.Loader;
+using Ionta.OSC.ToolKit.Controllers;
+using Ionta.OSC.ToolKit.Store;
 
 namespace OpenServiceCreator.Tests
 {
@@ -16,13 +18,13 @@ namespace OpenServiceCreator.Tests
     [Controller("test")]
     public class TestController
     {
-        [Command("t1")]
+        [Post("t1")]
         public Response TestMethod(Body body)
         {
             return new Response() { text = "Hello, " + body.Text };
         }
 
-        [Command("t2")]
+        [Post("t2")]
         public Response TestMethod2(Body body)
         {
             return new Response() { text = body.Text + " " + body.Text +" = "+ body.Age*2};
@@ -32,16 +34,22 @@ namespace OpenServiceCreator.Tests
     [Controller("user")]
     public class Test2Controller
     {
-        [Command("t1")]
+        [Post("t1")]
         public Response TestMethod(Body body)
         {
             return new Response() { text = "Hello, " + body.Text };
         }
 
-        [Command("t2")]
+        [Post("t2")]
         public Response TestMethod2(Body body)
         {
             return new Response() { text = body.Text + " " + body.Text +" = "+ body.Age*4};
         }
+    }
+
+    public class Data551 : BaseEntity
+    {
+        public string Name { get; set; }
+        public string Company { get; set; }
     }
 }

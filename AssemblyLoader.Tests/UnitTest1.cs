@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using Ionta.OSC.ToolKit.Controllers;
 using AssemblyLoader.Loader;
 
 namespace AssemblyLoader.Tests
@@ -12,7 +13,7 @@ namespace AssemblyLoader.Tests
             var service = new Loader.AssemblyManager();
             service.InitAssembly(this.GetType().Assembly);
 
-            var controllers = service.GetCommand();
+            var controllers = service.GetControllers();
             
             return;
         }
@@ -21,12 +22,12 @@ namespace AssemblyLoader.Tests
     [Controller("test")]
     public class TestController
     {
-        [Command("t1")]
+        [Post("t1")]
         public void Test1()
         {
             Console.WriteLine("++");
         }
-        [Command("t2")]
+        [Post("t2")]
         public void Test2()
         {
             Console.WriteLine("--");
