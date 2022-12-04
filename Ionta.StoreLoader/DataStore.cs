@@ -45,7 +45,7 @@ namespace Ionta.StoreLoader
             }
         }
         
-        private IQueryable<T> GetSet<T>(Type entity)
+        private IQueryable<BaseEntity> GetSet<T>(Type entity) where T: class
         {
             var genericMethod = setMethod.MakeGenericMethod(entity);
             dynamic result = genericMethod.Invoke(this, new object[] { });
@@ -57,7 +57,7 @@ namespace Ionta.StoreLoader
             return GetSet<BaseEntity>(type);
         }
         
-        public IQueryable<T> GetEntity<T>() where T: class
+        public DbSet<T> GetEntity<T>() where T: class
         {
             return Set<T>();
         }

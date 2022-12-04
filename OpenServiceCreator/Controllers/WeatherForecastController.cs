@@ -23,7 +23,9 @@ namespace OpenServiceCreator.Controllers
         public string Get()
         {
             var x = _store.GetEntity(typeof(Data551));
-            return "Hello, world" + x.Count();
+            var y = _store.GetEntity<test6>();
+            y.Add(new test6() { Name = "Lox" });
+            return "Hello, world" + y.Count();
         }
     }
 }

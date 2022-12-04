@@ -52,4 +52,10 @@ namespace OpenServiceCreator.Tests
         public string Name { get; set; }
         public string Company { get; set; }
     }
+    
+    public class test6 : BaseEntity
+    {
+        public string Name { get; set; }
+        public string Company { get; set; }
+    }
 }
