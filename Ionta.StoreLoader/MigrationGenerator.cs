@@ -2,7 +2,8 @@
 
 namespace Ionta.StoreLoader
 {
-    public class Class1
+    public class MigrationGenerator
     {
+        
     }
 }

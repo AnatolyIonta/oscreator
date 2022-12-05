@@ -1,6 +1,8 @@
 ﻿using AssemblyLoader.Loader;
 using Ionta.OSC.ToolKit.Controllers;
 using Ionta.OSC.ToolKit.Store;
+using Ionta.OSC.ToolKit.ServiceProvider;
+using System.Linq;
 
 namespace OpenServiceCreator.Tests
 {
@@ -34,6 +36,14 @@ namespace OpenServiceCreator.Tests
     [Controller("user")]
     public class Test2Controller
     {
+        private readonly ITestService _service;
+        private readonly IDataStore _store;
+        public Test2Controller(ITestService service, IDataStore store)
+        {
+            _service = service;
+            _store = store;
+        }
+
         [Post("t1")]
         public Response TestMethod(Body body)
         {
@@ -43,7 +53,21 @@ namespace OpenServiceCreator.Tests
         [Post("t2")]
         public Response TestMethod2(Body body)
         {
-            return new Response() { text = body.Text + " " + body.Text +" = "+ body.Age*4};
+            return new Response() { text = _store.GetEntity<test8>().Count().ToString()};
+        }
+    }
+
+    public interface ITestService
+    {
+        public string GetText();
+    }
+
+    [Service(typeof(ITestService), ServiceType.Scoped)]
+    public class TestService : ITestService
+    {
+        public string GetText()
+        {
+            return "Hello world! I am Custom service!";
         }
     }
 
@@ -58,4 +82,15 @@ namespace OpenServiceCreator.Tests
         public string Name { get; set; }
         public string Company { get; set; }
     }
+    public class test7 : BaseEntity
+    {
+        public string Name { get; set; }
+        public string X { get; set; }
+    }
+    public class test8 : BaseEntity
+    {
+        public string Name { get; set; }
+        public string X { get; set; }
+    }
+
 }

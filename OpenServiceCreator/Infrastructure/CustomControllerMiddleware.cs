@@ -7,26 +7,29 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AssemblyLoader.Loader;
+using Ionta.ServiceTools;
 using Ionta.OSC.ToolKit.Controllers;
 using Ionta.OSC.ToolKit.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using IServiceProvider = Ionta.ServiceTools.IServiceProvider;
 
 namespace OpenServiceCreator.Infrastructure
 {
     public class CustomControllerMiddleware
     {
-        private IEnumerable<ControllerInfo> _info;
+        private IEnumerable<ControllerInfo> _info = new List<ControllerInfo>();
         private readonly IAssemblyManager _manager;
+        private readonly IServiceProvider _services;
         private readonly RequestDelegate _next;
         
-        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager)
+        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceProvider services)
         {
+            infoManager.OnChange += LoadControllers;
             _manager = infoManager;
             _next = next;
+            _services = services;
             infoManager.InitAssembly(Assembly.GetAssembly(GetType()));
-            _info = infoManager.GetControllers();
-            infoManager.OnChange += LoadControllers;
         }
         public void LoadControllers(Assembly[] assemblies)
         {
@@ -43,8 +46,13 @@ namespace OpenServiceCreator.Infrastructure
                     {
                         if (context.Request.Path.Value == $"/{controller.Path}/{handler.Path}")
                         {
-                            var constructorInfo = controller.Type.GetConstructor(new Type[] { });
-                            var instance = constructorInfo.Invoke(new object[] { });
+                            var constructorInfo = controller.Type.GetConstructors().First();
+
+                            var services = constructorInfo.GetParameters()
+                                .Select(p => _services.GetService(p.ParameterType))
+                                .ToArray();
+
+                            var instance = constructorInfo.Invoke(services);
 
                             var parameterType = handler.Handler.GetParameters()[0].ParameterType;
 
