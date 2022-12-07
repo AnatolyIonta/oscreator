@@ -25,11 +25,11 @@ namespace OpenServiceCreator.Infrastructure
         
         public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceProvider services)
         {
-            infoManager.OnChange += LoadControllers;
             _manager = infoManager;
+            LoadControllers(infoManager.GetAssemblies());
+            infoManager.OnChange += LoadControllers;
             _next = next;
             _services = services;
-            infoManager.InitAssembly(Assembly.GetAssembly(GetType()));
         }
         public void LoadControllers(Assembly[] assemblies)
         {

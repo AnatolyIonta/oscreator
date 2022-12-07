@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Ionta.OSC.App.Services.Auth;
+using Ionta.OSC.ToolKit.Services;
 using Ionta.OSC.ToolKit.Store;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,18 +17,18 @@ namespace OpenServiceCreator.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly IDataStore _store;
-        public WeatherForecastController(IDataStore store)
+        private readonly IMigrationGenerator _migrationGenerator;
+        public WeatherForecastController(IDataStore store, IMigrationGenerator migrationGenerator)
         {
             _store = store;
+            _migrationGenerator = migrationGenerator;
         }
 
         [HttpGet]
         public string Get()
         {
-            var x = _store.GetEntity(typeof(Data551));
-            var y = _store.GetEntity<test6>();
-            y.Add(new test6() { Name = "Lox" });
-            return "Hello, world" + y.Count();
+            _migrationGenerator.ApplayMigrations();
+            return "Ok";
         }
     }
 }

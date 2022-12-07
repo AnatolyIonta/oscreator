@@ -12,5 +12,6 @@ namespace Ionta.OSC.ToolKit.Services
         event Action<Assembly[]> OnChange;
         public IEnumerable<ControllerInfo> GetControllers(params Assembly[] assemblies);
         public IEnumerable<Type> GetEntities(params Assembly[] assemblies);
+        public IEnumerable<Type> GetEntities();
     }
 }

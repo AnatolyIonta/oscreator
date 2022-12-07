@@ -10,7 +10,7 @@ namespace AssemblyLoader.Loader
 {
     public class AssemblyManager : IAssemblyManager
     {
-        private List<Assembly> assemblies = new List<Assembly>();
+        private readonly List<Assembly> assemblies = new List<Assembly>();
 
         public Assembly[] GetAssemblies()
         {
@@ -28,6 +28,13 @@ namespace AssemblyLoader.Loader
         public IEnumerable<Type> GetEntities(params Assembly[] assemblies)
         {
             var entityTypes = assemblies.SelectMany(a => a.GetExportedTypes()).Where(c => c.IsClass && !c.IsAbstract && c.IsPublic &&
+                                                                        typeof(BaseEntity).IsAssignableFrom(c));
+            return entityTypes;
+        }
+
+        public IEnumerable<Type> GetEntities()
+        {
+            var entityTypes = this.assemblies.SelectMany(a => a.GetExportedTypes()).Where(c => c.IsClass && !c.IsAbstract && c.IsPublic &&
                                                                         typeof(BaseEntity).IsAssignableFrom(c));
             return entityTypes;
         }

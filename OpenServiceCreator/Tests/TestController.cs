@@ -33,7 +33,7 @@ namespace OpenServiceCreator.Tests
         }
     }
     
-    [Controller("user")]
+    [Controller("user1")]
     public class Test2Controller
     {
         private readonly ITestService _service;
@@ -91,6 +91,7 @@ namespace OpenServiceCreator.Tests
     {
         public string Name { get; set; }
         public string X { get; set; }
+        public int Y { get; set; }
     }
 
 }

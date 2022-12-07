@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Ionta.OSC.App\Ionta.OSC.App.csproj" />
+	  <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />
+	</ItemGroup>
+
+
+</Project>

@@ -3,6 +3,7 @@ using Ionta.OSC.ToolKit.ServiceProvider;
 using Ionta.OSC.ToolKit.Services;
 using Ionta.OSC.ToolKit.Store;
 using Ionta.StoreLoader;
+using Ionta.StoreLoader.Migration;
 using Ionta.ServiceTools;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,14 @@ using Microsoft.Extensions.Hosting;
 using OpenServiceCreator.Infrastructure;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Ionta.OSC.ToolKit.Auth;
+using Ionta.OSC.Storage;
+using Ionta.OSC.App.Services.HashingPasswordService;
+using Ionta.OSC.App.Services.Auth;
+using Ionta.OSC.App;
+using Microsoft.AspNetCore.Http;
+using MediatR;
 
 namespace OpenServiceCreator
 {
@@ -31,8 +40,17 @@ namespace OpenServiceCreator
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddOptions();
             services.AddSingleton<IAssemblyManager, AssemblyManager>();
             services.AddSingleton<IServiceProvider, Ionta.ServiceTools.ServiceProvider>();
+            services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
+            services.AddScoped<IHashingPasswordService, HashingPasswordService>();
+            services.AddScoped<IAuthService, AuthService>();
+
+            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly, typeof(AuthOptions).Assembly);
+
+
             services.AddScoped(servicesProvider =>
             {
                 var options = new DbContextOptionsBuilder<DataStore>()
@@ -41,9 +59,45 @@ namespace OpenServiceCreator
                 var assemblyLoader = servicesProvider.GetService<IAssemblyManager>();
                 return (IDataStore)(new DataStore(options.Options, assemblyLoader));
             });
+
+            services.AddScoped(servicesProvider =>
+            {
+                var options = new DbContextOptionsBuilder<OscStorage>()
+                    .UseNpgsql(GetOscDatabaseConnectionString(Configuration));
+
+                var hashingPassword = servicesProvider.GetService<IHashingPasswordService>();
+                return (IOscStorage)(new OscStorage(options.Options, hashingPassword));
+            });
+
+            var authOptionsCofiguration = Configuration.GetSection("Auth").Get<AuthOptions>();
+            services.AddSingleton(authOptionsCofiguration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+                AddJwtBearer(options =>
+                {
+                    var authOptions = authOptionsCofiguration;
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = authOptions.Issure,
+                        ValidateAudience = false,
+                        ValidateActor = false,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+                        ValidateIssuerSigningKey = true
+                    };
+                }
+                );
+
         }
-        
+
         private static string GetDatabaseConnectionString(IConfiguration configuration)
+        {
+            return
+                $"Host={configuration["DB_GLOBAL_HOST"]};Port={configuration["DB_GLOBAL_PORT"]};Database={configuration["DB_GLOBAL_NAME"]};Username={configuration["DB_GLOBAL_USER"]};Password={configuration["DB_GLOBAL_PASSWORD"]}";
+        }
+
+        private static string GetOscDatabaseConnectionString(IConfiguration configuration)
         {
             return
                 $"Host={configuration["DB_HOST"]};Port={configuration["DB_PORT"]};Database={configuration["DB_NAME"]};Username={configuration["DB_USER"]};Password={configuration["DB_PASSWORD"]}";
@@ -82,6 +136,9 @@ namespace OpenServiceCreator
             });
 
             app.UseMiddleware<CustomControllerMiddleware>(assemblyManager);
+
+
+            assemblyManager.InitAssembly(Assembly.GetAssembly(GetType()));
 
         }
     }

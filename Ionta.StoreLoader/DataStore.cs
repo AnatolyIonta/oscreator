@@ -19,7 +19,7 @@ namespace Ionta.StoreLoader
             : base(options)
         { 
             _assemblyManager = assemblyManager;
-            assemblyManager.OnChange += InitEntity;
+            //assemblyManager.OnChange += InitEntity;
             Database.EnsureCreated();
         }
 
