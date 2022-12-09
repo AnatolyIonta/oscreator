@@ -24,6 +24,7 @@ using Ionta.OSC.App.Services.Auth;
 using Ionta.OSC.App;
 using Microsoft.AspNetCore.Http;
 using MediatR;
+using Ionta.OSC.App.Services.AssemblyInitializer;
 
 namespace OpenServiceCreator
 {
@@ -44,11 +45,13 @@ namespace OpenServiceCreator
             services.AddSingleton<IAssemblyManager, AssemblyManager>();
             services.AddSingleton<IServiceProvider, Ionta.ServiceTools.ServiceProvider>();
             services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
+            services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();
             services.AddScoped<IHashingPasswordService, HashingPasswordService>();
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddMediatR(typeof(Startup));
-            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly, typeof(AuthOptions).Assembly);
+            services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly, 
+                typeof(AuthOptions).Assembly, typeof(IMigrationGenerator).Assembly);
 
 
             services.AddScoped(servicesProvider =>
@@ -105,7 +108,7 @@ namespace OpenServiceCreator
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAssemblyManager assemblyManager, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAssemblyManager assemblyManager, IServiceProvider serviceProvider, IAssemblyInitializer initializer)
         {
             serviceProvider.AddScoped(()=>
             {
@@ -127,6 +130,10 @@ namespace OpenServiceCreator
             }
 
             app.UseRouting();
+            
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
 
             app.UseEndpoints(endpoints =>
             {
@@ -137,9 +144,7 @@ namespace OpenServiceCreator
 
             app.UseMiddleware<CustomControllerMiddleware>(assemblyManager);
 
-
-            assemblyManager.InitAssembly(Assembly.GetAssembly(GetType()));
-
+            initializer.Initialize();
         }
     }
 }

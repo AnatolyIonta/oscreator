@@ -5,10 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Ionta.OSC.ToolKit\Ionta.OSC.ToolKit.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     </ItemGroup>
 

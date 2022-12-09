@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.ToolKit.Services
+namespace Ionta.OSC.App.Services.AssemblyInitializer
 {
-    public interface IMigrationGenerator
+    public interface IAssemblyInitializer
     {
-        public void ApplayMigrations();
+        void Initialize();
     }
 }

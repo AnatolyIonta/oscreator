@@ -18,11 +18,18 @@ namespace AssemblyLoader.Loader
         }
 
         public event Action<Assembly[]> OnChange;
+        public event Action<Assembly[]> OnUnloading;
 
         public void InitAssembly(params Assembly[] assemblies)
         {
             this.assemblies.AddRange(assemblies);
             OnChange?.Invoke(assemblies);
+        }
+
+        public void UnloadingAssembly(params Assembly[] assemblies)
+        {
+            this.assemblies.RemoveAll(a => assemblies.Contains(a));
+            OnUnloading?.Invoke(assemblies);
         }
 
         public IEnumerable<Type> GetEntities(params Assembly[] assemblies)

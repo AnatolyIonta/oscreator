@@ -11,6 +11,7 @@ namespace Ionta.OSC.App
     public interface IOscStorage
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<AssemblyFile> AssemblyFiles { get; set; }
 
         public Task SaveChangesAsync();
     }

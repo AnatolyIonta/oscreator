@@ -9,19 +9,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyLoader", "AssemblyL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyLoader.Tests", "AssemblyLoader.Tests\AssemblyLoader.Tests.csproj", "{C4284F6D-9CE5-4946-86D5-871D8179C46F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.ToolKit", "Ionta.OSC.ToolKit\Ionta.OSC.ToolKit.csproj", "{522C10C9-5DD5-413F-8C51-0D8D72B20C78}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.StoreLoader", "Ionta.StoreLoader\Ionta.StoreLoader.csproj", "{ED491483-4B30-4168-9FF1-7F1CFCB608E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C8593652-EFB7-4860-9E5C-F32DDDF99613}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.ServiceTools", "Ionta.ServiceProvider\Ionta.ServiceTools.csproj", "{AAE2CFE6-6999-4DD6-92D1-91F20F89912C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionta.OSC.App", "Ionta.OSC.App\Ionta.OSC.App.csproj", "{A8014546-8252-4B74-A78D-F11782FA25D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.App", "Ionta.OSC.App\Ionta.OSC.App.csproj", "{A8014546-8252-4B74-A78D-F11782FA25D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionta.OSC.Domain", "Ionta.OSC.Domain\Ionta.OSC.Domain.csproj", "{5C53ADF9-0245-4443-AC6F-838245EBC19D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Domain", "Ionta.OSC.Domain\Ionta.OSC.Domain.csproj", "{5C53ADF9-0245-4443-AC6F-838245EBC19D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionta.OSC.Storage", "Ionta.OSC.Storage\Ionta.OSC.Storage.csproj", "{CD087CFF-7F87-42DC-839A-CAD2281300DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Storage", "Ionta.OSC.Storage\Ionta.OSC.Storage.csproj", "{CD087CFF-7F87-42DC-839A-CAD2281300DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{C4284F6D-9CE5-4946-86D5-871D8179C46F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4284F6D-9CE5-4946-86D5-871D8179C46F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4284F6D-9CE5-4946-86D5-871D8179C46F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{522C10C9-5DD5-413F-8C51-0D8D72B20C78}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED491483-4B30-4168-9FF1-7F1CFCB608E3}.Release|Any CPU.ActiveCfg = Release|Any CPU

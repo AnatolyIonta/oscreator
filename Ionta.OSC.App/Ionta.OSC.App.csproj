@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.0" />
 	  <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.16.0" />
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="5.0.15" />
@@ -12,12 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />
-    <ProjectReference Include="..\Ionta.OSC.ToolKit\Ionta.OSC.ToolKit.csproj" />
     <PackageReference Include="MediatR" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CQRS\Queries\" />
   </ItemGroup>
 
 </Project>

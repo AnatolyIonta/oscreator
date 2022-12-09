@@ -12,7 +12,7 @@ namespace Ionta.StoreLoader
                 typeof (BaseModel).IsAssignableFrom(c));
             foreach (Type type in types)
             {
-                modelBuilder.Entity(type).ToTable(type.Name).HasKey("Id");
+                modelBuilder.Entity(type).ToTable(type.Name.ToLower()).HasKey("Id");
             }
         }
     }

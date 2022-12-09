@@ -13,6 +13,7 @@ namespace Ionta.OSC.Storage
     public class OscStorage : DbContext, IOscStorage
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<AssemblyFile> AssemblyFiles { get; set; }
 
         private readonly IHashingPasswordService _hashingPassword;
 
@@ -36,7 +37,7 @@ namespace Ionta.OSC.Storage
 
         public async Task SaveChangesAsync()
         {
-            await SaveChangesAsync();
+            await base.SaveChangesAsync();
         }
     }
 }
