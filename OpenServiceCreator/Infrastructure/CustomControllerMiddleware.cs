@@ -12,7 +12,7 @@ using Ionta.OSC.ToolKit.Controllers;
 using Ionta.OSC.ToolKit.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using IServiceProvider = Ionta.ServiceTools.IServiceProvider;
+using IServiceProvider = Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider;
 
 namespace OpenServiceCreator.Infrastructure
 {

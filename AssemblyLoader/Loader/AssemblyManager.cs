@@ -23,7 +23,17 @@ namespace AssemblyLoader.Loader
         public void InitAssembly(params Assembly[] assemblies)
         {
             this.assemblies.AddRange(assemblies);
-            OnChange?.Invoke(assemblies);
+            try
+            {
+                OnChange?.Invoke(assemblies);
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally{
+
+            }
         }
 
         public void UnloadingAssembly(params Assembly[] assemblies)

@@ -29,7 +29,7 @@ namespace OpenServiceCreator.Controllers
         public Task<bool> SaveAssembly([FromForm(Name = "file")] IFormFile uploadedFile)
         {
             var file = GetBytes(uploadedFile.OpenReadStream());
-            var query = new LoadAssemblyCommand() {Name = uploadedFile.Name, Data = file };
+            var query = new LoadAssemblyCommand() {Name = uploadedFile.FileName, Data = file };
             return _mediator.Send(query);
         }
 
@@ -52,7 +52,7 @@ namespace OpenServiceCreator.Controllers
         [ProducesResponseType(typeof(DtosList<AssemblyDto>), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("list")]
-        public async Task<DtosList<AssemblyDto>> SaveAssembly([FromBody] GetAssembliesQuery query)
+        public async Task<DtosList<AssemblyDto>> List([FromBody] GetAssembliesQuery query)
         {
             return await _mediator.Send(query);
         }

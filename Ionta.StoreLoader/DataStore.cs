@@ -8,28 +8,27 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Threading.Tasks;
 
 namespace Ionta.StoreLoader
 {
     public class DataStore : DbContext, IDataStore
     {
-        private readonly Dictionary<string, IQueryable<BaseEntity>> _entities = new();
+        private readonly Dictionary<string, Type> _entities = new();
         public readonly IAssemblyManager _assemblyManager;
-        private ModelBuilder _builder;
         
         public DataStore(DbContextOptions<DataStore> options, IAssemblyManager assemblyManager)
             : base(options)
         { 
             _assemblyManager = assemblyManager;
-            //assemblyManager.OnChange += InitEntity;
+            _assemblyManager.OnChange += InitEntity;
             Database.EnsureCreated();
         }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
-            _builder = modelBuilder;
-            _builder.RegisterAllEntities<BaseEntity>(_assemblyManager.GetAssemblies());
+            modelBuilder.RegisterAllEntities<BaseEntity>(_assemblyManager.GetAssemblies());
             return;
         }
 
@@ -44,7 +43,11 @@ namespace Ionta.StoreLoader
             .Single(m => m.Name == nameof(DataStore.GetEntity) && m.GetParameters().Length == 0);
         public void InitEntity(Assembly[] assemblies)
         {
-            
+            var entities = _assemblyManager.GetEntities(assemblies);
+            foreach(var entity in entities)
+            {
+                _entities.Add(nameof(entity), entity);
+            }
         }
         
         private IQueryable<BaseEntity> GetSet<T>(Type entity) where T: class
@@ -52,6 +55,11 @@ namespace Ionta.StoreLoader
             var genericMethod = setMethod.MakeGenericMethod(entity);
             dynamic result = genericMethod.Invoke(this, new object[] { });
             return result;
+        }
+
+        public IQueryable<BaseEntity> GetEntity(string entityName)
+        {
+            return GetSet<BaseEntity>(_entities[entityName]);
         }
 
         public IQueryable<BaseEntity> GetEntity(Type type)
@@ -62,6 +70,11 @@ namespace Ionta.StoreLoader
         public DbSet<T> GetEntity<T>() where T: class
         {
             return Set<T>();
+        }
+
+        public async Task SaveAsync()
+        {
+            await base.SaveChangesAsync();
         }
     }
 

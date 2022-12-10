@@ -25,14 +25,14 @@ namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
             var assembly = _storage.AssemblyFiles.Single(a => a.Id == request.AssemblyId);
             if(request.IsActive != assembly.IsActive)
             {
-                var assemblyData = Assembly.Load(assembly.Data);
+                var assemblyData = AppDomain.CurrentDomain.Load(assembly.Data);
                 if (request.IsActive)
                 {
                     _assemblyManager.InitAssembly(assemblyData);
                 }
                 else
                 {
-                    _assemblyManager.UnloadingAssembly(assemblyData);
+                    //_assemblyManager.UnloadingAssembly(assemblyData);
                 }
                 assembly.IsActive = request.IsActive;
                 await _storage.SaveChangesAsync();

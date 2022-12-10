@@ -118,6 +118,12 @@ namespace OpenServiceCreator
                 return (IDataStore)(new DataStore(options.Options, assemblyManager));
             });
 
+            /*
+            serviceProvider.AddSingeltone(() =>
+            {
+                return (IServiceProvider) serviceProvider;
+            });
+            */
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

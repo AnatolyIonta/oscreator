@@ -9,14 +9,13 @@ using Ionta.OSC.ToolKit.Services;
 
 namespace Ionta.ServiceTools
 {
-
     class ServiceInfo
     {
         public ServiceType Type { get; set; }
         public Type Service { get; set; }
         public object Generator { get; set; }
     }
-    public class ServiceProvider : IServiceProvider
+    public class ServiceProvider : Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider
     {
         private Dictionary<Type, ServiceInfo> ServiceCollection = new();
         private Dictionary<Type, object> SingletoneService = new();
@@ -54,6 +53,11 @@ namespace Ionta.ServiceTools
         public void AddSingeltone<T>()
         {
             AddService(ServiceType.Singelton, typeof(T));
+        }
+
+        public object? GetService(string serviceName)
+        {
+            return GetService(ServiceCollection.Keys.First(s => s.Name == serviceName));
         }
 
         public object? GetService(Type serviceType)
