@@ -32,7 +32,7 @@ namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
                 }
                 else
                 {
-                    //_assemblyManager.UnloadingAssembly(assemblyData);
+                    //_assemblyManager.(assemblyData);
                 }
                 assembly.IsActive = request.IsActive;
                 await _storage.SaveChangesAsync();

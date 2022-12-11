@@ -31,9 +31,15 @@ namespace AssemblyLoader.Loader
             {
 
             }
-            finally{
+        }
 
+        public void UnloadAssembli(params Assembly[] assemblies)
+        {
+            foreach(var assembly in assemblies)
+            {
+                this.assemblies.Remove(assembly);
             }
+            OnUnloading?.Invoke(assemblies);
         }
 
         public void UnloadingAssembly(params Assembly[] assemblies)

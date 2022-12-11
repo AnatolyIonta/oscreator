@@ -98,12 +98,8 @@ namespace OpenServiceCreator.Infrastructure
 
         private async Task SendResult(HttpContext context, object result)
         {
-            if(result is Task)
-            {
-
-            }
             context.Response.StatusCode = 200;
-            await context.Response.WriteAsJsonAsync(new JsonResult(result));
+            await context.Response.WriteAsJsonAsync(new JsonResult(result) { StatusCode = 200});
         }
 
         private async Task<string> GetJson(System.IO.Stream input)
