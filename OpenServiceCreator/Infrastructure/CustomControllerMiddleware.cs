@@ -13,6 +13,8 @@ using Ionta.OSC.ToolKit.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using IServiceProvider = Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider;
+using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Components;
 
 namespace OpenServiceCreator.Infrastructure
 {
@@ -60,7 +62,22 @@ namespace OpenServiceCreator.Infrastructure
 
                             var parameter = JsonSerializer.Deserialize(json, parameterType);
 
-                            await SendResult(context,handler.Handler.Invoke(instance,new []{parameter}));
+                            var method = handler.Handler;
+
+                            dynamic methodResult = handler.Handler.Invoke(instance, new[] { parameter });
+
+                            
+                            if (IsAsyncMethod(method))
+                            {
+                                var res = await methodResult;
+                                await SendResult(context, res);
+                            }
+                            else
+                            {
+                                await SendResult(context, methodResult);
+                            }
+
+                            //SendResult(context, methodResult);
                             return;
                         }
                     }
@@ -70,8 +87,21 @@ namespace OpenServiceCreator.Infrastructure
             await _next.Invoke(context);
         }
 
+        private static bool IsAsyncMethod(MethodInfo method)
+        { 
+            Type attType = typeof(AsyncStateMachineAttribute);
+
+            var attrib = (AsyncStateMachineAttribute)method.GetCustomAttribute(attType);
+
+            return (attrib != null);
+        }
+
         private async Task SendResult(HttpContext context, object result)
         {
+            if(result is Task)
+            {
+
+            }
             context.Response.StatusCode = 200;
             await context.Response.WriteAsJsonAsync(new JsonResult(result));
         }
