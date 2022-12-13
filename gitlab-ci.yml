@@ -9,7 +9,7 @@ variables:
 publish:
     stage: publish
     tags:
-    - loyalty
+    - OSC
     image: docker:stable-dind
     script:
         - docker build -t $TAG -t $LATEST_TAG .
