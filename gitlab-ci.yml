@@ -1,19 +1,10 @@
 stages:
-    - test
     - publish
 
 variables:
     TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
     LATEST_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
     DOCKER_API_VERSION: "1.39"
-
-test:
-    stage: test
-    tags:
-    - loyalty
-    image: mcr.microsoft.com/dotnet/sdk:5.0
-    script: 
-        - "dotnet test Pushka.Application.Tests/Pushka.Application.Tests.csproj"
 
 publish:
     stage: publish
