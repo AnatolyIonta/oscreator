@@ -5,6 +5,9 @@ stages:
 
 unit-test-job:
   stage: test 
+  image:
+    name: $CI_REGISTRY/dreamhost/kubectl-helm-docker
+    pull_policy: always
   tags:
     - OSC
   script:
