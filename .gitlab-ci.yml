@@ -1,22 +1,27 @@
-
-
 stages:
   - test
+  - publish
 
-lint-test-job-two:
-  stage: test
-  tags:
-    - osc
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+variables:
+    TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
+    LATEST_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+    DOCKER_API_VERSION: "1.39"
 
 lint-test-job:
   stage: test
   tags:
     - osc
-  script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
-    - echo "No lint issues found."
+  image: mcr.microsoft.com/dotnet/sdk:5.0
+  script: 
+    - "dotnet test AssemblyLoader.Tests AssemblyLoader.Tests.csproj"
+
+publish:
+    stage: publish
+    tags:
+    - osc
+    image: docker:stable-dind
+    script:
+        - docker build -t $TAG -t $LATEST_TAG .
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - docker push $TAG
+        - docker push $LATEST_TAG
