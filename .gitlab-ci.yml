@@ -9,7 +9,7 @@ unit-test-job:
     name: $CI_REGISTRY/dreamhost/kubectl-helm-docker
     pull_policy: always
   tags:
-    - OSC
+    - osc
   script:
     - echo "Running unit tests... This will take about 60 seconds."
     - sleep 60
@@ -18,7 +18,7 @@ unit-test-job:
 lint-test-job:
   stage: test
   tags:
-    - OSC
+    - osc
   script:
     - echo "Linting code... This will take about 10 seconds."
     - sleep 10
