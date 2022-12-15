@@ -45,14 +45,26 @@ namespace OpenServiceCreator.Infrastructure
                     {
                         if (context.Request.Path.Value == $"/{controller.Path}/{handler.Path}")
                         {
-                            var parameter = await GetParametrJson(context, handler.Handler);
+                            object[] parametrs = null;
+
+                            if (context.Request.Method.ToLower() != handler.Method.ToString().ToLower()) throw new Exception("Методы не совпадают");
+
+                            if (context.Request.Method.ToLower() == "post")
+                            {
+                                var parameters = await GetParametrJson(context, handler.Handler);
+                                parametrs = parameters is null ? new object[] { } : new[] { await GetParametrJson(context, handler.Handler) };
+                            }
+                            else if(context.Request.Method.ToLower() == "get")
+                            {
+                                parametrs = GetParametersUrl(context, handler.Handler).ToArray();
+                            }
                             
                             var executeInfo = new ExecuteInfo()
                             {
                                 Handler = handler.Handler,
                                 Controller = controller,
                                 Services = GetServices(controller),
-                                Parameter = parameter
+                                Parameter = parametrs
                             };
                             await Execute(context, executeInfo);
 
@@ -71,7 +83,7 @@ namespace OpenServiceCreator.Infrastructure
             var instance = constructorInfo.Invoke(info.Services);
             var method = info.Handler;
 
-            var parametrs = info.Parameter is null ? new object[] { } : new[] { info.Parameter };
+            var parametrs = info.Parameter;
             dynamic methodResult = method.Invoke(instance, parametrs);
 
             if (IsAsyncMethod(method))
@@ -111,6 +123,26 @@ namespace OpenServiceCreator.Infrastructure
             return parameter;
         }
 
+        private IEnumerable<object> GetParametersUrl(HttpContext context, MethodInfo handler)
+        {
+            var parametrs = handler.GetParameters();
+
+            if (parametrs.Length > 0)
+            {
+                var query = context.Request.Query;
+
+                foreach (var parametr in parametrs)
+                {
+                    object result = query.First(q => q.Key.ToLower() == parametr.Name.ToLower()).Value.ToString();
+                    if (parametr.ParameterType != typeof(string))
+                    {
+                        result = Convert.ChangeType(result, parametr.ParameterType);
+                    }
+                    yield return result;
+                }
+            }
+        }
+
         private static bool IsAsyncMethod(MethodInfo method)
         {
             Type attType = typeof(AsyncStateMachineAttribute);
@@ -142,6 +174,6 @@ namespace OpenServiceCreator.Infrastructure
         public MethodInfo Handler { get; set; }
         public object[] Services { get; set; }
         public ControllerInfo Controller { get; set; }
-        public object Parameter { get; set; }
+        public object[] Parameter { get; set; }
     }
 }
