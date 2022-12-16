@@ -22,9 +22,20 @@ namespace Ionta.StoreLoader
         { 
             _assemblyManager = assemblyManager;
             _assemblyManager.OnChange += InitEntity;
+            _assemblyManager.OnUnloading += OnUnloading;
             Database.EnsureCreated();
         }
 
+        private void OnUnloading(Assembly[] obj)
+        {
+            var entities = _assemblyManager.GetEntities();
+            
+            _entities.Clear();
+            foreach (var entity in entities)
+            {
+                _entities.Add(nameof(entity), entity);
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);

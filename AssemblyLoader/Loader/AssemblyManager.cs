@@ -44,7 +44,11 @@ namespace AssemblyLoader.Loader
 
         public void UnloadingAssembly(params Assembly[] assemblies)
         {
-            this.assemblies.RemoveAll(a => assemblies.Contains(a));
+            foreach (var assembly in assemblies)
+            {
+                var target = this.assemblies.FirstOrDefault(a => a.GetType() == assembly.GetType());
+                this.assemblies.Remove(target);
+            }
             OnUnloading?.Invoke(assemblies);
         }
 

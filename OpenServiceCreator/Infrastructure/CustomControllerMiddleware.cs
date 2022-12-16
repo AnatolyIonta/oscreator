@@ -17,7 +17,7 @@ namespace OpenServiceCreator.Infrastructure
 {
     public class CustomControllerMiddleware
     {
-        private IEnumerable<ControllerInfo> _info = new List<ControllerInfo>();
+        private List<ControllerInfo> _info = new List<ControllerInfo>();
         private readonly IAssemblyManager _manager;
         private readonly IServiceProvider _services;
         private readonly RequestDelegate _next;
@@ -27,12 +27,32 @@ namespace OpenServiceCreator.Infrastructure
             _manager = infoManager;
             LoadControllers(infoManager.GetAssemblies());
             infoManager.OnChange += LoadControllers;
+            infoManager.OnUnloading += OnUnloading;
             _next = next;
             _services = services;
         }
+
+        private void OnUnloading(Assembly[] obj)
+        {
+            var controllers = _manager.GetControllers(_manager.GetAssemblies());
+
+            _info = controllers.ToList();
+
+            /*
+            foreach(var controller in controllers)
+            {
+                var target = _info.FirstOrDefault(i => i.Type == controller.Type);
+                if(target != null)
+                {
+                    _info.Remove(target);
+                }
+            }
+            */
+        }
+
         public void LoadControllers(Assembly[] assemblies)
         {
-            _info = _info.Union(_manager.GetControllers(assemblies));
+            _info = _info.Union(_manager.GetControllers(assemblies)).ToList();
         }
         public async Task InvokeAsync(HttpContext context)
         {
