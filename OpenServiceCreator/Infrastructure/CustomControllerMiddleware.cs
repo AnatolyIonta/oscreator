@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using IServiceProvider = Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider;
 using System.Runtime.CompilerServices;
+using Ionta.ServiceTools.V2;
 
 namespace OpenServiceCreator.Infrastructure
 {
@@ -19,10 +20,10 @@ namespace OpenServiceCreator.Infrastructure
     {
         private List<ControllerInfo> _info = new List<ControllerInfo>();
         private readonly IAssemblyManager _manager;
-        private readonly IServiceProvider _services;
+        private readonly IServiceManager _services;
         private readonly RequestDelegate _next;
 
-        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceProvider services)
+        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceManager services)
         {
             _manager = infoManager;
             LoadControllers(infoManager.GetAssemblies());
@@ -122,7 +123,7 @@ namespace OpenServiceCreator.Infrastructure
             var constructorInfo = controller.Type.GetConstructors().First();
 
             var services = constructorInfo.GetParameters()
-                .Select(p => _services.GetService(p.ParameterType))
+                .Select(p => _services.GetService(p.ParameterType, controller.Type.Assembly))
                 .ToArray();
 
             return services;
