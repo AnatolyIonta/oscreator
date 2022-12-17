@@ -73,7 +73,7 @@ namespace OpenServiceCreator.Infrastructure
                             if (context.Request.Method.ToLower() == "post")
                             {
                                 var parameters = await GetParametrJson(context, handler.Handler);
-                                parametrs = parameters is null ? new object[] { } : new[] { await GetParametrJson(context, handler.Handler) };
+                                parametrs = parameters is null ? new object[] { } : new[] { parameters };
                             }
                             else if(context.Request.Method.ToLower() == "get")
                             {

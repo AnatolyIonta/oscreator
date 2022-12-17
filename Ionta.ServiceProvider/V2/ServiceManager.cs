@@ -63,13 +63,13 @@ namespace Ionta.ServiceTools.V2
             switch (type)
             {
                 case ServiceType.Scoped:
-                    GlobalCollection.AddScoped(service, _interface ?? service);
+                    GlobalCollection.AddScoped(_interface ?? service, service);
                     break;
                 case ServiceType.Singelton:
-                    GlobalCollection.AddSingleton(service, _interface ?? service);
+                    GlobalCollection.AddSingleton(_interface ?? service, service);
                     break;
                 case ServiceType.Transiten:
-                    GlobalCollection.AddTransient(service, _interface ?? service);
+                    GlobalCollection.AddTransient(_interface ?? service, service);
                     break;
             }
             if(isBuild) GlobalContainer = GlobalCollection.BuildServiceProvider();
@@ -146,13 +146,13 @@ namespace Ionta.ServiceTools.V2
                     switch (attributeInfo.Type)
                     {
                         case ServiceType.Singelton:
-                            serviceCollection.AddSingleton(service, attributeInfo.Inteface ?? service);
+                            serviceCollection.AddSingleton(attributeInfo.Inteface ?? service, service);
                             break;
                         case ServiceType.Scoped:
-                            serviceCollection.AddScoped(service, attributeInfo.Inteface ?? service);
+                            serviceCollection.AddScoped(attributeInfo.Inteface ?? service, service);
                             break;
                         case ServiceType.Transiten:
-                            serviceCollection.AddTransient(service, attributeInfo.Inteface ?? service);
+                            serviceCollection.AddTransient(attributeInfo.Inteface ?? service, service);
                             break;
                     }
                 }
@@ -160,17 +160,21 @@ namespace Ionta.ServiceTools.V2
             }
         }
 
-        public object GetService(Type serviceType)
-        {
-            return GlobalContainer.GetService(serviceType);
-        }
-
-        public object GetService(string serviceName)
+        public ServiceWrapper GetService(string serviceName)
         {
             var x = _assemblyManager.GetAssemblies()[0].GetTypes();
             var types = _assemblyManager.GetAssemblies().Select(e => e.GetTypes().FirstOrDefault(t => t.Name == serviceName));
             var serviceType = types.First(e => e != null);
-            return GlobalContainer.GetService(serviceType);
+
+            return GetService(serviceType);
+        }
+
+        public ServiceWrapper GetService(Type serviceType)
+        {
+            GlobalServiceBuild();
+            var service = GlobalContainer.GetService(serviceType);
+            if (service == null) return null;
+            return new ServiceWrapper(service);
         }
     }
 }

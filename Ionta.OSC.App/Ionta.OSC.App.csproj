@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.9" />
+	  <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.10" />
 	  <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.16.0" />
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="5.0.15" />

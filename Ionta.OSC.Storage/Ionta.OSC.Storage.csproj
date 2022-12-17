@@ -5,7 +5,7 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.9" />
+		<PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.10" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
 	</ItemGroup>
 
