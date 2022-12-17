@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.2" />
+      <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.9" />
     </ItemGroup>
 
 </Project>

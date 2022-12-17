@@ -44,7 +44,11 @@ namespace AssemblyLoader.Loader
 
         public void UnloadingAssembly(params Assembly[] assemblies)
         {
-            this.assemblies.RemoveAll(a => assemblies.Contains(a));
+            foreach (var assembly in assemblies)
+            {
+                var target = this.assemblies.FirstOrDefault(a => a.GetType() == assembly.GetType());
+                this.assemblies.Remove(target);
+            }
             OnUnloading?.Invoke(assemblies);
         }
 
@@ -73,14 +77,19 @@ namespace AssemblyLoader.Loader
                 {
                     var methods = controller
                         .GetMethods()
-                        .Where(m => m.GetCustomAttribute(typeof(PostAttribute)) != null);
+                        .Where(m => m.GetCustomAttribute(typeof(PostAttribute)) != null || m.GetCustomAttribute(typeof(GetAttribute)) != null);
                     yield return new ControllerInfo()
                     {
-                        Handlers = methods.Select(m => new HandlerInfo()
-                        {
-                            Handler = m,
-                            Path = ((PostAttribute)m.GetCustomAttribute(typeof(PostAttribute)))?.Path
-                        }),
+                        Handlers = methods.Select(m => { 
+                            var attribute = m.GetCustomAttribute(typeof(PostAttribute)) ?? m.GetCustomAttribute(typeof(GetAttribute));
+                            return new HandlerInfo()
+                            {
+                                Handler = m,
+                                Path = ((IMethodAttribute)attribute).Path,
+                                Method = ((IMethodAttribute)attribute).Method
+                            };
+                            }
+                        ),
                         Path = ((ControllerAttribute)controller.GetCustomAttribute(typeof(ControllerAttribute)))?.Prefix,
                         Type = controller
                     };

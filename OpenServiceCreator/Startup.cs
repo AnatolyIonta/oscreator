@@ -25,6 +25,7 @@ using Ionta.OSC.App;
 using Microsoft.AspNetCore.Http;
 using MediatR;
 using Ionta.OSC.App.Services.AssemblyInitializer;
+using Ionta.ServiceTools.V2;
 
 namespace OpenServiceCreator
 {
@@ -43,7 +44,7 @@ namespace OpenServiceCreator
             services.AddControllersWithViews();
             services.AddOptions();
             services.AddSingleton<IAssemblyManager, AssemblyManager>();
-            services.AddSingleton<IServiceProvider, Ionta.ServiceTools.ServiceProvider>();
+            services.AddSingleton<IServiceManager, ServiceManager>();
             services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
             services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();
             services.AddScoped<IHashingPasswordService, HashingPasswordService>();
@@ -108,9 +109,9 @@ namespace OpenServiceCreator
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAssemblyManager assemblyManager, IServiceProvider serviceProvider, IAssemblyInitializer initializer)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IAssemblyManager assemblyManager, IServiceManager serviceManager, IAssemblyInitializer initializer)
         {
-            serviceProvider.AddScoped(()=>
+            ((ServiceManager)serviceManager).GlobalCollection.AddScoped((serviceProvider) =>
             {
                 var options = new DbContextOptionsBuilder<DataStore>()
                     .UseNpgsql(GetDatabaseConnectionString(Configuration));
@@ -118,12 +119,10 @@ namespace OpenServiceCreator
                 return (IDataStore)(new DataStore(options.Options, assemblyManager));
             });
 
-            /*
-            serviceProvider.AddSingeltone(() =>
-            {
-                return (IServiceProvider) serviceProvider;
-            });
-            */
+            ((ServiceManager)serviceManager).GlobalCollection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
+
+            serviceManager.GlobalServiceBuild();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

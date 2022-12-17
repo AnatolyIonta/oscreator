@@ -24,6 +24,21 @@ namespace Ionta.ServiceTools
         {
             RegisterNewService(assemblyManager.GetAssemblies());
             assemblyManager.OnChange += RegisterNewService;
+            assemblyManager.OnUnloading += OnUnloading;
+        }
+
+        private void OnUnloading(Assembly[] assemblies)
+        {
+            foreach (Assembly assembly in assemblies)
+            {
+                var services = assembly.GetTypes()
+                    .Where(a => a.GetCustomAttribute(typeof(ServiceAttribute)) != null);
+
+                foreach (var service in services)
+                {
+                    ServiceCollection.Remove(service);
+                }
+            }
         }
 
         public void AddScoped<I, T>()

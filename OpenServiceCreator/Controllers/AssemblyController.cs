@@ -1,12 +1,14 @@
 ﻿using Ionta.OSC.App.CQRS.Commands.ActivateAssembly;
 using Ionta.OSC.App.CQRS.Commands.ApplayMigration;
 using Ionta.OSC.App.CQRS.Commands.Auth;
+using Ionta.OSC.App.CQRS.Commands.DeleteModul;
 using Ionta.OSC.App.CQRS.Commands.LoadAssembly;
 using Ionta.OSC.App.CQRS.Queries.GetAssemblies;
 using Ionta.OSC.App.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -53,6 +55,14 @@ namespace OpenServiceCreator.Controllers
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("list")]
         public async Task<DtosList<AssemblyDto>> List([FromBody] GetAssembliesQuery query)
+        {
+            return await _mediator.Send(query);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("delete")]
+        public async Task<bool> Delete([FromBody] DeleteModulCommand query)
         {
             return await _mediator.Send(query);
         }
