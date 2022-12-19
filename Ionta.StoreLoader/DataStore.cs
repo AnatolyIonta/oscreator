@@ -46,7 +46,7 @@ namespace Ionta.StoreLoader
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.ReplaceService<IModelCacheKeyFactory, DynamicModelCacheKeyFactory>();
+            //optionsBuilder.ReplaceService<IModelCacheKeyFactory, DynamicModelCacheKeyFactory>();
         }
 
 
@@ -95,5 +95,10 @@ namespace Ionta.StoreLoader
             => context is DataStore dynamicContext
                 ? (context.GetType(), dynamicContext._assemblyManager.GetEntities())
                 : (object)context.GetType();
+
+        public object Create(DbContext context, bool designTime)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

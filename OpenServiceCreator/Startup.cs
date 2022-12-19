@@ -121,6 +121,18 @@ namespace OpenServiceCreator
 
             ((ServiceManager)serviceManager).GlobalCollection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
 
+            serviceManager.ConfigurePrivateContainer = (collection) =>
+            {
+                collection.AddScoped((serviceProvider) =>
+                {
+                    var options = new DbContextOptionsBuilder<DataStore>()
+                        .UseNpgsql(GetDatabaseConnectionString(Configuration));
+
+                    return (IDataStore)(new DataStore(options.Options, assemblyManager));
+                });
+                collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
+            };
+
             serviceManager.GlobalServiceBuild();
 
             if (env.IsDevelopment())

@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenServiceCreator", "OpenServiceCreator\OpenServiceCreator.csproj", "{7F07D8CF-862D-4C35-849F-7759EAC1C7AA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyLoader", "AssemblyLoader\AssemblyLoader.csproj", "{60CF6938-C693-4E76-93C6-512A4B580904}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssemblyLoader.Tests", "AssemblyLoader.Tests\AssemblyLoader.Tests.csproj", "{C4284F6D-9CE5-4946-86D5-871D8179C46F}"
@@ -21,16 +19,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Domain", "Ionta.O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Storage", "Ionta.OSC.Storage\Ionta.OSC.Storage.csproj", "{CD087CFF-7F87-42DC-839A-CAD2281300DB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Web", "Ionta.OSC.Web\Ionta.OSC.Web.csproj", "{E826EE41-23D0-4E90-BB00-9B3CDEBC67C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7F07D8CF-862D-4C35-849F-7759EAC1C7AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F07D8CF-862D-4C35-849F-7759EAC1C7AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F07D8CF-862D-4C35-849F-7759EAC1C7AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F07D8CF-862D-4C35-849F-7759EAC1C7AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60CF6938-C693-4E76-93C6-512A4B580904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60CF6938-C693-4E76-93C6-512A4B580904}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60CF6938-C693-4E76-93C6-512A4B580904}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -59,6 +55,10 @@ Global
 		{CD087CFF-7F87-42DC-839A-CAD2281300DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD087CFF-7F87-42DC-839A-CAD2281300DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD087CFF-7F87-42DC-839A-CAD2281300DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E826EE41-23D0-4E90-BB00-9B3CDEBC67C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E826EE41-23D0-4E90-BB00-9B3CDEBC67C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E826EE41-23D0-4E90-BB00-9B3CDEBC67C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E826EE41-23D0-4E90-BB00-9B3CDEBC67C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

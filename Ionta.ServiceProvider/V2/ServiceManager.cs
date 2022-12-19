@@ -16,6 +16,7 @@ namespace Ionta.ServiceTools.V2
         public Dictionary<Assembly, Microsoft.Extensions.DependencyInjection.ServiceProvider> PrivateContainers { get; set; }
         public IServiceCollection GlobalCollection { get; set; }
         public Microsoft.Extensions.DependencyInjection.ServiceProvider GlobalContainer { get; set; }
+        public Action<IServiceCollection> ConfigurePrivateContainer { get; set; }
 
         private readonly IAssemblyManager _assemblyManager;
 
@@ -142,6 +143,8 @@ namespace Ionta.ServiceTools.V2
                 foreach (var service in servicesPrivate)
                 {
                     var attributeInfo = (ServiceAttribute)service.GetCustomAttribute(typeof(ServiceAttribute));
+
+                    ConfigurePrivateContainer(serviceCollection);
 
                     switch (attributeInfo.Type)
                     {
