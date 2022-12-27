@@ -1,0 +1,54 @@
+html, body{
+  height: 100%;
+}
+
+.App{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
+}
+
+.body{
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+}
+
+.nav{
+  background-color: #1a222f;
+  color: #e4e9ed;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.navItem{
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  padding: 7px;
+  cursor: pointer;
+}
+
+.navItem:hover{
+  background-color: #293040;
+}
+
+.header{
+  margin: 10px 0;
+  text-align: center;
+}
+
+.content{
+  background-color: #f6f6f6;
+  padding: 10px;
+}
+
+.block{
+  border: 2px solid #1a222f;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
