@@ -4,6 +4,13 @@ export const LanguageRu : ILocalizableStrings = {
         Libary: "Модули",
         Marketplace: "Маркетплейс",
         About: "О создателях"
+    },
+    AsemblyPage:{
+        description: "Выберете файл в формате .dll" ,
+        loadButton: "Загрузить модуль",
+        disableModule:"Деактивировать",
+        enambleModule: "Активировать",
+        deleteModule: "Удалить",
     }
 }
 
@@ -16,8 +23,17 @@ interface ILocalizableNav{
     About: string;
 }
 
+interface ILocalizableAsemblyPage{
+    description:string;
+    loadButton:string;
+    disableModule:string;
+    enambleModule:string;
+    deleteModule:string;
+}
+
 interface ILocalizableStrings{
     Nav: ILocalizableNav;
+    AsemblyPage: ILocalizableAsemblyPage;
 }
 
 export class LocalizableStringsManager{
