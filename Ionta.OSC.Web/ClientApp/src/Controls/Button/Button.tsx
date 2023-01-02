@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./Button.module.css";
 
 export enum ButtonStyles{
@@ -17,10 +18,10 @@ export default function Button(props:{title:string, onClick:(e:any)=>void, butto
     )
 }
 
-export function ButtonFileLoad(props:{title:string}){
+export function ButtonFileLoad(props:{title:string, onChange:(e:any) => void}){
     return(
         <label className={styles.classic}>
-            <input className='displayNone' type="file"/>
+            <input className='displayNone' type="file" onChange={props.onChange}/>
             <div>{props.title}</div>
         </label>
     )

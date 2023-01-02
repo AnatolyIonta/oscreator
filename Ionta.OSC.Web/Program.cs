@@ -20,7 +20,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddControllersWithViews();
 services.AddOptions();
@@ -48,7 +61,8 @@ services.AddScoped(servicesProvider =>
     return (IOscStorage)(new OscStorage(options.Options, hashingPassword));
 });
 
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly,
+                typeof(AuthOptions).Assembly, typeof(IMigrationGenerator).Assembly);
 
 var authOptionsCofiguration = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
 services.AddSingleton(authOptionsCofiguration);
@@ -72,20 +86,24 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
 
 var app = builder.Build();
 
+app.UseAuthentication();
+
+app.UseCors(MyAllowSpecificOrigins);
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
 }
 
-app.UseStaticFiles();
+//app.UseStaticFiles();
 app.UseRouting();
-
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-app.MapFallbackToFile("index.html");
+//app.MapFallbackToFile("index.html");
 
 var assemblyManager = app.Services.GetService<IAssemblyManager>();
 var serviceManager = app.Services.GetService<IServiceManager>();

@@ -6,6 +6,7 @@ using Ionta.OSC.App.CQRS.Commands.LoadAssembly;
 using Ionta.OSC.App.CQRS.Queries.GetAssemblies;
 using Ionta.OSC.App.Dtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace OpenServiceCreator.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class AssemblyController : ControllerBase
     {

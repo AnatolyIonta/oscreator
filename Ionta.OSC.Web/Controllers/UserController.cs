@@ -33,5 +33,13 @@ namespace OpenServiceCreator.Controllers
         {
             return await _mediator.Send(query);
         }
+
+        [ProducesResponseType(typeof(JWTDto), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("сhangepassword")]
+        public async Task ChangePassword([FromBody] LoginCommand query)
+        {
+            await _mediator.Send(query);
+        }
     }
 }

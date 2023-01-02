@@ -1,4 +1,12 @@
 import React, { useRef, useState } from 'react';
+import {
+  Switch,
+  Route,
+  Redirect,
+  useLocation, useHistory, BrowserRouter
+} from "react-router-dom";
+
+
 import logo from './logo.svg';
 import './App.css';
 import {ReactComponent as Library} from "./Icon/library.svg";
@@ -9,8 +17,41 @@ import Strings from './Core/LocalizableStrings';
 import Button, { ButtonStyles } from './Controls/Button/Button';
 import {ButtonFileLoad} from './Controls/Button/Button';
 
+import LoadAssemblyPage from "./Pages/ModuleLoader/ModuleLoader"
+import LoginPage from './Pages/LoginPage/LoginPage';
+import loginStore from './Core/LoginStore';
+import { observer } from 'mobx-react-lite';
+
+
 function App() {
+  return(
+    <Router/>
+  )
+}
+
+const Router = observer(function (){
   return (
+    <BrowserRouter>
+        <Switch>
+          <Route path="/login">
+            {!loginStore.loggedIn ? 
+              <LoginPage/>
+              : <Redirect exact from="/login" to="/"/>
+            }
+          </Route>
+          <Route path="/">
+          {loginStore.loggedIn ? 
+            <AdminPanel/>
+            : <Redirect exact from="/" to="/login"/>
+          }
+          </Route>
+        </Switch>
+    </BrowserRouter>
+  );
+});
+
+function AdminPanel(){
+  return(
     <div className="App">
       <div className='body'>
 
@@ -33,64 +74,12 @@ function App() {
         </div>
 
         <div className='content'>
-          <LoadAssemblyToolBar/>
-          <LoadAssemblyList/>
+          <LoadAssemblyPage/>
         </div>
 
       </div>
     </div>
-  );
-}
-
-function LoadAssemblyToolBar(){
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  function openDialog(){
-    
-  }
-  return(
-    <>
-    <div className='row justBetween alignCenter' style={{marginBottom:"30px"}}>
-      <h3>Загрузчик модулей</h3>
-      <ButtonFileLoad title={Strings.AsemblyPage.loadButton}/>
-    </div>
-    <dialog ref={dialogRef}>
-      <h1>Опа! Здарова!</h1>
-    </dialog>
-    </>
-    
   )
-}
-
-function LoadAssemblyList(){
-  return(
-    <div className='column gap'>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-      <LoadAssemblyListItem/>
-    </div>
-  )
-}
-
-function LoadAssemblyListItem(){
-  return(
-    <div className='block row'>
-      <div className='row margin-right alignCenter'>
-        <div className='dicorateBox'/>
-        <span className='nameModul'>Название модуля</span>
-      </div>
-        
-      <div className='row margin-right alignCenter justCenter'>
-        <Button onClick={()=>null} title={Strings.AsemblyPage.disableModule}/>
-        <Button onClick={()=>null} title={Strings.AsemblyPage.deleteModule} buttonStyle={ButtonStyles.red}/>
-      </div>
-    </div>
-  );
 }
 
 export default App;

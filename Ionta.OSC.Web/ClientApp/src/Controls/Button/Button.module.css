@@ -6,6 +6,12 @@
     border: 1px solid #bed2eb;
     border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    text-align: center;
+}
+
+.classic:hover{
+    background-color: #dbdbdb;
 }
 
 .red{
@@ -16,4 +22,10 @@
     border: 1px solid #d2b4b4;
     border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.red:hover{
+    background-color: #fdb4b4;
+    cursor: pointer;
 }
