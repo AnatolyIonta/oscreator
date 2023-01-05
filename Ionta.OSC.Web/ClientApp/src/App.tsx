@@ -3,7 +3,7 @@ import {
   Switch,
   Route,
   Redirect,
-  useLocation, useHistory, BrowserRouter
+  useLocation, useHistory, BrowserRouter, Link
 } from "react-router-dom";
 
 
@@ -21,6 +21,8 @@ import LoadAssemblyPage from "./Pages/ModuleLoader/ModuleLoader"
 import LoginPage from './Pages/LoginPage/LoginPage';
 import loginStore from './Core/LoginStore';
 import { observer } from 'mobx-react-lite';
+import SettingPage from './Pages/SettingPage/SettingPage';
+import AboutPage from './Pages/AboutPage/AboutPage';
 
 
 function App() {
@@ -41,7 +43,9 @@ const Router = observer(function (){
           </Route>
           <Route path="/">
           {loginStore.loggedIn ? 
-            <AdminPanel/>
+            <BrowserRouter>
+              <AdminPanel/>
+            </BrowserRouter>
             : <Redirect exact from="/" to="/login"/>
           }
           </Route>
@@ -61,20 +65,33 @@ function AdminPanel(){
           </div>
           <div className='navItem'>  
             <Library fill='#e4e9ed' stroke='#e4e9ed'/>
-            <span>{Strings.Nav.Libary}</span>
+            <Link to={"/additions"}><span>{Strings.Nav.Libary}</span></Link>
           </div>
           <div className='navItem'>  
             <Setting fill='#e4e9ed' stroke='#e4e9ed'/>
-            <span>{Strings.Nav.Setting}</span>
+            <Link to={"/settings"}><span>{Strings.Nav.Setting}</span></Link>
           </div>
-          <div className='navItem'>  
+          <div className='navItem'>   
             <Info fill='#e4e9ed' stroke='#e4e9ed'/>
-            <span>{Strings.Nav.About}</span>
+            <Link to={"/about"}><span>{Strings.Nav.About}</span></Link>
           </div>
         </div>
 
         <div className='content'>
-          <LoadAssemblyPage/>
+          <Switch>
+            <Route path="/" exact>
+              <Redirect exact from="/" to="/additions"/>
+            </Route>
+            <Route path="/additions">
+              <LoadAssemblyPage/>
+            </Route>
+            <Route path="/settings">
+              <SettingPage/>
+            </Route>
+            <Route path="/about">
+              <AboutPage/>
+            </Route>
+          </Switch>
         </div>
 
       </div>

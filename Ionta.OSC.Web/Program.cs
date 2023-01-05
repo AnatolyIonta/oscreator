@@ -2,7 +2,6 @@ using AssemblyLoader.Loader;
 using Ionta.OSC.App;
 using Ionta.OSC.App.Services.AssemblyInitializer;
 using Ionta.OSC.App.Services.Auth;
-using Ionta.OSC.App.Services.HashingPasswordService;
 using Ionta.OSC.ToolKit.Auth;
 using Ionta.OSC.ToolKit.Services;
 using Ionta.ServiceTools.V2;
@@ -16,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Ionta.OSC.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Ionta.OSC.App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -41,7 +41,7 @@ services.AddSingleton<IAssemblyManager, AssemblyManager>();
 services.AddSingleton<IServiceManager, ServiceManager>();
 services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
 services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();
-services.AddScoped<IHashingPasswordService, HashingPasswordService>();
+//services.AddTransient<IHashingPasswordService, HashingPasswordService>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped(servicesProvider =>
 {
@@ -57,14 +57,14 @@ services.AddScoped(servicesProvider =>
     var options = new DbContextOptionsBuilder<OscStorage>()
         .UseNpgsql(GetOscDatabaseConnectionString(servicesProvider.GetService<IConfiguration>()));
 
-    var hashingPassword = servicesProvider.GetService<IHashingPasswordService>();
-    return (IOscStorage)(new OscStorage(options.Options, hashingPassword));
+    return (IOscStorage)(new OscStorage(options.Options));
 });
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly,
                 typeof(AuthOptions).Assembly, typeof(IMigrationGenerator).Assembly);
 
 var authOptionsCofiguration = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
+
 services.AddSingleton(authOptionsCofiguration);
 services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
     AddJwtBearer(options =>
@@ -83,6 +83,8 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
         };
     }
     );
+services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+services.AddScoped<IUserProvider, UserProvider>();
 
 var app = builder.Build();
 

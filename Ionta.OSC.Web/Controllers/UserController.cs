@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Ionta.OSC.App.CQRS.Commands.Auth;
+using Ionta.OSC.App.CQRS.Commands.ChangePassword;
 using Ionta.OSC.App.Dtos;
 using Ionta.OSC.App.Services.Auth;
 using Ionta.OSC.ToolKit.Services;
@@ -37,9 +38,9 @@ namespace OpenServiceCreator.Controllers
         [ProducesResponseType(typeof(JWTDto), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("сhangepassword")]
-        public async Task ChangePassword([FromBody] LoginCommand query)
+        public async Task ChangePassword([FromBody] ChangePasswordCommand command)
         {
-            await _mediator.Send(query);
+            await _mediator.Send(command);
         }
     }
 }

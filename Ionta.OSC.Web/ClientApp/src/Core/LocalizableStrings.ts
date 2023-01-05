@@ -11,6 +11,17 @@ export const LanguageRu : ILocalizableStrings = {
         disableModule:"Деактивировать",
         enambleModule: "Активировать",
         deleteModule: "Удалить",
+    },
+    SettingPage:{
+        description:"Сменить пароль",
+        errorExternal:"Ошибка при смене пароля",
+        errorInternal:"Пароли не совпадают",
+        seccses:"Пароль успешно изменён",
+        newPassword:"Новый пароль",
+        oldPassword:"Старый пароль",
+        passwordRepeat:"Повторите пароль",
+        changePassword:"Сменить пароль",
+        logOut:"Выйти из аккаунта"
     }
 }
 
@@ -31,9 +42,22 @@ interface ILocalizableAsemblyPage{
     deleteModule:string;
 }
 
+interface ILocalizableSettingPage{
+    description:string;
+    errorInternal:string;
+    errorExternal:string;
+    seccses:string;
+    newPassword:string;
+    oldPassword:string;
+    passwordRepeat:string;
+    changePassword:string;
+    logOut:string;
+}
+
 interface ILocalizableStrings{
     Nav: ILocalizableNav;
     AsemblyPage: ILocalizableAsemblyPage;
+    SettingPage: ILocalizableSettingPage;
 }
 
 export class LocalizableStringsManager{
