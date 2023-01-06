@@ -1,6 +1,6 @@
 ﻿using Ionta.OSC.ToolKit.Controllers;
-using Ionta.OSC.ToolKit.Services;
-using Ionta.ServiceTools.V2;
+using Ionta.OSC.Core.Assemblys;
+using Ionta.OSC.Core.ServiceTools;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using System.Runtime.CompilerServices;

@@ -1,5 +1,6 @@
 ﻿using Ionta.OSC.App.CQRS.Commands.LoadAssembly;
-using Ionta.OSC.ToolKit.Services;
+using Ionta.OSC.Core.Assemblys;
+using Ionta.OSC.Core.Store;
 using MediatR;
 using System;
 using System.Collections.Generic;

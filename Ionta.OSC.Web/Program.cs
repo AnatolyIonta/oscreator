@@ -1,21 +1,21 @@
-using AssemblyLoader.Loader;
 using Ionta.OSC.App;
 using Ionta.OSC.App.Services.AssemblyInitializer;
 using Ionta.OSC.App.Services.Auth;
 using Ionta.OSC.ToolKit.Auth;
-using Ionta.OSC.ToolKit.Services;
-using Ionta.ServiceTools.V2;
-using Ionta.StoreLoader.Migration;
 using MediatR;
 using System.Reflection;
 using Ionta.OSC.Web.Infrastructure;
 using Ionta.OSC.ToolKit.Store;
-using Ionta.StoreLoader;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Ionta.OSC.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Ionta.OSC.App.Services;
+
+using Ionta.OSC.Core.Assemblys;
+using Ionta.OSC.Core.ServiceTools;
+using Ionta.OSC.Core.Store;
+using Ionta.OSC.Core.Store.Migration;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

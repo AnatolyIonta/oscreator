@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using IServiceProvider = Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider;
 using System.Runtime.CompilerServices;
-using Ionta.ServiceTools.V2;
+using Ionta.OSC.Core.ServiceTools;
 
 namespace Ionta.OSC.Web.Infrastructure
 {

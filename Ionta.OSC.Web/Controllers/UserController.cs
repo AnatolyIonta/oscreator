@@ -7,7 +7,7 @@ using Ionta.OSC.App.CQRS.Commands.Auth;
 using Ionta.OSC.App.CQRS.Commands.ChangePassword;
 using Ionta.OSC.App.Dtos;
 using Ionta.OSC.App.Services.Auth;
-using Ionta.OSC.ToolKit.Services;
+using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.ToolKit.Store;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

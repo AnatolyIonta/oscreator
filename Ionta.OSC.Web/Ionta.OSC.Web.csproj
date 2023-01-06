@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ionta.OSC.ToolKit" Version="7.0.2" />
     <PackageReference Include="MediatR.Extensions.Cqs" Version="1.0.5" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection.Libraries" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.1" />
@@ -40,12 +41,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AssemblyLoader\AssemblyLoader.csproj" />
     <ProjectReference Include="..\Ionta.OSC.App\Ionta.OSC.App.csproj" />
+    <ProjectReference Include="..\Ionta.OSC.Core\Ionta.OSC.Core.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Storage\Ionta.OSC.Storage.csproj" />
-    <ProjectReference Include="..\Ionta.ServiceProvider\Ionta.ServiceTools.csproj" />
-    <ProjectReference Include="..\Ionta.StoreLoader\Ionta.StoreLoader.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

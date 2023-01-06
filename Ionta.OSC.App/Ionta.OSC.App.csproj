@@ -5,13 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Ionta.OSC.ToolKit" Version="1.0.10" />
+	  <PackageReference Include="Ionta.OSC.ToolKit" Version="7.0.2" />
 	  <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.16.0" />
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ionta.OSC.Core\Ionta.OSC.Core.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />
     <PackageReference Include="MediatR" Version="11.1.0" />
   </ItemGroup>
