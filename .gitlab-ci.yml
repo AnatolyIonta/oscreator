@@ -26,4 +26,4 @@ publish:
         - docker push $TAG
         - docker push $LATEST_TAG
     only:
-      - main
+      - dev
