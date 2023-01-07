@@ -1,5 +1,5 @@
 ﻿using Ionta.OSC.App.Dtos;
-using Ionta.OSC.App.Services.HashingPasswordService;
+using Ionta.OSC.App.Services.HashingPassword;
 using Ionta.OSC.Domain;
 using Ionta.OSC.ToolKit.Auth;
 using Ionta.OSC.ToolKit.Store;
@@ -18,19 +18,17 @@ namespace Ionta.OSC.App.Services.Auth
     public class AuthService : IAuthService
     {
         private readonly IOscStorage _storage;
-        private readonly IHashingPasswordService _hashing;
         private readonly AuthOptions _authOptions;
-        public AuthService(IOscStorage storage, IHashingPasswordService hashingPassword, AuthOptions authOptions)
+        public AuthService(IOscStorage storage, AuthOptions authOptions)
         {
             _storage = storage;
-            _hashing = hashingPassword;
             _authOptions = authOptions;
         }
         public async Task<JWTDto> Handle(string login, string password)
         {
 
             var user = _storage.Users.Single(u => u.Name.ToLower() == login.ToLower());
-            if (user.Password != _hashing.Hash(password)) new Exception("Password Error");
+            if (user.Password != HashingPasswordService.Hash(password)) new Exception("Password Error");
 
             return new JWTDto() { JWT = GenerateJwt(user) };
         }

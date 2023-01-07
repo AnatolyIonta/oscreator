@@ -1,0 +1,10 @@
+.classic{
+    display: inline-block;
+    color: #475466;
+    background-color: #ffffff;
+    border: 1px solid #bed2eb;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    min-height: 30px;
+    width: 100%;
+}

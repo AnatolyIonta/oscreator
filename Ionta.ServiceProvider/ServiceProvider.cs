@@ -15,7 +15,7 @@ namespace Ionta.ServiceTools
         public Type Service { get; set; }
         public object Generator { get; set; }
     }
-    public class ServiceProvider : Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider
+    public class ServiceProvider
     {
         private Dictionary<Type, ServiceInfo> ServiceCollection = new();
         private Dictionary<Type, object> SingletoneService = new();

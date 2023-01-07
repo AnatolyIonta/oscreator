@@ -1,4 +1,5 @@
 ﻿using Ionta.OSC.ToolKit.ServiceProvider;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Ionta.ServiceTools.V2
 {
     public interface IServiceManager
     {
+        public IServiceCollection GlobalCollection { get; }
+        public Action<IServiceCollection> ConfigurePrivateContainer { get; set; }
         public object? GetService(string serviceName, Assembly assembly);
         public object? GetService<T>(Assembly assembly);
         public object? GetService(Type serviceType, Assembly assembly);

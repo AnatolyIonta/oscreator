@@ -1,4 +1,5 @@
 ﻿using Ionta.OSC.App.Dtos;
+using Ionta.OSC.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

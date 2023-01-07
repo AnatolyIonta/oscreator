@@ -47,6 +47,7 @@ namespace AssemblyLoader.Loader
             foreach (var assembly in assemblies)
             {
                 var target = this.assemblies.FirstOrDefault(a => a.GetType() == assembly.GetType());
+                if (target == null) return;
                 this.assemblies.Remove(target);
             }
             OnUnloading?.Invoke(assemblies);

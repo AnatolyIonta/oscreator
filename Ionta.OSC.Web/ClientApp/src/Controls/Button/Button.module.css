@@ -1,0 +1,31 @@
+.classic{
+    padding: 10px 16px;
+    display: inline-block;
+    color: #475466;
+    background-color: #f6f6f6;
+    border: 1px solid #bed2eb;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    cursor: pointer;
+    text-align: center;
+}
+
+.classic:hover{
+    background-color: #dbdbdb;
+}
+
+.red{
+    padding: 10px 16px;
+    display: inline-block;
+    color: #664747;
+    background-color: #ffe1e1;
+    border: 1px solid #d2b4b4;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.red:hover{
+    background-color: #fdb4b4;
+    cursor: pointer;
+}

@@ -1,5 +1,5 @@
 ﻿using Ionta.OSC.App;
-using Ionta.OSC.App.Services.HashingPasswordService;
+using Ionta.OSC.App.Services.HashingPassword;
 using Ionta.OSC.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,11 +15,8 @@ namespace Ionta.OSC.Storage
         public DbSet<User> Users { get; set; }
         public DbSet<AssemblyFile> AssemblyFiles { get; set; }
 
-        private readonly IHashingPasswordService _hashingPassword;
-
-        public OscStorage(DbContextOptions options, IHashingPasswordService hashingPassword) : base(options) 
+        public OscStorage(DbContextOptions options) : base(options) 
         { 
-            _hashingPassword= hashingPassword;
             Database.EnsureCreated();
         }
 
@@ -30,7 +27,7 @@ namespace Ionta.OSC.Storage
             {
                 Id= 1,
                 Name = "Admin",
-                Password = _hashingPassword.Hash("Password"),
+                Password = HashingPasswordService.Hash("Password"),
                 Email = "Admin@OSC.ru"
             });
         }

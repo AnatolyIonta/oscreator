@@ -6,28 +6,20 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.App.Services.HashingPasswordService
+namespace Ionta.OSC.App.Services.HashingPassword
 {
-    public class HashingPasswordService : IHashingPasswordService
+    public static class HashingPasswordService 
     {
-        private readonly byte[] salt = new byte[128 / 8];
-        public HashingPasswordService()
+        public static string Hash(string password)
         {
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetNonZeroBytes(salt);
-            }
-        }
-        public string Hash(string password)
-        {
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            password: password,
-            salt: salt,
-            prf: KeyDerivationPrf.HMACSHA256,
-            iterationCount: 100000,
-            numBytesRequested: 256 / 8));
+            SHA512 shaM = new SHA512Managed();
+            byte[] bytes = Encoding.UTF8.GetBytes(password);
+            var result = shaM.ComputeHash(bytes);
 
-            return hashed;
+            var hashedInputStringBuilder = new System.Text.StringBuilder(128);
+            foreach (var b in result)
+                hashedInputStringBuilder.Append(b.ToString("X2"));
+            return hashedInputStringBuilder.ToString();
         }
     }
 }
