@@ -11,7 +11,7 @@ lint-test-job:
   stage: test
   tags:
     - osc
-  image: mcr.microsoft.com/dotnet/sdk:5.0
+  image: mcr.microsoft.com/dotnet/sdk:7.0
   script: 
     - "dotnet test AssemblyLoader.Tests/AssemblyLoader.Tests.csproj"
 
