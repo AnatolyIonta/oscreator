@@ -10,6 +10,7 @@ using Ionta.OSC.App.Services.Auth;
 using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.ToolKit.Store;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -35,12 +36,21 @@ namespace OpenServiceCreator.Controllers
             return await _mediator.Send(query);
         }
 
+        [Authorize]
         [ProducesResponseType(typeof(JWTDto), 200)]
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("сhangepassword")]
         public async Task ChangePassword([FromBody] ChangePasswordCommand command)
         {
             await _mediator.Send(command);
+        }
+
+        [ProducesResponseType(typeof(string), 200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("status")]
+        public string Health()
+        {
+            return "Health";
         }
     }
 }
