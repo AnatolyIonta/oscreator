@@ -97,7 +97,7 @@ if (!app.Environment.IsDevelopment())
 {
 }
 
-//app.UseStaticFiles();
+app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
@@ -105,13 +105,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
-//app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("index.html");
 
 var assemblyManager = app.Services.GetService<IAssemblyManager>();
 var serviceManager = app.Services.GetService<IServiceManager>();
 var Configuration = app.Services.GetService<IConfiguration>();
 
 app.UseMiddleware<CustomControllerMiddleware>(assemblyManager);
+
 
 
 serviceManager.GlobalCollection.AddScoped((serviceProvider) =>
