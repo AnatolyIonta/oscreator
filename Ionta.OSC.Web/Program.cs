@@ -139,6 +139,12 @@ serviceManager.ConfigurePrivateContainer = (collection) =>
 
 serviceManager.GlobalServiceBuild();
 
+using (var scope = app.Services.CreateScope())
+{
+    var initializer = scope.ServiceProvider.GetService<IAssemblyInitializer>();
+    initializer.Initialize();
+}
+
 app.Run();
 
 
