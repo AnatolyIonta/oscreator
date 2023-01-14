@@ -78,7 +78,7 @@ function LoadAssemblyListItem(props:{name:string, id:number, isActive:boolean}){
 
     function enableModul(){
         const data = {assemblyId: props.id, isActive: !props.isActive};
-        let response = Api.postAuth("Assembly/SetActive", data).then(e => store.load());
+        let response = Api.postAuth("Assembly/SetActive", data).then(e => { Api.postAuth("Assembly/ApplayMigration",{}); store.load() });
     }
 
     const dialogRef = useRef<HTMLDialogElement>( null );
