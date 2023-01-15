@@ -11,7 +11,7 @@ namespace Ionta.OSC.Web.Infrastructure
 {
     public class CustomControllerMiddleware
     {
-        private List<ControllerInfo> _info = new List<ControllerInfo>();
+        //private List<ControllerInfo> _info
         private readonly IAssemblyManager _manager;
         private readonly IServiceManager _services;
         private readonly RequestDelegate _next;
@@ -19,37 +19,43 @@ namespace Ionta.OSC.Web.Infrastructure
         public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceManager services)
         {
             _manager = infoManager;
-            LoadControllers(infoManager.GetAssemblies());
-            infoManager.OnChange += LoadControllers;
-            infoManager.OnUnloading += OnUnloading;
+            //LoadControllers(infoManager.GetAssemblies());
+            //infoManager.OnChange += LoadControllers;
+            //infoManager.OnUnloading += OnUnloading;
             _next = next;
             _services = services;
         }
 
-        private void OnUnloading(Assembly[] obj)
+        private List<ControllerInfo> GetControllers()
         {
-            var controllers = _manager.GetControllers(_manager.GetAssemblies());
-
-            _info = controllers.ToList();
-
-            /*
-            foreach(var controller in controllers)
-            {
-                var target = _info.FirstOrDefault(i => i.Type == controller.Type);
-                if(target != null)
-                {
-                    _info.Remove(target);
-                }
-            }
-            */
+            return _manager.GetControllers(_manager.GetAssemblies()).ToList();
         }
 
-        public void LoadControllers(Assembly[] assemblies)
-        {
-            _info = _info.Union(_manager.GetControllers(assemblies)).ToList();
-        }
+       
+        //private void OnUnloading(Assembly[] obj)
+        //{
+        //    var controllers = _manager.GetControllers(_manager.GetAssemblies());
+
+        //    /*
+        //    foreach(var controller in controllers)
+        //    {
+        //        var target = _info.FirstOrDefault(i => i.Type == controller.Type);
+        //        if(target != null)
+        //        {
+        //            _info.Remove(target);
+        //        }
+        //    }
+        //    */
+        //}
+
+        //public void LoadControllers(Assembly[] assemblies)
+        //{
+        //    _info = _info.Union(_manager.GetControllers(assemblies)).ToList();
+        //}
+
         public async Task InvokeAsync(HttpContext context)
         {
+            var _info = GetControllers();
             foreach (var controller in _info)
             {
                 if (context.Request.Path.Value == null) await SendResult(context, "ok");
