@@ -16,6 +16,8 @@ namespace Ionta.OSC.Core.Store.Migration
         String,
         Boolean,
         Guid,
-        None
+        None,
+        Object,
+        Data
     }
 }

@@ -191,6 +191,7 @@ namespace Ionta.OSC.Core.Store.Migration
             if (type == "text" || type == typeof(string).Name) return ColumnType.String;
             if (type == "boolean" || type == typeof(bool).Name) return ColumnType.Boolean;
             if (type == "uuid" || type == typeof(Guid).Name) return ColumnType.Guid;
+            if (type == "bytea" || type == typeof(byte[]).Name) return ColumnType.Data;
 
             return ColumnType.None;
         }
@@ -205,6 +206,7 @@ namespace Ionta.OSC.Core.Store.Migration
             if (type == ColumnType.String) return "text";
             if (type == ColumnType.Boolean) return "boolean";
             if (type == ColumnType.Guid) return "uuid";
+            if(type == ColumnType.Data) return "bytea";
 
             throw new Exception("Тип не опознан!");
         }

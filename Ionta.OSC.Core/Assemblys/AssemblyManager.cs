@@ -23,7 +23,13 @@ namespace Ionta.OSC.Core.Assemblys
 
         public void InitAssembly(params Assembly[] assemblies)
         {
-            this.assemblies.AddRange(assemblies);
+            foreach(var assembly in assemblies)
+            {
+                if (!this.assemblies.Any(e => e.FullName == assembly.FullName))
+                {
+                    this.assemblies.Add(assembly);
+                }
+            }
             try
             {
                 OnChange?.Invoke(assemblies);
@@ -47,9 +53,9 @@ namespace Ionta.OSC.Core.Assemblys
         {
             foreach (var assembly in assemblies)
             {
-                var target = this.assemblies.FirstOrDefault(a => a.GetType() == assembly.GetType());
+                var target = this.assemblies.FirstOrDefault(a => a.FullName == assembly.FullName);
                 if (target == null) return;
-                this.assemblies.Remove(target);
+                this.assemblies.RemoveAll(e => e.FullName == target.FullName);
             }
             OnUnloading?.Invoke(assemblies);
         }
