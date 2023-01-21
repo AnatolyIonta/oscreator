@@ -6,6 +6,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text;
+using MediatR;
+using Microsoft.Net.Http.Headers;
+using Ionta.OSC.ToolKit.Auth;
 
 namespace Ionta.OSC.Web.Infrastructure
 {
@@ -15,8 +18,9 @@ namespace Ionta.OSC.Web.Infrastructure
         private readonly IAssemblyManager _manager;
         private readonly IServiceManager _services;
         private readonly RequestDelegate _next;
+        private readonly IAuthenticationService _authentication;
 
-        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceManager services)
+        public CustomControllerMiddleware(RequestDelegate next, IAssemblyManager infoManager, IServiceManager services, IAuthenticationService authentication)
         {
             _manager = infoManager;
             LoadControllers(infoManager.GetAssemblies());
@@ -24,6 +28,7 @@ namespace Ionta.OSC.Web.Infrastructure
             infoManager.OnUnloading += OnUnloading;
             _next = next;
             _services = services;
+            _authentication = authentication;
         }
 
         private void OnUnloading(Assembly[] obj)
@@ -46,6 +51,8 @@ namespace Ionta.OSC.Web.Infrastructure
 
         public void LoadControllers(Assembly[] assemblies)
         {
+            var controllers = _manager.GetControllers(assemblies);
+
             _info = _info.Union(_manager.GetControllers(assemblies)).ToList();
         }
         public async Task InvokeAsync(HttpContext context)
@@ -55,6 +62,14 @@ namespace Ionta.OSC.Web.Infrastructure
                 if (context.Request.Path.Value == null) await SendResult(context, "ok");
                 if (context.Request.Path.Value.StartsWith("/" + controller.Path))
                 {
+                    if (controller.Authorize) {
+                        var accessToken = context.Request.Headers[HeaderNames.Authorization];
+                        if (!_authentication.ValidateToken(accessToken.ToString().Replace("Bearer ","")))
+                        {
+                            context.Response.StatusCode = 403;
+                            return;
+                        }
+                    }
                     foreach (var handler in controller.Handlers)
                     {
                         if (context.Request.Path.Value == $"/{controller.Path}/{handler.Path}")

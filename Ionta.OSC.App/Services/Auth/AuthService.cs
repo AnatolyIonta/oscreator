@@ -28,7 +28,8 @@ namespace Ionta.OSC.App.Services.Auth
         {
 
             var user = _storage.Users.Single(u => u.Name.ToLower() == login.ToLower());
-            if (user.Password != HashingPasswordService.Hash(password)) new Exception("Password Error");
+            var x = HashingPasswordService.Hash(password);
+            if (user.Password != x) throw new Exception("Password Error");
 
             return new JWTDto() { JWT = GenerateJwt(user) };
         }
