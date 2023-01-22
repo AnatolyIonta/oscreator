@@ -2,7 +2,9 @@ import { Api } from "./api";
 
 export let ApiDomen = "";
 
-getHost().then(e => ApiDomen = e);
+export async function setAppDomen() {
+    ApiDomen = await getHost();
+}
 
 async function getHost() : Promise<string>{
     let status = false;

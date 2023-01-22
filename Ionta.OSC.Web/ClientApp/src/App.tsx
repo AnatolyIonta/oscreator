@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Switch,
   Route,
@@ -23,11 +23,23 @@ import loginStore from './Core/LoginStore';
 import { observer } from 'mobx-react-lite';
 import SettingPage from './Pages/SettingPage/SettingPage';
 import AboutPage from './Pages/AboutPage/AboutPage';
+import { setAppDomen } from './Core/Configure';
 
 
 function App() {
-  return(
-    <Router/>
+    const [loading, setLoading] = useState<boolean>(false);
+    useEffect(() => {
+        async function fun() {
+            await setAppDomen();
+            setLoading(true);
+        }
+        fun();
+    }, [])
+    return (
+        <>
+            {loading ? < Router /> : <div>Loading</div>}
+      </>
+   
   )
 }
 

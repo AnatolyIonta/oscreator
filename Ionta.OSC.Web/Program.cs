@@ -16,6 +16,7 @@ using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.Core.ServiceTools;
 using Ionta.OSC.Core.Store;
 using Ionta.OSC.Core.Store.Migration;
+using Ionta.OSC.Core.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -40,7 +41,7 @@ services.AddOptions();
 services.AddSingleton<IAssemblyManager, AssemblyManager>();
 services.AddSingleton<IServiceManager, ServiceManager>();
 services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
-services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();
+services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();                                                                                    
 //services.AddTransient<IHashingPasswordService, HashingPasswordService>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped(servicesProvider =>
@@ -85,6 +86,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
     );
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 services.AddScoped<IUserProvider, UserProvider>();
+services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
@@ -135,6 +137,7 @@ serviceManager.ConfigurePrivateContainer = (collection) =>
         return (IDataStore)(new DataStore(options.Options, assemblyManager));
     });
     collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
+    collection.AddSingleton<IAuthenticationService, AuthenticationService>();
     collection.AddHttpClient();
 };
 

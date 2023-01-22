@@ -144,8 +144,6 @@ namespace Ionta.OSC.Core.ServiceTools
                 {
                     var attributeInfo = (ServiceAttribute)service.GetCustomAttribute(typeof(ServiceAttribute));
 
-                    ConfigurePrivateContainer(serviceCollection);
-
                     switch (attributeInfo.Type)
                     {
                         case ServiceType.Singelton:
@@ -159,6 +157,7 @@ namespace Ionta.OSC.Core.ServiceTools
                             break;
                     }
                 }
+                ConfigurePrivateContainer(serviceCollection);
                 PrivateContainers.Add(assembly, serviceCollection.BuildServiceProvider());
             }
         }

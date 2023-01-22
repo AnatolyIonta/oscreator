@@ -5,6 +5,7 @@ using System.Reflection;
 using Ionta.OSC.ToolKit.Controllers;
 using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.ToolKit.Store;
+using Ionta.OSC.ToolKit.Auth;
 
 namespace Ionta.OSC.Core.Assemblys
 {
@@ -98,7 +99,8 @@ namespace Ionta.OSC.Core.Assemblys
                             }
                         ),
                         Path = ((ControllerAttribute)controller.GetCustomAttribute(typeof(ControllerAttribute)))?.Prefix,
-                        Type = controller
+                        Type = controller,
+                        Authorize = controller.GetCustomAttribute(typeof(AuthorizeAttribute)) != null
                     };
                     
                 }
