@@ -135,6 +135,7 @@ serviceManager.ConfigurePrivateContainer = (collection) =>
         return (IDataStore)(new DataStore(options.Options, assemblyManager));
     });
     collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
+    collection.AddHttpClient();
 };
 
 serviceManager.GlobalServiceBuild();
