@@ -17,6 +17,7 @@ using Ionta.OSC.Core.ServiceTools;
 using Ionta.OSC.Core.Store;
 using Ionta.OSC.Core.Store.Migration;
 using Ionta.OSC.Core.Auth;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -86,7 +87,7 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
     );
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 services.AddScoped<IUserProvider, UserProvider>();
-services.AddSingleton<IAuthenticationService, AuthenticationService>();
+services.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(builder.Configuration["Secret"]));
 
 var app = builder.Build();
 
