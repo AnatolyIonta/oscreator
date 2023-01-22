@@ -16,9 +16,9 @@ namespace Ionta.OSC.Core.Auth
     {
         private string key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429";
 
-        public AuthenticationService(IConfiguration configuration) 
+        public AuthenticationService(string secretKey) 
         {
-            key = configuration["Secret"];
+            key = secretKey;
         }
 
         public string GenerateToken()

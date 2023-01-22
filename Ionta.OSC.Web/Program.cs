@@ -137,7 +137,7 @@ serviceManager.ConfigurePrivateContainer = (collection) =>
         return (IDataStore)(new DataStore(options.Options, assemblyManager));
     });
     collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
-    collection.AddSingleton<IAuthenticationService, AuthenticationService>();
+    collection.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(Configuration["Secret"]));
     collection.AddHttpClient();
 };
 
