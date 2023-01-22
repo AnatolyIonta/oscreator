@@ -8,12 +8,18 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Ionta.OSC.ToolKit.Auth;
+using Microsoft.Extensions.Configuration;
 
 namespace Ionta.OSC.Core.Auth
 {
     public class AuthenticationService : IAuthenticationService
     {
-        static string key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429";
+        private string key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429";
+
+        public AuthenticationService(IConfiguration configuration) 
+        {
+            key = configuration["Secret"];
+        }
 
         public string GenerateToken()
         {

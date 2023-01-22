@@ -64,7 +64,7 @@ namespace Ionta.OSC.Web.Infrastructure
             foreach (var controller in _info)
             {
                 if (context.Request.Path.Value == null) await SendResult(context, "ok");
-                if (context.Request.Path.Value.StartsWith("/" + controller.Path))
+                if (context.Request.Path.Value.ToLower().StartsWith("/" + controller.Path.ToLower()))
                 {
                     if (controller.Authorize) {
                         var accessToken = context.Request.Headers[HeaderNames.Authorization];
@@ -76,7 +76,7 @@ namespace Ionta.OSC.Web.Infrastructure
                     }
                     foreach (var handler in controller.Handlers)
                     {
-                        if (context.Request.Path.Value == $"/{controller.Path}/{handler.Path}")
+                        if (context.Request.Path.Value.ToLower() == $"/{controller.Path.ToLower()}/{handler.Path.ToLower()}")
                         {
                             object[] parametrs = null;
 
