@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,12 @@ namespace Ionta.OSC.App.CQRS.Commands.DeleteModul
 
         public async Task<bool> Handle(DeleteModulCommand request, CancellationToken cancellationToken)
         {
-            var module = _storage.AssemblyFiles.First(a => a.Id == request.Id);
+            var module = _storage.AssemblyPackages.Include(e => e.Assembly).First(a => a.Id == request.Id);
 
-            if (module.IsActive) throw new Exception("Модуль активирован, его не возможно удалить! Для удаления деактивируйте модуль");
+            if (module.isActive) throw new Exception("Модуль активирован, его не возможно удалить! Для удаления деактивируйте модуль");
 
-            _storage.AssemblyFiles.Remove(module);
+            _storage.AssemblyFiles.RemoveRange(module.Assembly);
+            _storage.AssemblyPackages.Remove(module);
             await _storage.SaveChangesAsync();
 
             return true;

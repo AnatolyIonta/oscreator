@@ -14,6 +14,7 @@ namespace Ionta.OSC.Storage
     {
         public DbSet<User> Users { get; set; }
         public DbSet<AssemblyFile> AssemblyFiles { get; set; }
+        public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
 
         public OscStorage(DbContextOptions options) : base(options) 
         { 

@@ -1,5 +1,6 @@
 ﻿using Ionta.OSC.Core.Assemblys;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,21 +23,25 @@ namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
 
         public async Task<bool> Handle(ActivateAssemblyCommand request, CancellationToken cancellationToken)
         {
-            var assembly = _storage.AssemblyFiles.Single(a => a.Id == request.AssemblyId);
-            if(request.IsActive != assembly.IsActive)
+            var assemblyPackage = _storage.AssemblyPackages.Include(e => e.Assembly).Single(a => a.Id == request.AssemblyId);
+            if (request.IsActive != assemblyPackage.isActive)
             {
-                var assemblyData = AppDomain.CurrentDomain.Load(assembly.Data);
-                if (request.IsActive)
+                foreach (var assembly in assemblyPackage.Assembly)
                 {
-                    _assemblyManager.InitAssembly(assemblyData);
+                    if (request.IsActive)
+                    {
+                        var assemblyData = AppDomain.CurrentDomain.Load(assembly.Data);
+                        _assemblyManager.InitAssembly(assemblyData);
+                    }
+                    else
+                    {
+                        _assemblyManager.UnloadingAssembly(Assembly.Load(assembly.Data));
+                    }
+                    assembly.IsActive = request.IsActive;
                 }
-                else
-                {
-                    _assemblyManager.UnloadingAssembly(assemblyData);
-                }
-                assembly.IsActive = request.IsActive;
-                await _storage.SaveChangesAsync();
             }
+            assemblyPackage.isActive = request.IsActive;
+            await _storage.SaveChangesAsync();
             return true;
         }
     }
