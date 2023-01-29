@@ -60,7 +60,7 @@ namespace Ionta.OSC.Core.Auth
         {
             return new TokenValidationParameters()
             {
-                ValidateLifetime = false, // Because there is no expiration in the generated token
+                ValidateLifetime = true, // Because there is no expiration in the generated token
                 ValidateAudience = false, // Because there is no audiance in the generated token
                 ValidateIssuer = false,   // Because there is no issuer in the generated token
                 ValidIssuer = "Sample",

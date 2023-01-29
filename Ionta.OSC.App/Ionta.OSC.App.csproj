@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Новая папка\**" />
+    <EmbeddedResource Remove="Services\Новая папка\**" />
+    <None Remove="Services\Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <PackageReference Include="Ionta.OSC.ToolKit" Version="7.0.4" />
 	  <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.16.0" />
 	  <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />

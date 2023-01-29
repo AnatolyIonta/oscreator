@@ -6,12 +6,19 @@ using Ionta.OSC.ToolKit.Controllers;
 using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.ToolKit.Store;
 using Ionta.OSC.ToolKit.Auth;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Ionta.OSC.Core.Assemblys
 {
     public class AssemblyManager : IAssemblyManager
     {
         private readonly List<Assembly> assemblies = new List<Assembly>();
+        private readonly IMemoryCache _cache;
+
+        public AssemblyManager(IMemoryCache cache)
+        {
+            _cache = cache;
+        }
 
         public Assembly[] GetAssemblies()
         {
@@ -23,7 +30,8 @@ namespace Ionta.OSC.Core.Assemblys
 
         public void InitAssembly(params Assembly[] assemblies)
         {
-            foreach(var assembly in assemblies)
+            ResetCache();
+            foreach (var assembly in assemblies)
             {
                 if (!this.assemblies.Any(e => e.FullName == assembly.FullName))
                 {
@@ -40,9 +48,15 @@ namespace Ionta.OSC.Core.Assemblys
             }
         }
 
+        public void ResetCache()
+        {
+            _cache.Remove("controllers");
+        }
+
         public void UnloadAssembli(params Assembly[] assemblies)
         {
-            foreach(var assembly in assemblies)
+            ResetCache();
+            foreach (var assembly in assemblies)
             {
                 this.assemblies.Remove(assembly);
             }

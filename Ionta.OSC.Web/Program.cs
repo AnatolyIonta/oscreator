@@ -18,6 +18,9 @@ using Ionta.OSC.Core.Store;
 using Ionta.OSC.Core.Store.Migration;
 using Ionta.OSC.Core.Auth;
 using Microsoft.Extensions.DependencyInjection;
+using Ionta.OSC.Core.CustomControllers.ControllerHandler;
+using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
+using Ionta.OSC.Web.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -42,6 +45,8 @@ services.AddOptions();
 services.AddSingleton<IAssemblyManager, AssemblyManager>();
 services.AddSingleton<IServiceManager, ServiceManager>();
 services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
+services.AddMemoryCache();
+services.AddCustomControllers();
 services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();                                                                                    
 //services.AddTransient<IHashingPasswordService, HashingPasswordService>();
 services.AddScoped<IAuthService, AuthService>();
@@ -114,7 +119,8 @@ var assemblyManager = app.Services.GetService<IAssemblyManager>();
 var serviceManager = app.Services.GetService<IServiceManager>();
 var Configuration = app.Services.GetService<IConfiguration>();
 
-app.UseMiddleware<CustomControllerMiddleware>(assemblyManager);
+app.UseMiddleware<CustomAuthenticationMiddleware>();
+app.UseMiddleware<Ionta.OSC.Web.Infrastructure.V2.CustomControllerMiddleware>();
 
 
 
