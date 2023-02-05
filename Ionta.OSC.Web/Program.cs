@@ -21,6 +21,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Ionta.OSC.Core.CustomControllers.ControllerHandler;
 using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
 using Ionta.OSC.Web.Extension;
+using Ionta.OSC.Core.AssembliesInformation;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -48,6 +49,7 @@ services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
 services.AddMemoryCache();
 services.AddCustomControllers();
 services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();                                                                                    
+services.AddScoped<IAssembliesInfo, AssembliesInfo>();                                                                                    
 //services.AddTransient<IHashingPasswordService, HashingPasswordService>();
 services.AddScoped<IAuthService, AuthService>();
 services.AddScoped(servicesProvider =>
