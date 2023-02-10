@@ -10,6 +10,6 @@ namespace Ionta.OSC.Core.AssembliesInformation
 {
     public interface IAssembliesInfo
     {
-        ControllerDto[] GetControllerDtos(Assembly[] assemblies);
+        AssemblyInfoDto GetInfo(Assembly[] assemblies);
     }
 }

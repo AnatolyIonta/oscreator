@@ -74,7 +74,7 @@ namespace OpenServiceCreator.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("info")]
-        public async Task<ControllerDto[]> GetInfo([FromBody] GetAsembliesInfoQuery query)
+        public async Task<AssemblyInfoDto> GetInfo([FromBody] GetAsembliesInfoQuery query)
         {
             return await _mediator.Send(query);
         }

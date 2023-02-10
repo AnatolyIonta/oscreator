@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Ionta.OSC.App.CQRS.Queries.GetAsembliesInfo
 {
-    public class GetAsembliesInfoQueryHandler : IRequestHandler<GetAsembliesInfoQuery, ControllerDto[]>
+    public class GetAsembliesInfoQueryHandler : IRequestHandler<GetAsembliesInfoQuery, AssemblyInfoDto>
     {
         private readonly IAssembliesInfo _assembliesInfo;
         private readonly IAssemblyManager _assemblyManager;
@@ -22,9 +22,9 @@ namespace Ionta.OSC.App.CQRS.Queries.GetAsembliesInfo
             _assembliesInfo = assembliesInfo;
             _assemblyManager = assemblyManager;
         }
-        public async Task<ControllerDto[]> Handle(GetAsembliesInfoQuery request, CancellationToken cancellationToken)
+        public async Task<AssemblyInfoDto> Handle(GetAsembliesInfoQuery request, CancellationToken cancellationToken)
         {
-            return _assembliesInfo.GetControllerDtos(_assemblyManager.GetAssemblies());
+            return _assembliesInfo.GetInfo(_assemblyManager.GetAssemblies());
         }
     }
 }

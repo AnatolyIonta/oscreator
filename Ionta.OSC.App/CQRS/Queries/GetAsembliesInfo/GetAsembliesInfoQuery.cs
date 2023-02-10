@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Ionta.OSC.App.CQRS.Queries.GetAsembliesInfo
 {
-    public class GetAsembliesInfoQuery : IRequest<ControllerDto[]>
+    public class GetAsembliesInfoQuery : IRequest<AssemblyInfoDto>
     {
     }
 }
