@@ -14,7 +14,7 @@ namespace Ionta.OSC.Core.Auth
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private string key = "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429";
+        private readonly string key;
 
         public AuthenticationService(string secretKey) 
         {

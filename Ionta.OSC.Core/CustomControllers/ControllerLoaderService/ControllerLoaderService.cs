@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Ionta.OSC.Core.Assemblys;
+using Ionta.OSC.Core.Assemblys.V2;
 using Ionta.OSC.Core.CustomControllers.ControllerHandler;
 using Ionta.OSC.ToolKit.Controllers;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,10 +15,10 @@ namespace Ionta.OSC.Core.CustomControllers.ControllerLoaderService
     public class ControllerLoaderService : IControllerLoaderService
     {
         private readonly IMemoryCache _cache;
-        private readonly IAssemblyManager _manager;
+        private readonly IAssemblyStore _manager;
         private readonly IControllerHandler _controllerHandler;
 
-        public ControllerLoaderService(IMemoryCache cache, IAssemblyManager manager, IControllerHandler controllerHandler)
+        public ControllerLoaderService(IMemoryCache cache, IAssemblyStore manager, IControllerHandler controllerHandler)
         {
             _cache = cache;
             _manager = manager;
@@ -26,7 +27,7 @@ namespace Ionta.OSC.Core.CustomControllers.ControllerLoaderService
 
         public async Task<ExecuteInfo?> FindController(RequestInfo request)
         {
-            var _info = GetControllers();
+            var _info = _manager.Get<ControllerInfo>();
             foreach (var controller in _info)
             {
                 if (request.Path.ToLower().StartsWith("/" + controller.Path.ToLower()))

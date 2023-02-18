@@ -8,14 +8,15 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ionta.OSC.Core.Assemblys.V2;
 
 namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
 {
     public class ActivateAssemblyCommandHandler : IRequestHandler<ActivateAssemblyCommand, bool>
     {
         private readonly IOscStorage _storage;
-        private readonly IAssemblyManager _assemblyManager;
-        public ActivateAssemblyCommandHandler(IOscStorage storage, IAssemblyManager assemblyManager) 
+        private readonly IAssemblyStore _assemblyManager;
+        public ActivateAssemblyCommandHandler(IOscStorage storage, IAssemblyStore assemblyManager) 
         { 
             _storage= storage; 
             _assemblyManager= assemblyManager;
@@ -26,17 +27,16 @@ namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
             var assemblyPackage = _storage.AssemblyPackages.Include(e => e.Assembly).Single(a => a.Id == request.AssemblyId);
             if (request.IsActive != assemblyPackage.isActive)
             {
+                if (request.IsActive)
+                {
+                    _assemblyManager.Load(assemblyPackage.Assembly.Select(e => e.Data), assemblyPackage.Id);
+                }
+                else
+                {
+                    _assemblyManager.Unload(assemblyPackage.Id);
+                }
                 foreach (var assembly in assemblyPackage.Assembly)
                 {
-                    if (request.IsActive)
-                    {
-                        var assemblyData = AppDomain.CurrentDomain.Load(assembly.Data);
-                        _assemblyManager.InitAssembly(assemblyData);
-                    }
-                    else
-                    {
-                        _assemblyManager.UnloadingAssembly(Assembly.Load(assembly.Data));
-                    }
                     assembly.IsActive = request.IsActive;
                 }
             }

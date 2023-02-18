@@ -7,15 +7,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using Ionta.OSC.Core.Assemblys;
+using Ionta.OSC.Core.Assemblys.V2;
 
 namespace Ionta.OSC.Core.Store
 {
     public class DataStore : DbContext, IDataStore
     {
         private readonly Dictionary<string, Type> _entities = new();
-        public readonly IAssemblyManager _assemblyManager;
+        public readonly IAssemblyStore _assemblyManager;
         
-        public DataStore(DbContextOptions<DataStore> options, IAssemblyManager assemblyManager)
+        public DataStore(DbContextOptions<DataStore> options, IAssemblyStore assemblyManager)
             : base(options)
         { 
             _assemblyManager = assemblyManager;
