@@ -15,10 +15,10 @@ namespace Ionta.OSC.Core.CustomControllers.ControllerLoaderService
     public class ControllerLoaderService : IControllerLoaderService
     {
         private readonly IMemoryCache _cache;
-        private readonly IAssemblyStore _manager;
+        private readonly IAssemblyManager _manager;
         private readonly IControllerHandler _controllerHandler;
 
-        public ControllerLoaderService(IMemoryCache cache, IAssemblyStore manager, IControllerHandler controllerHandler)
+        public ControllerLoaderService(IMemoryCache cache, IAssemblyManager manager, IControllerHandler controllerHandler)
         {
             _cache = cache;
             _manager = manager;
@@ -27,7 +27,7 @@ namespace Ionta.OSC.Core.CustomControllers.ControllerLoaderService
 
         public async Task<ExecuteInfo?> FindController(RequestInfo request)
         {
-            var _info = _manager.Get<ControllerInfo>();
+            var _info = GetControllers();
             foreach (var controller in _info)
             {
                 if (request.Path.ToLower().StartsWith("/" + controller.Path.ToLower()))
@@ -53,15 +53,7 @@ namespace Ionta.OSC.Core.CustomControllers.ControllerLoaderService
 
         private List<ControllerInfo> GetControllers()
         {
-            var controllers = _cache.Get<List<ControllerInfo>>("controllers");
-            if (controllers == null)
-            {
-                controllers = _manager.GetControllers(_manager.GetAssemblies()).ToList();
-                _cache.Set("controllers", controllers, new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
-                });
-            }
+            var controllers = _manager.GetControllers(_manager.GetAssemblies())?.ToList() ?? new List<ControllerInfo>();
             return controllers;
         }
     }

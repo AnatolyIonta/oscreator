@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Ionta.OSC.Core.Assemblys.V2.Handlers
 {
-    public class ControllersHandlers : IGetTypeHandler
+    public class ControllersHandlers : IGetTypeHandler<ControllerInfo>
     {
         public Type Type => typeof(ControllerInfo);
 
-        public IEnumerable<object> Handle(Assembly assembly)
+        public IEnumerable<ControllerInfo> Handle(Assembly assembly)
         {
                 var controllers = assembly.GetTypes()
                     .Where(a => a.GetCustomAttribute(typeof(ControllerAttribute)) != null);

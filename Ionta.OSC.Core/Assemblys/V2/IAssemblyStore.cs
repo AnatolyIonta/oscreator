@@ -18,5 +18,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
         IEnumerable<T>? Get<T>() where T : class;
 
         IEnumerable<U>? GetWithType<T, U>() where T : class where U : class;
+
+        public IEnumerable<Assembly> GetAllAssembly();
     }
 }

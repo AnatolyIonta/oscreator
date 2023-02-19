@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Ionta.OSC.Core.Assemblys.V2.Handlers
 {
-    public class EntityHandlers : IGetTypeHandler
+    public class EntityHandlers : IGetTypeHandler<Type>
     {
         public Type Type => typeof(IEnumerable<BaseEntity>);
 
-        public IEnumerable<object> Handle(Assembly assembly)
+        public IEnumerable<Type> Handle(Assembly assembly)
         {
             var entityTypes = assembly.GetExportedTypes().Where(c => c.IsClass && !c.IsAbstract && c.IsPublic &&
                                                                        typeof(BaseEntity).IsAssignableFrom(c));

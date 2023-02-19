@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using Ionta.OSC.Core.Assemblys.V2.Handlers;
+using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -10,18 +11,18 @@ namespace Ionta.OSC.Core.Assemblys.V2
     public class AssembliesStore : IAssemblyStore
     {
         private readonly ObservableCollection<AssemblyLoadContext> assebliesContext = new ObservableCollection<AssemblyLoadContext>();
-        public Dictionary<int,string> Context { get; private set; }
+        public Dictionary<long,string> Context { get; private set; }
         private readonly IMemoryCache _cache;
         public AssembliesStore(IMemoryCache cache) 
-        { 
+        {
             _cache = cache;
             assebliesContext.CollectionChanged += OnChange;
-            Context = new Dictionary<int, string>();
+            Context = new Dictionary<long, string>();
         }
 
         private void OnChange(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            _cache.Dispose();
+            ((MemoryCache)_cache).Clear();
         }
 
         public void Load(IEnumerable<byte[]> assemblies, long id)
@@ -56,17 +57,18 @@ namespace Ionta.OSC.Core.Assemblys.V2
             var isGetValue = _cache.TryGetValue(typeof(T), out var result);
             if (isGetValue) return result as IEnumerable<U>;
 
+            var name = nameof(IGetTypeHandler<U>)+"`1";
+
             var Handlers = GetType()
                 .Assembly
                 .GetTypes()
-                .Where(e => e.GetInterface(nameof(IGetTypeHandler)) != null);
-
-            var instances = Handlers.Select(e => (IGetTypeHandler)Activator.CreateInstance(e));
+                .Where(e => e.GetInterface(name) != null);
+            var instances = Handlers.Where(e => e.GetInterface(name).GenericTypeArguments[0] == typeof(U)).Select(e => (IGetTypeHandler<U>)Activator.CreateInstance(e));
 
             var handler = instances.FirstOrDefault(e => e.Type == typeof(T));
             if(handler == null) return null;
 
-            var instance = (IEnumerable<U>)handler.Handle(assembly);
+            var instance = handler.Handle(assembly);
 
             _cache.Set(typeof(T), instance);
 
@@ -99,6 +101,17 @@ namespace Ionta.OSC.Core.Assemblys.V2
                 }
             }
             return null;
+        }
+
+        public IEnumerable<Assembly> GetAllAssembly()
+        {
+            foreach (var context in assebliesContext)
+            {
+                foreach (var assembly in context.Assemblies)
+                {
+                    yield return assembly;
+                }
+            }
         }
     }
 }

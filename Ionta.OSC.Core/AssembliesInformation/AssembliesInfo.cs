@@ -34,7 +34,7 @@ namespace Ionta.OSC.Core.AssembliesInformation
         private ControllerDto[] GetControllerDtos(Assembly[] assemblies)
         {
             var result = new List<ControllerDto>();
-            var controllers = GetControllers(assemblies);
+            var controllers = GetControllers();
 
             foreach(var controller in controllers)
             {
@@ -46,7 +46,7 @@ namespace Ionta.OSC.Core.AssembliesInformation
 
         private IEnumerable<TableDto> GetTablesDtos(Assembly[] assemblies)
         {
-            var entities = _manager.GetEntities(assemblies);
+            var entities = _manager.GetEntities(assemblies) ?? new List<Type>();
             foreach(var entity in entities)
             {
                 yield return GetTableInfo(entity);
@@ -112,17 +112,9 @@ namespace Ionta.OSC.Core.AssembliesInformation
             return result;
         }
 
-        private List<ControllerInfo> GetControllers(Assembly[] assemblies)
+        private List<ControllerInfo> GetControllers()
         {
-            var controllers = _cache.Get<List<ControllerInfo>>(assemblies);
-            if (controllers == null)
-            {
-                controllers = _manager.GetControllers(assemblies).ToList();
-                _cache.Set(assemblies, controllers, new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
-                });
-            }
+            var controllers = _manager.GetControllers(_manager.GetAssemblies())?.ToList() ?? new List<ControllerInfo>();
             return controllers;
         }
     }

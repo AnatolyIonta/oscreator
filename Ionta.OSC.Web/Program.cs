@@ -22,6 +22,7 @@ using Ionta.OSC.Core.CustomControllers.ControllerHandler;
 using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
 using Ionta.OSC.Web.Extension;
 using Ionta.OSC.Core.AssembliesInformation;
+using Ionta.OSC.Core.Assemblys.V2;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -43,7 +44,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllersWithViews();
 services.AddOptions();
-services.AddSingleton<IAssemblyManager, AssemblyManager>();
+services.AddSingleton<IAssemblyManager, AssemblyManagerV2>();
+services.AddSingleton<IAssemblyStore, AssembliesStore>();
 services.AddSingleton<IServiceManager, ServiceManager>();
 services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
 services.AddMemoryCache();

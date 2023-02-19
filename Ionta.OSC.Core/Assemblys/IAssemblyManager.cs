@@ -7,8 +7,6 @@ namespace Ionta.OSC.Core.Assemblys
 {
     public interface IAssemblyManager
     {
-        void InitAssembly(params Assembly[] assemblies);
-        void UnloadingAssembly(params Assembly[] assemblies);
         Assembly[] GetAssemblies();
         event Action<Assembly[]> OnChange;
         event Action<Assembly[]> OnUnloading;

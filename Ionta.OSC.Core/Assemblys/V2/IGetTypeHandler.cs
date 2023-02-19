@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Ionta.OSC.Core.Assemblys.V2
 {
-    public interface IGetTypeHandler
+    public interface IGetTypeHandler<T>
     {
         public Type Type { get; }
-        public IEnumerable<object> Handle(Assembly assembly);
+        public IEnumerable<T> Handle(Assembly assembly);
     }
 }

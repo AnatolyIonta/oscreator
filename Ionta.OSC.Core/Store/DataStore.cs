@@ -14,9 +14,9 @@ namespace Ionta.OSC.Core.Store
     public class DataStore : DbContext, IDataStore
     {
         private readonly Dictionary<string, Type> _entities = new();
-        public readonly IAssemblyStore _assemblyManager;
+        public readonly IAssemblyManager _assemblyManager;
         
-        public DataStore(DbContextOptions<DataStore> options, IAssemblyStore assemblyManager)
+        public DataStore(DbContextOptions<DataStore> options, IAssemblyManager assemblyManager)
             : base(options)
         { 
             _assemblyManager = assemblyManager;
