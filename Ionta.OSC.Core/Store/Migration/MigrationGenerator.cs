@@ -91,7 +91,6 @@ namespace Ionta.OSC.Core.Store.Migration
         private string ComparisonColumn(ColumnInfo columnModel, IEnumerable<ColumnInfo> columnDatabase)
         {
             var column = columnDatabase.FirstOrDefault(c => c.Name.ToLower() == columnModel.Name.ToLower());
-            if (columnModel.Type == ColumnType.None) return;
             if (column != null)
             {
                 if (column.Type == columnModel.Type) return "";
