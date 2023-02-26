@@ -48,7 +48,7 @@ namespace Ionta.OSC.Core.Store.Migration
                     AddNewColumnIntoTable(tableName, columnInfoFromModel, columnInfoFromDatabase);
                 }
                 var links = GetLiks(table);
-                CreateForeignKey(links);
+                CreateForeignKey(links); 
             }
         }
 
@@ -91,6 +91,7 @@ namespace Ionta.OSC.Core.Store.Migration
         private string ComparisonColumn(ColumnInfo columnModel, IEnumerable<ColumnInfo> columnDatabase)
         {
             var column = columnDatabase.FirstOrDefault(c => c.Name.ToLower() == columnModel.Name.ToLower());
+            if (columnModel.Type == ColumnType.None) return "";
             if (column != null)
             {
                 if (column.Type == columnModel.Type) return "";
@@ -200,9 +201,20 @@ namespace Ionta.OSC.Core.Store.Migration
         private IEnumerable<DataLink> GetLiks(Type table)
         {
             var properties = table.GetProperties();
+            var manyAndManyBuffer = new List<DataLink>();
             foreach(var property in properties)
             {
                 var result = FindLink(table, property);
+                if (result != null && result.Type == DataLinkType.ManyToMany) 
+                {
+                    if(manyAndManyBuffer.Exists(e => e.Type == DataLinkType.ManyToMany && (
+                    e.ModelFirst == result.ModelFirst && e.ModelSecond == result.ModelSecond ||
+                    e.ModelSecond == result.ModelFirst && e.ModelFirst == result.ModelSecond)))
+                    {
+                        continue;
+                    }
+                    manyAndManyBuffer.Add(result);
+                }
                 if(result != null) yield return result;
             }
         }
@@ -258,8 +270,9 @@ namespace Ionta.OSC.Core.Store.Migration
             */
             if (!typeof(BaseEntity).IsAssignableFrom(property.PropertyType) && !property.PropertyType.IsArray
                 || property.PropertyType.IsArray && !typeof(BaseEntity).IsAssignableFrom(property.PropertyType.GetElementType())) return null;
-            var link = property.PropertyType.GetProperties()
-    .FirstOrDefault(e => current.IsAssignableFrom(e.PropertyType));
+            var x = property.PropertyType.GetProperties().ToList();
+            var link = property.PropertyType.GetElementType()!.GetProperties()
+    .FirstOrDefault(e => e.PropertyType.IsArray && current.IsAssignableFrom(e.PropertyType.GetElementType()));
 
             var dataLink = new DataLink();
             dataLink.Name = property.Name;
@@ -335,7 +348,6 @@ namespace Ionta.OSC.Core.Store.Migration
                     result.AppendLine($"CREATE TABLE \"{tableFirts}and{tableSecond}\" ( " +
                         $"\"{tableFirts}Id\" INT NOT NULL, " +
                         $"\"{tableSecond}Id\" INT NOT NULL," +
-                        $"PRIMARY KEY (\"{tableFirts}Id\", \"{tableSecond}Id)\"," +
                         $"FOREIGN KEY (\"{tableFirts}Id\") REFERENCES \"{tableFirts}\"(\"Id\"), " +
                         $"FOREIGN KEY (\"{tableSecond}Id\") REFERENCES \"{tableSecond}\"(\"Id\")" +
                         $");");
