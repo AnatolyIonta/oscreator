@@ -4,8 +4,8 @@ stages:
   - deploy
 
 variables:
-    TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
-    LATEST_TAG: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+    TAG: registry.gitlab.com/iontasoft/openservicecreator/$CI_COMMIT_REF_NAME:$CI_PIPELINE_ID
+    LATEST_TAG: registry.gitlab.com/iontasoft/openservicecreator/$CI_COMMIT_REF_NAME:latest
     DOCKER_API_VERSION: "1.39"
 
 lint-test-job:
