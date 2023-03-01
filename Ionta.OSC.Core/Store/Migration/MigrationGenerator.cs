@@ -18,6 +18,7 @@ namespace Ionta.OSC.Core.Store.Migration
         private readonly IAssemblyManager _assemblyManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<MigrationGenerator> _logger;
+        private List<DataLink> manyAndManyBuffer = new List<DataLink>();
         public MigrationGenerator(IAssemblyManager assemblyManager, IConfiguration configuration, ILogger<MigrationGenerator> logger)
         {
             _assemblyManager = assemblyManager;
@@ -27,6 +28,7 @@ namespace Ionta.OSC.Core.Store.Migration
 
         public void ApplayMigrations()
         {
+            manyAndManyBuffer.Clear();
             var modelsTable = _assemblyManager.GetEntities();
 
             if (modelsTable == null) return;
@@ -47,8 +49,11 @@ namespace Ionta.OSC.Core.Store.Migration
                 {
                     AddNewColumnIntoTable(tableName, columnInfoFromModel, columnInfoFromDatabase);
                 }
+            }
+            foreach(var table in modelsTable)
+            {
                 var links = GetLiks(table);
-                CreateForeignKey(links); 
+                CreateForeignKey(links);
             }
         }
 
@@ -201,15 +206,14 @@ namespace Ionta.OSC.Core.Store.Migration
         private IEnumerable<DataLink> GetLiks(Type table)
         {
             var properties = table.GetProperties();
-            var manyAndManyBuffer = new List<DataLink>();
             foreach(var property in properties)
             {
                 var result = FindLink(table, property);
                 if (result != null && result.Type == DataLinkType.ManyToMany) 
                 {
-                    if(manyAndManyBuffer.Exists(e => e.Type == DataLinkType.ManyToMany && (
-                    e.ModelFirst == result.ModelFirst && e.ModelSecond == result.ModelSecond ||
-                    e.ModelSecond == result.ModelFirst && e.ModelFirst == result.ModelSecond)))
+                    if (manyAndManyBuffer.Exists(e => e.Type == DataLinkType.ManyToMany &&
+                       (e.ModelFirst.Name == result.ModelFirst.Name && e.ModelSecond.GetGenericArguments().FirstOrDefault()?.Name == result.ModelSecond.GetGenericArguments().FirstOrDefault()?.Name ||
+                        e.ModelSecond.GetGenericArguments().FirstOrDefault()?.Name == result.ModelFirst.Name && e.ModelFirst.Name == result.ModelSecond.GetGenericArguments().FirstOrDefault()?.Name)))
                     {
                         continue;
                     }
@@ -268,23 +272,32 @@ namespace Ionta.OSC.Core.Store.Migration
                 
             }
             */
-            if (!typeof(BaseEntity).IsAssignableFrom(property.PropertyType) && !property.PropertyType.IsArray
-                || property.PropertyType.IsArray && !typeof(BaseEntity).IsAssignableFrom(property.PropertyType.GetElementType())) return null;
-            var x = property.PropertyType.GetProperties().ToList();
-            var link = property.PropertyType.GetElementType()!.GetProperties()
-    .FirstOrDefault(e => e.PropertyType.IsArray && current.IsAssignableFrom(e.PropertyType.GetElementType()));
+
+            var propertyType = property.PropertyType.GetGenericArguments().FirstOrDefault();
+            if (!typeof(BaseEntity).IsAssignableFrom(property.PropertyType) && propertyType == null
+                || propertyType != null && !typeof(BaseEntity).IsAssignableFrom(propertyType)) return null;
+            
+            var link = propertyType?.GetProperties()
+    .FirstOrDefault(e => current.IsAssignableFrom(e.PropertyType.GetGenericArguments().FirstOrDefault()));
 
             var dataLink = new DataLink();
             dataLink.Name = property.Name;
             dataLink.ModelFirst = current;
 
+            /*
             dataLink.Type = link != null
                 ? (property.PropertyType.IsArray || property.PropertyType.IsEnum
                     ? DataLinkType.ManyToMany
                     : DataLinkType.OneToOne)
                 : DataLinkType.OneToMany;
+            */
+
+            if (link != null && (propertyType != null)) dataLink.Type = DataLinkType.ManyToMany;
+            else if (propertyType != null) dataLink.Type = DataLinkType.OneToMany;
+            else dataLink.Type = DataLinkType.OneToOne;
 
             dataLink.ModelSecond = property.PropertyType;
+            dataLink.NameSecond = link?.Name ?? "";
 
             return dataLink;
         }
@@ -331,25 +344,30 @@ namespace Ionta.OSC.Core.Store.Migration
             foreach (DataLink link in links)
             {
                 var tableFirts = link.ModelFirst.Name.ToLower();
-                var tableSecond = link.ModelSecond.GetElementType()?.Name.ToLower() ?? link.ModelSecond.Name.ToLower();
+                var tableSecond = link.ModelSecond.GetGenericArguments().FirstOrDefault()?.Name.ToLower() ?? link.ModelSecond.Name.ToLower();
+
+                var tableFirtsNoLower = link.ModelFirst.Name;
+                var tableSecondNoLower = link.ModelSecond.GetGenericArguments().FirstOrDefault()?.Name ?? link.ModelSecond.Name;
                 if (link.Type == DataLinkType.OneToOne)
                 {
-                    result.AppendLine($"ALTER TABLE \"{tableFirts} \"" +
-                        $"ADD FOREIGN KEY (\"{link.Name}\") " +
+                    result.AppendLine($"ALTER TABLE \"{tableFirts}\"" +
+                        $"ADD COLUMN \"{link.Name}Id\" bigint, " +
+                        $"ADD FOREIGN KEY (\"{link.Name}Id\") " +
                         $"REFERENCES \"{tableSecond}\"(\"Id\");");
                 }
                 else if (link.Type == DataLinkType.OneToMany)
                 {
-                    result.AppendLine($"ALTER TABLE \"{tableFirts}\" " +
-                        $"ADD FOREIGN KEY (\"{link.Name}\") REFERENCES \"{tableSecond}\"(\"Id\") ON DELETE CASCADE;");
+                    result.AppendLine($"ALTER TABLE \"{tableSecond}\" " +
+                        $"ADD COLUMN \"{link.ModelFirst.Name}Id\" bigint, " +
+                        $"ADD FOREIGN KEY (\"{link.ModelFirst.Name}Id\") REFERENCES \"{tableFirts}\"(\"Id\") ON DELETE CASCADE;");
                 }
                 else if (link.Type == DataLinkType.ManyToMany)
                 {
-                    result.AppendLine($"CREATE TABLE \"{tableFirts}and{tableSecond}\" ( " +
-                        $"\"{tableFirts}Id\" INT NOT NULL, " +
-                        $"\"{tableSecond}Id\" INT NOT NULL," +
-                        $"FOREIGN KEY (\"{tableFirts}Id\") REFERENCES \"{tableFirts}\"(\"Id\"), " +
-                        $"FOREIGN KEY (\"{tableSecond}Id\") REFERENCES \"{tableSecond}\"(\"Id\")" +
+                    result.AppendLine($"CREATE TABLE \"{tableFirtsNoLower}{tableSecondNoLower}\" ( " +
+                        $"\"{link.Name}Id\" bigint NOT NULL, " +
+                        $"\"{link.NameSecond}Id\" bigint NOT NULL, " +
+                        $"FOREIGN KEY (\"{link.Name}Id\") REFERENCES \"{tableFirts}\"(\"Id\"), " +
+                        $"FOREIGN KEY (\"{link.NameSecond}Id\") REFERENCES \"{tableSecond}\"(\"Id\")" +
                         $");");
                 }
             }
@@ -365,6 +383,7 @@ namespace Ionta.OSC.Core.Store.Migration
     public class DataLink
     {
         public string Name { get; set; }
+        public string NameSecond { get; set; }
         public Type ModelFirst { get; set; }
         public DataLinkType Type { get; set; }
         public Type ModelSecond { get; set; }
