@@ -1,5 +1,6 @@
 ﻿using Ionta.OSC.Core.Assemblys.V2;
 using Ionta.OSC.ToolKit.Controllers;
+using Ionta.OSC.ToolKit.Store;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,17 +40,7 @@ namespace Ionta.OSC.Core.Assemblys
 
         public IEnumerable<Type> GetEntities()
         {
-            return _assemblyStore.GetWithType<ControllerInfo,Type>();
-        }
-
-        public void InitAssembly(params Assembly[] assemblies)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UnloadingAssembly(params Assembly[] assemblies)
-        {
-            throw new NotImplementedException();
+            return _assemblyStore.GetWithType<BaseEntity,Type>();
         }
     }
 }

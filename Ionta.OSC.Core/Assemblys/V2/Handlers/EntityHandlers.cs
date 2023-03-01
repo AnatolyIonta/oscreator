@@ -10,7 +10,7 @@ namespace Ionta.OSC.Core.Assemblys.V2.Handlers
 {
     public class EntityHandlers : IGetTypeHandler<Type>
     {
-        public Type Type => typeof(IEnumerable<BaseEntity>);
+        public Type Type => typeof(BaseEntity);
 
         public IEnumerable<Type> Handle(Assembly assembly)
         {
