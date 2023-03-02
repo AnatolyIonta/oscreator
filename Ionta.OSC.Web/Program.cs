@@ -63,13 +63,11 @@ services.AddScoped(servicesProvider =>
     return (IDataStore)(new DataStore(options.Options, assemblyLoader));
 });
 
-services.AddScoped(servicesProvider =>
+var conectionString = GetOscDatabaseConnectionString(builder.Configuration);
+services.AddDbContextPool<IOscStorage, OscStorage>(options =>
 {
-    var options = new DbContextOptionsBuilder<OscStorage>()
-        .UseNpgsql(GetOscDatabaseConnectionString(servicesProvider.GetService<IConfiguration>()));
-
-    return (IOscStorage)(new OscStorage(options.Options));
-});
+    options.UseNpgsql(conectionString);
+}, 16);
 
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly,
                 typeof(AuthOptions).Assembly, typeof(IMigrationGenerator).Assembly);
@@ -126,7 +124,11 @@ var Configuration = app.Services.GetService<IConfiguration>();
 app.UseMiddleware<CustomAuthenticationMiddleware>();
 app.UseMiddleware<Ionta.OSC.Web.Infrastructure.V2.CustomControllerMiddleware>();
 
-
+using (var scope = app.Services.CreateScope())
+{
+    var store = scope.ServiceProvider.GetService<IOscStorage>();
+    store.ApplyMigrations();
+}
 
 serviceManager.GlobalCollection.AddScoped((serviceProvider) =>
 {
@@ -161,6 +163,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
 
 
 static string GetDatabaseConnectionString(IConfiguration configuration)

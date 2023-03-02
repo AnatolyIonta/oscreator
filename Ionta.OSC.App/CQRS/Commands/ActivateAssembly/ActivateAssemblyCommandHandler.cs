@@ -25,7 +25,7 @@ namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
         public async Task<bool> Handle(ActivateAssemblyCommand request, CancellationToken cancellationToken)
         {
             var assemblyPackage = _storage.AssemblyPackages.Include(e => e.Assembly).Single(a => a.Id == request.AssemblyId);
-            if (request.IsActive != assemblyPackage.isActive)
+            if (request.IsActive != assemblyPackage.IsActive)
             {
                 if (request.IsActive)
                 {
@@ -40,7 +40,7 @@ namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
                     assembly.IsActive = request.IsActive;
                 }
             }
-            assemblyPackage.isActive = request.IsActive;
+            assemblyPackage.IsActive = request.IsActive;
             await _storage.SaveChangesAsync();
             return true;
         }

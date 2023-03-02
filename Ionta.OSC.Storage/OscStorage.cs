@@ -2,8 +2,11 @@
 using Ionta.OSC.App.Services.HashingPassword;
 using Ionta.OSC.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +20,8 @@ namespace Ionta.OSC.Storage
         public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
 
         public OscStorage(DbContextOptions options) : base(options) 
-        { 
-            Database.EnsureCreated();
+        {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,6 +39,10 @@ namespace Ionta.OSC.Storage
         public async Task SaveChangesAsync()
         {
             await base.SaveChangesAsync();
+        }
+        public void ApplyMigrations()
+        {
+            Database.Migrate();
         }
     }
 }

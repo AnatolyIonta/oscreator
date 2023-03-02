@@ -21,7 +21,7 @@ namespace Ionta.OSC.App.CQRS.Commands.DeleteModul
         {
             var module = _storage.AssemblyPackages.Include(e => e.Assembly).First(a => a.Id == request.Id);
 
-            if (module.isActive) throw new Exception("Модуль активирован, его не возможно удалить! Для удаления деактивируйте модуль");
+            if (module.IsActive) throw new Exception("Модуль активирован, его не возможно удалить! Для удаления деактивируйте модуль");
 
             _storage.AssemblyFiles.RemoveRange(module.Assembly);
             _storage.AssemblyPackages.Remove(module);

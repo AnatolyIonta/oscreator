@@ -15,5 +15,6 @@ namespace Ionta.OSC.App
         public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
 
         public Task SaveChangesAsync();
+        void ApplyMigrations();
     }
 }

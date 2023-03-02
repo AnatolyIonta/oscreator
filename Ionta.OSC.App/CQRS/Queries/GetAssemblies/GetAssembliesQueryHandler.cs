@@ -18,7 +18,7 @@ namespace Ionta.OSC.App.CQRS.Queries.GetAssemblies
         }
         public Task<DtosList<AssemblyDto>> Handle(GetAssembliesQuery request, CancellationToken cancellationToken)
         {
-            var assemblyCollection = _storage.AssemblyPackages.Select(a => new AssemblyDto() { IsActive= a.isActive, Name = a.Name, Id = a.Id });
+            var assemblyCollection = _storage.AssemblyPackages.Select(a => new AssemblyDto() { IsActive= a.IsActive, Name = a.Name, Id = a.Id });
 
             return Task.FromResult(new DtosList<AssemblyDto>()
             {
