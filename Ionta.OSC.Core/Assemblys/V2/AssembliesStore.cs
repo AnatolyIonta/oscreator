@@ -13,6 +13,9 @@ namespace Ionta.OSC.Core.Assemblys.V2
         private readonly ObservableCollection<AssemblyLoadContext> assebliesContext = new ObservableCollection<AssemblyLoadContext>();
         public Dictionary<long,string> Context { get; private set; }
         private readonly IMemoryCache _cache;
+
+        public event Action<Assembly[]> OnLoad;
+        public event Action<Assembly[]> OnUnloading;
         public AssembliesStore(IMemoryCache cache) 
         {
             _cache = cache;
@@ -24,6 +27,8 @@ namespace Ionta.OSC.Core.Assemblys.V2
         {
             ((MemoryCache)_cache).Clear();
         }
+
+
 
         public void Load(IEnumerable<byte[]> assemblies, long id)
         {
@@ -38,6 +43,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
             }
             assebliesContext.Add(context);
             Context.Add(id, context.Name);
+            OnLoad?.Invoke(context.Assemblies.ToArray());
         }
 
         public void Unload(long id)
@@ -45,6 +51,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
             string contextName = Context[id];
             var context = assebliesContext.FirstOrDefault(e => e.Name == contextName);
             if (context == null) return;
+            OnUnloading?.Invoke(context.Assemblies.ToArray());
             context.Unload();
             assebliesContext.Remove(context);
             Context.Remove(id);
