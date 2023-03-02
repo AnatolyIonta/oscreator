@@ -21,7 +21,7 @@ namespace Ionta.OSC.App.Services.AssemblyInitializer
         }
         public void Initialize()
         {
-            var activePackages = _storage.AssemblyPackages.Include(e => e.Assembly).Where(e => e.isActive);
+            var activePackages = _storage.AssemblyPackages.Include(e => e.Assembly).Where(e => e.IsActive);
             foreach(var packages in activePackages)
             {
                 var data = packages.Assembly.Select(e => e.Data);
