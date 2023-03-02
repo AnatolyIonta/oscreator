@@ -20,5 +20,8 @@ namespace Ionta.OSC.Core.Assemblys.V2
         IEnumerable<U>? GetWithType<T, U>() where T : class where U : class;
 
         public IEnumerable<Assembly> GetAllAssembly();
+
+        event Action<Assembly[]> OnLoad;
+        event Action<Assembly[]> OnUnloading;
     }
 }

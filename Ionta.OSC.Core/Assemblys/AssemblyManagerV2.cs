@@ -21,6 +21,8 @@ namespace Ionta.OSC.Core.Assemblys
         public AssemblyManagerV2(IAssemblyStore assemblyStore) 
         {
             _assemblyStore = assemblyStore;
+            _assemblyStore.OnUnloading += (Assembly[] assemblies) => OnUnloading!.Invoke(assemblies);
+            _assemblyStore.OnLoad += (Assembly[] assemblies) => OnChange!.Invoke(assemblies);
         }
 
         public Assembly[] GetAssemblies()
