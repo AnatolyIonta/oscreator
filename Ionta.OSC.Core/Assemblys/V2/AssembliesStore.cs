@@ -13,7 +13,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
         private readonly ObservableCollection<AssemblyLoadContext> assebliesContext = new ObservableCollection<AssemblyLoadContext>();
         public Dictionary<long,string> Context { get; private set; }
         private readonly IMemoryCache _cache;
-
+        private static readonly object _lock = new object();
         public event Action<Assembly[]> OnLoad;
         public event Action<Assembly[]> OnUnloading;
         public AssembliesStore(IMemoryCache cache) 
@@ -33,6 +33,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
         public void Load(IEnumerable<byte[]> assemblies, long id)
         {
             var context = new AssemblyLoadContext(name: Guid.NewGuid().ToString(), isCollectible: true);
+            context.Resolving += OnAssemblyResolve;
             foreach (var assembly in assemblies)
             {
                 using (var assemblyStream = new MemoryStream(assembly))
@@ -61,7 +62,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
             where T : class
             where U : class
         {
-            var isGetValue = _cache.TryGetValue(typeof(T), out var result);
+            var isGetValue = _cache.TryGetValue(typeof(T).Name+assembly.FullName, out var result);
             if (isGetValue) return result as IEnumerable<U>;
 
             var name = nameof(IGetTypeHandler<U>)+"`1";
@@ -76,38 +77,40 @@ namespace Ionta.OSC.Core.Assemblys.V2
             if(handler == null) return null;
 
             var instance = handler.Handle(assembly);
-
-            _cache.Set(typeof(T), instance);
+            
+            _cache.Set(typeof(T), instance, DateTimeOffset.UtcNow.AddMinutes(3));
 
             return instance;
         }
 
-        public IEnumerable<T>? Get<T>() where T : class
+        public IEnumerable<T> Get<T>() where T : class
         {
+            IEnumerable<T> result = new List<T>();
             foreach(var context in assebliesContext)
             {
-                foreach(var assembly in context.Assemblies)
+                foreach (var assembly in context.Assemblies)
                 {
-                    var result = Get<T,T>(assembly);
-                    if(result != null) return result;
+                    var data = Get<T,T>(assembly);
+                    if(result != null) result = result.Union(data);
                 }
             }
-            return null;
+            return result;
         }
 
         public IEnumerable<U>? GetWithType<T,U>() 
             where T : class
             where U : class
         {
+            IEnumerable<U> result = new List<U>();
             foreach (var context in assebliesContext)
             {
                 foreach (var assembly in context.Assemblies)
                 {
-                    var result = Get<T, U>(assembly);
-                    if (result != null) return result;
+                    var data = Get<T, U>(assembly);
+                    if (result != null) result = result.Union(data);
                 }
             }
-            return null;
+            return result;
         }
 
         public IEnumerable<Assembly> GetAllAssembly()
@@ -120,5 +123,15 @@ namespace Ionta.OSC.Core.Assemblys.V2
                 }
             }
         }
+        protected virtual Assembly OnAssemblyResolve(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+        {
+            lock (_lock)
+            {
+                var assemblies = assemblyLoadContext.Assemblies.ToList();
+                var assembly = assemblyLoadContext.LoadFromAssemblyName(assemblyName);
+                return assembly;
+            }
+        }
     }
+
 }
