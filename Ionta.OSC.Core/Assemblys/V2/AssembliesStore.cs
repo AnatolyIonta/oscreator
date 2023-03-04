@@ -62,7 +62,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
             where T : class
             where U : class
         {
-            var isGetValue = _cache.TryGetValue(typeof(T), out var result);
+            var isGetValue = _cache.TryGetValue(typeof(T).Name+assembly.FullName, out var result);
             if (isGetValue) return result as IEnumerable<U>;
 
             var name = nameof(IGetTypeHandler<U>)+"`1";
@@ -77,38 +77,40 @@ namespace Ionta.OSC.Core.Assemblys.V2
             if(handler == null) return null;
 
             var instance = handler.Handle(assembly);
-
-            _cache.Set(typeof(T), instance);
+            
+            _cache.Set(typeof(T), instance, DateTimeOffset.UtcNow.AddMinutes(3));
 
             return instance;
         }
 
-        public IEnumerable<T>? Get<T>() where T : class
+        public IEnumerable<T> Get<T>() where T : class
         {
+            IEnumerable<T> result = new List<T>();
             foreach(var context in assebliesContext)
             {
-                foreach(var assembly in context.Assemblies)
+                foreach (var assembly in context.Assemblies)
                 {
-                    var result = Get<T,T>(assembly);
-                    if(result != null) return result;
+                    var data = Get<T,T>(assembly);
+                    if(result != null) result = result.Union(data);
                 }
             }
-            return null;
+            return result;
         }
 
         public IEnumerable<U>? GetWithType<T,U>() 
             where T : class
             where U : class
         {
+            IEnumerable<U> result = new List<U>();
             foreach (var context in assebliesContext)
             {
                 foreach (var assembly in context.Assemblies)
                 {
-                    var result = Get<T, U>(assembly);
-                    if (result != null) return result;
+                    var data = Get<T, U>(assembly);
+                    if (result != null) result = result.Union(data);
                 }
             }
-            return null;
+            return result;
         }
 
         public IEnumerable<Assembly> GetAllAssembly()
@@ -130,18 +132,6 @@ namespace Ionta.OSC.Core.Assemblys.V2
                 var assembly = assemblies.FirstOrDefault(assembly => assembly.FullName == assemblyName.FullName);
                 return assembly;
             }
-        }
-        private static Assembly AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            AppDomain domain = (AppDomain)sender;
-            foreach (Assembly asm in domain.GetAssemblies())
-            {
-                if (asm.FullName == args.Name)
-                {
-                    return asm;
-                }
-            }
-            throw new ApplicationException($"Can't find assembly {args.Name}");
         }
     }
 
