@@ -16,7 +16,7 @@ namespace Ionta.OSC.Core.Assemblys.V2.Handlers
         public IEnumerable<ControllerInfo> Handle(Assembly assembly)
         {
                 var controllers = assembly.GetTypes()
-                    .Where(a => a.GetCustomAttribute(typeof(ControllerAttribute)) != null).ToArray();
+                    .Where(a => a.GetCustomAttribute(typeof(ControllerAttribute)) != null);
 
                 foreach (var controller in controllers)
                 {
