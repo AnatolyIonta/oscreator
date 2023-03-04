@@ -128,8 +128,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
             lock (_lock)
             {
                 var assemblies = assemblyLoadContext.Assemblies.ToList();
-                var name = assemblyName.FullName.Split(",")[0];
-                var assembly = assemblies.FirstOrDefault(assembly => assembly.FullName == assemblyName.FullName);
+                var assembly = assemblyLoadContext.LoadFromAssemblyName(assemblyName);
                 return assembly;
             }
         }
