@@ -13,7 +13,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
         private readonly ObservableCollection<AssemblyLoadContext> assebliesContext = new ObservableCollection<AssemblyLoadContext>();
         public Dictionary<long,string> Context { get; private set; }
         private readonly IMemoryCache _cache;
-
+        private static readonly object _lock = new object();
         public event Action<Assembly[]> OnLoad;
         public event Action<Assembly[]> OnUnloading;
         public AssembliesStore(IMemoryCache cache) 
@@ -33,6 +33,7 @@ namespace Ionta.OSC.Core.Assemblys.V2
         public void Load(IEnumerable<byte[]> assemblies, long id)
         {
             var context = new AssemblyLoadContext(name: Guid.NewGuid().ToString(), isCollectible: true);
+            context.Resolving += OnAssemblyResolve;
             foreach (var assembly in assemblies)
             {
                 using (var assemblyStream = new MemoryStream(assembly))
@@ -120,5 +121,28 @@ namespace Ionta.OSC.Core.Assemblys.V2
                 }
             }
         }
+        protected virtual Assembly OnAssemblyResolve(AssemblyLoadContext assemblyLoadContext, AssemblyName assemblyName)
+        {
+            lock (_lock)
+            {
+                var assemblies = assemblyLoadContext.Assemblies.ToList();
+                var name = assemblyName.FullName.Split(",")[0];
+                var assembly = assemblies.FirstOrDefault(assembly => assembly.FullName == assemblyName.FullName);
+                return assembly;
+            }
+        }
+        private static Assembly AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            AppDomain domain = (AppDomain)sender;
+            foreach (Assembly asm in domain.GetAssemblies())
+            {
+                if (asm.FullName == args.Name)
+                {
+                    return asm;
+                }
+            }
+            throw new ApplicationException($"Can't find assembly {args.Name}");
+        }
     }
+
 }
