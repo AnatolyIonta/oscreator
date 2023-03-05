@@ -1,6 +1,5 @@
 ﻿using Ionta.OSC.App.CQRS.Commands.ActivateAssembly;
 using Ionta.OSC.App.CQRS.Commands.ApplayMigration;
-using Ionta.OSC.App.CQRS.Commands.Auth;
 using Ionta.OSC.App.CQRS.Commands.DeleteModul;
 using Ionta.OSC.App.CQRS.Commands.LoadAssembly;
 using Ionta.OSC.App.CQRS.Queries.GetAsembliesInfo;
@@ -9,11 +8,7 @@ using Ionta.OSC.App.Dtos;
 using Ionta.OSC.Core.AssembliesInformation.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace OpenServiceCreator.Controllers
 {

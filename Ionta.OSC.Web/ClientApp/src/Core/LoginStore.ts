@@ -31,5 +31,4 @@ reaction(
     }
 );
 
-
 export default loginStore;

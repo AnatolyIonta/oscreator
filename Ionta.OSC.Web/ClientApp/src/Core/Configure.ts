@@ -1,5 +1,3 @@
-import { Api } from "./api";
-
 export let ApiDomen = "";
 
 export async function setAppDomen() {

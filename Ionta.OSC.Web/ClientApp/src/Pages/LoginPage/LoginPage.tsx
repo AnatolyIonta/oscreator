@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Input from "../../Controls/Input/Input";
 import InputPassword from "../../Controls/Input/InputPassword";
 
 import "../../App.css";
 import styles from './LoginPage.module.css';
 import Button from "../../Controls/Button/Button";
-import { ApiDomen } from "../../Core/Configure";
 import { Api } from "../../Core/api";
 import loginStore from "../../Core/LoginStore";
 import { observer } from "mobx-react-lite";
@@ -30,12 +29,12 @@ function LoginPage(){
         <div className={styles.wrapper}>
             <div className={`column ${styles.content}`}>
                 <h2 style={{margin:"0"}}>Вход</h2>
-                <label htmlFor="name" >
+                <label htmlFor="name">
                     <span>Логин:</span>
                     <br/>
                     <Input name={"name"} id={"name"} onChangeValue={(e)=>setName(e)} value={name} />
                 </label>
-                <label htmlFor="password" >
+                <label htmlFor="password">
                     <span>Пароль:</span>
                     <br/>
                     <InputPassword name={"password"} id={"password"} onChangeValue={(e)=>setPassword(e)} value={password} />
