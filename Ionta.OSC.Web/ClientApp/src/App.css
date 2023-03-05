@@ -40,9 +40,11 @@ html, body{
   cursor: pointer;
   padding-left: 14px;
 }
-
 .navItem:hover{
   background-color: #293040;
+}
+.navItemAactive {
+  font-weight: bold;
 }
 
 .header{

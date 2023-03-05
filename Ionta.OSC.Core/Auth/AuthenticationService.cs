@@ -2,13 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 using Ionta.OSC.ToolKit.Auth;
-using Microsoft.Extensions.Configuration;
 
 namespace Ionta.OSC.Core.Auth
 {

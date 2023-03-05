@@ -1,21 +1,16 @@
 ﻿using Ionta.OSC.ToolKit.ServiceProvider;
 using Ionta.OSC.Core.Assemblys;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using IServiceProvider = Ionta.OSC.ToolKit.ServiceProvider.IServiceProvider;
 
 namespace Ionta.OSC.Core.ServiceTools
 {
     public class ServiceManager : IServiceManager, IServiceProvider
     {
-        public Dictionary<Assembly, Microsoft.Extensions.DependencyInjection.ServiceProvider> PrivateContainers { get; set; }
+        public Dictionary<Assembly, ServiceProvider> PrivateContainers { get; set; }
         public IServiceCollection GlobalCollection { get; set; }
-        public Microsoft.Extensions.DependencyInjection.ServiceProvider GlobalContainer { get; set; }
+        public ServiceProvider GlobalContainer { get; set; }
         public Action<IServiceCollection> ConfigurePrivateContainer { get; set; }
 
         private readonly IAssemblyManager _assemblyManager;
@@ -23,7 +18,7 @@ namespace Ionta.OSC.Core.ServiceTools
         public ServiceManager(IAssemblyManager assemblyManager) 
         {
             GlobalCollection = new ServiceCollection();
-            PrivateContainers = new Dictionary<Assembly, Microsoft.Extensions.DependencyInjection.ServiceProvider> { };
+            PrivateContainers = new Dictionary<Assembly, ServiceProvider> { };
             _assemblyManager = assemblyManager;
             assemblyManager.OnChange += OnChange;
             assemblyManager.OnUnloading += OnUnloading;

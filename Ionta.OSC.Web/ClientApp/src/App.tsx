@@ -1,21 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Switch,
   Route,
   Redirect,
-  useLocation, useHistory, BrowserRouter, Link
+  BrowserRouter, Link, useLocation
 } from "react-router-dom";
 
-
-import logo from './logo.svg';
 import './App.css';
 import {ReactComponent as Library} from "./Icon/library.svg";
 import {ReactComponent as Setting} from "./Icon/settings.svg"
 import {ReactComponent as Info} from "./Icon/info.svg"
-import {ReactComponent as CheckBox} from "./Icon/check_box.svg"
 import Strings from './Core/LocalizableStrings';
-import Button, { ButtonStyles } from './Controls/Button/Button';
-import {ButtonFileLoad} from './Controls/Button/Button';
 
 import LoadAssemblyPage from "./Pages/ModuleLoader/ModuleLoader"
 import LoginPage from './Pages/LoginPage/LoginPage';
@@ -39,8 +34,7 @@ function App() {
         <>
             {loading ? < Router /> : <div>Loading</div>}
       </>
-   
-  )
+    ) 
 }
 
 const Router = observer(function (){
@@ -67,25 +61,37 @@ const Router = observer(function (){
 });
 
 function AdminPanel(){
+  const { pathname } = useLocation();
+  const splitLocation = pathname.split("/");
+
   return(
     <div className="App">
       <div className='body'>
 
-        <div className='nav'>
+        <div className='nav'>       
           <div className='header'>
             <h2>OSCreator</h2>
           </div>
-          <div className='navItem'>  
+
+          <div className='navItem'>
             <Library fill='#e4e9ed' stroke='#e4e9ed'/>
-            <Link to={"/additions"}><span>{Strings.Nav.Libary}</span></Link>
+            <div className={splitLocation[1] === "additions" ? "navItemAactive" : ""}>
+              <Link to={"/additions"}><span>{Strings.Nav.Libary}</span></Link>
+            </div>
           </div>
-          <div className='navItem'>  
+
+          <div className='navItem'>
             <Setting fill='#e4e9ed' stroke='#e4e9ed'/>
-            <Link to={"/settings"}><span>{Strings.Nav.Setting}</span></Link>
+            <div className={splitLocation[1] === "settings" ? "navItemAactive" : ""}>
+              <Link to={"/settings"}><span>{Strings.Nav.Setting}</span></Link>
+            </div>
           </div>
-          <div className='navItem'>   
+
+          <div className='navItem'>
             <Info fill='#e4e9ed' stroke='#e4e9ed'/>
-            <Link to={"/about"}><span>{Strings.Nav.About}</span></Link>
+            <div className={splitLocation[1] === "about" ? "navItemAactive" : ""}>
+              <Link to={"/about"}><span>{Strings.Nav.About}</span></Link>
+            </div>
           </div>
         </div>
 

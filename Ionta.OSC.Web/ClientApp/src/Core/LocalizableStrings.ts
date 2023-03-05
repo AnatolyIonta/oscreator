@@ -8,6 +8,7 @@ export const LanguageRu : ILocalizableStrings = {
     AsemblyPage:{
         description: "Выберете файл в формате .dll" ,
         loadButton: "Загрузить модуль",
+        showInformationModule: "Показать информацию по модулям",
         disableModule:"Деактивировать",
         enambleModule: "Активировать",
         deleteModule: "Удалить",
@@ -25,8 +26,6 @@ export const LanguageRu : ILocalizableStrings = {
     }
 }
 
-
-
 interface ILocalizableNav{
     Setting: string;
     Libary: string;
@@ -37,6 +36,7 @@ interface ILocalizableNav{
 interface ILocalizableAsemblyPage{
     description:string;
     loadButton:string;
+    showInformationModule: string;
     disableModule:string;
     enambleModule:string;
     deleteModule:string;

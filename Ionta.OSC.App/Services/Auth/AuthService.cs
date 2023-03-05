@@ -2,15 +2,12 @@
 using Ionta.OSC.App.Services.HashingPassword;
 using Ionta.OSC.Domain;
 using Ionta.OSC.ToolKit.Auth;
-using Ionta.OSC.ToolKit.Store;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ionta.OSC.App.Services.Auth
@@ -26,7 +23,6 @@ namespace Ionta.OSC.App.Services.Auth
         }
         public async Task<JWTDto> Handle(string login, string password)
         {
-
             var user = _storage.Users.Single(u => u.Name.ToLower() == login.ToLower());
             var x = HashingPasswordService.Hash(password);
             if (user.Password != x) throw new Exception("Password Error");
@@ -52,6 +48,5 @@ namespace Ionta.OSC.App.Services.Auth
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }

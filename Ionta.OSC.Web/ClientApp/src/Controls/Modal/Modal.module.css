@@ -1,0 +1,9 @@
+.modalContent {
+    border-radius: 12px;
+    width: fit-content;
+    max-width: 60vw;
+    max-height: 80%;
+    transition: 0.4s all;
+    border: 0;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}

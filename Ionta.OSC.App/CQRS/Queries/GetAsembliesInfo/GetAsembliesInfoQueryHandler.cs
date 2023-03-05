@@ -1,13 +1,7 @@
-﻿using Ionta.OSC.App.CQRS.Queries.GetAssemblies;
-using Ionta.OSC.App.Dtos;
-using Ionta.OSC.Core.AssembliesInformation;
+﻿using Ionta.OSC.Core.AssembliesInformation;
 using Ionta.OSC.Core.AssembliesInformation.Dtos;
 using Ionta.OSC.Core.Assemblys;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
