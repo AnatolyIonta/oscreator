@@ -9,18 +9,18 @@ import loginStore from "../../Core/LoginStore";
 import Strings from "../../Core/LocalizableStrings";
 
 interface ILoginData{
-    password:string,
-    passwordReturn:string,
-    oldPassword:string,
+    password: string,
+    passwordReturn: string,
+    oldPassword: string,
     valid: ()=> boolean,
     secses: boolean | null,
 }
 
 const loginData : ILoginData = observable<ILoginData>({
-    password:"",
-    passwordReturn:"",
-    oldPassword:"",
-    valid: ()=> loginData.password == loginData.passwordReturn,
+    password: "",
+    passwordReturn: "",
+    oldPassword: "",
+    valid: () => loginData.password == loginData.passwordReturn,
     secses: null,
 })
 
@@ -40,7 +40,7 @@ function SettingPage(){
         <div className="gap column">
             <h2>{Strings.SettingPage.description}</h2>
             <span className="errorMessage" hidden={f.secses || f.secses === null}>{Strings.SettingPage.errorExternal}</span>
-            <span className="successMessage" hidden={!f.secses}>{Strings.SettingPage.seccses}</span>
+            <span className="successMessage" hidden={!f.secses}>{Strings.SettingPage.success}</span>
             <span className="errorMessage" hidden={f.valid()}>{Strings.SettingPage.errorInternal}</span>
             <label>
                 <span>{Strings.SettingPage.newPassword}</span>

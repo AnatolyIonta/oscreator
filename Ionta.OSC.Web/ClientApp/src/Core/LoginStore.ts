@@ -16,8 +16,6 @@ const loginStore = observable({
     logOut() {
         this.token = null;
     }
-
-
 });
 
 reaction(
