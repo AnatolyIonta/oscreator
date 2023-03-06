@@ -41,7 +41,6 @@ function LoadAssemblyToolBar(){
             body: data
         }).then(_ => store.load());
     }
-
     
     function ModulOpen(){
         setOpen(true);
@@ -54,7 +53,7 @@ function LoadAssemblyToolBar(){
     return(
         <>
             <div className='row justBetween alignCenter' style={{marginBottom:"30px"}}>
-                <h3>Загрузчик модулей</h3>
+                <h3>{Strings.AsemblyPage.moduleLoader}</h3>
                 <div className="row gap">
                     <Button title={Strings.AsemblyPage.showInformationModule} onClick={ModulOpen}/>
                     <ButtonFileLoad title={Strings.AsemblyPage.loadButton} onChange={onChangeHandler}/>
@@ -133,15 +132,15 @@ function LoadAssemblyListItem(props:{name:string, id:number, isActive:boolean}){
 
 interface IDeleteWarnningProps
 {
-    isOpen:boolean;
-    onDeleteModul: ()=>void;
-    onDeleteModulClose: ()=>void;
+    isOpen: boolean;
+    onDeleteModul: () => void;
+    onDeleteModulClose: () => void;
 }
 
 function DeleteWarnning(props:IDeleteWarnningProps){
     return (
         <Modal isOpen={props.isOpen}>
-            <span>Вы уверены, что хотите удалить модуль?</span>
+            <span>{Strings.AsemblyPage.deleteWarnning}</span>
             <menu className={styles.modalContentButton}>
                 <Button title="Подтвердить" onClick={props.onDeleteModul} />
                 <Button title="Отмена" onClick={props.onDeleteModulClose} />

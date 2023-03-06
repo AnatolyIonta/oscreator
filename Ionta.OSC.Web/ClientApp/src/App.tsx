@@ -20,7 +20,6 @@ import SettingPage from './Pages/SettingPage/SettingPage';
 import AboutPage from './Pages/AboutPage/AboutPage';
 import { setAppDomen } from './Core/Configure';
 
-
 function App() {
     const [loading, setLoading] = useState<boolean>(false);
     useEffect(() => {

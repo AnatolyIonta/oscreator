@@ -8,6 +8,7 @@ import Button from "../../Controls/Button/Button";
 import { Api } from "../../Core/api";
 import loginStore from "../../Core/LoginStore";
 import { observer } from "mobx-react-lite";
+import Strings from "../../Core/LocalizableStrings";
 
 function LoginPage(){
     const [name,setName] = useState<string>("");
@@ -28,14 +29,14 @@ function LoginPage(){
     return(
         <div className={styles.wrapper}>
             <div className={`column ${styles.content}`}>
-                <h2 style={{margin:"0"}}>Вход</h2>
+                <h2 style={{margin:"0"}}>{Strings.LoginPage.entrance}</h2>
                 <label htmlFor="name">
-                    <span>Логин:</span>
+                    <span>{Strings.LoginPage.login}</span>
                     <br/>
                     <Input name={"name"} id={"name"} onChangeValue={(e)=>setName(e)} value={name} />
                 </label>
                 <label htmlFor="password">
-                    <span>Пароль:</span>
+                    <span>{Strings.LoginPage.password}</span>
                     <br/>
                     <InputPassword name={"password"} id={"password"} onChangeValue={(e)=>setPassword(e)} value={password} />
                 </label>

@@ -12,17 +12,24 @@ export const LanguageRu : ILocalizableStrings = {
         disableModule:"Деактивировать",
         enambleModule: "Активировать",
         deleteModule: "Удалить",
+        moduleLoader: "Загрузчик модулей",
+        deleteWarnning: "Вы уверены, что хотите удалить модуль?",
     },
     SettingPage:{
-        description:"Сменить пароль",
-        errorExternal:"Ошибка при смене пароля",
-        errorInternal:"Пароли не совпадают",
-        seccses:"Пароль успешно изменён",
-        newPassword:"Новый пароль",
-        oldPassword:"Старый пароль",
-        passwordRepeat:"Повторите пароль",
-        changePassword:"Сменить пароль",
-        logOut:"Выйти из аккаунта"
+        description: "Сменить пароль",
+        errorExternal: "Ошибка при смене пароля",
+        errorInternal: "Пароли не совпадают",
+        success: "Пароль успешно изменён",
+        newPassword: "Новый пароль",
+        oldPassword: "Старый пароль",
+        passwordRepeat: "Повторите пароль",
+        changePassword: "Сменить пароль",
+        logOut: "Выйти из аккаунта"
+    },
+    LoginPage:{
+        login: "Логин:",
+        password: "Пароль:",
+        entrance: "Вход"
     }
 }
 
@@ -34,30 +41,39 @@ interface ILocalizableNav{
 }
 
 interface ILocalizableAsemblyPage{
-    description:string;
-    loadButton:string;
+    description: string;
+    loadButton: string;
     showInformationModule: string;
-    disableModule:string;
-    enambleModule:string;
-    deleteModule:string;
+    disableModule: string;
+    enambleModule: string;
+    deleteModule: string;
+    moduleLoader: string;
+    deleteWarnning: string;
 }
 
 interface ILocalizableSettingPage{
-    description:string;
-    errorInternal:string;
-    errorExternal:string;
-    seccses:string;
-    newPassword:string;
-    oldPassword:string;
-    passwordRepeat:string;
-    changePassword:string;
-    logOut:string;
+    description: string;
+    errorInternal: string;
+    errorExternal: string;
+    success: string;
+    newPassword: string;
+    oldPassword: string;
+    passwordRepeat: string;
+    changePassword: string;
+    logOut: string;
+}
+
+interface ILocalizableLoginPage{
+    login: string;
+    password: string;
+    entrance: string;
 }
 
 interface ILocalizableStrings{
     Nav: ILocalizableNav;
     AsemblyPage: ILocalizableAsemblyPage;
     SettingPage: ILocalizableSettingPage;
+    LoginPage: ILocalizableLoginPage;
 }
 
 export class LocalizableStringsManager{
