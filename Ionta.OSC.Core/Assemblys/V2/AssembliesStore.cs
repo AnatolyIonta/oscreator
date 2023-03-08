@@ -44,7 +44,15 @@ namespace Ionta.OSC.Core.Assemblys.V2
             }
             assebliesContext.Add(context);
             Context.Add(id, context.Name);
-            OnLoad?.Invoke(context.Assemblies.ToArray());
+
+            try
+            {
+                OnLoad?.Invoke(context.Assemblies.ToArray());
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         public void Unload(long id)
@@ -52,7 +60,15 @@ namespace Ionta.OSC.Core.Assemblys.V2
             string contextName = Context[id];
             var context = assebliesContext.FirstOrDefault(e => e.Name == contextName);
             if (context == null) return;
-            OnUnloading?.Invoke(context.Assemblies.ToArray());
+            try
+            {
+                OnUnloading?.Invoke(context.Assemblies.ToArray());
+            }
+            catch(Exception ex)
+            {
+
+            }
+            
             context.Unload();
             assebliesContext.Remove(context);
             Context.Remove(id);

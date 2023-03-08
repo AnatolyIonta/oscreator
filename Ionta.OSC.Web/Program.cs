@@ -60,7 +60,7 @@ services.AddScoped(servicesProvider =>
         .UseNpgsql(GetDatabaseConnectionString(servicesProvider.GetService<IConfiguration>()));
 
     var assemblyLoader = servicesProvider.GetService<IAssemblyManager>();
-    return (IDataStore)(new DataStore(options.Options, assemblyLoader));
+    return (IDataStore)(new DataStore(options.Options, assemblyLoader, builder.Configuration));
 });
 
 var conectionString = GetOscDatabaseConnectionString(builder.Configuration);
@@ -135,7 +135,7 @@ serviceManager.GlobalCollection.AddScoped((serviceProvider) =>
     var options = new DbContextOptionsBuilder<DataStore>()
         .UseNpgsql(GetDatabaseConnectionString(Configuration));
 
-    return (IDataStore)(new DataStore(options.Options, assemblyManager));
+    return (IDataStore)(new DataStore(options.Options, assemblyManager, builder.Configuration));
 });
 
 serviceManager.GlobalCollection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
@@ -147,7 +147,7 @@ serviceManager.ConfigurePrivateContainer = (collection) =>
         var options = new DbContextOptionsBuilder<DataStore>()
             .UseNpgsql(GetDatabaseConnectionString(Configuration));
 
-        return (IDataStore)(new DataStore(options.Options, assemblyManager));
+        return (IDataStore)(new DataStore(options.Options, assemblyManager, builder.Configuration));
     });
     collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
     collection.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(Configuration["Secret"]));

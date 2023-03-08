@@ -8,20 +8,23 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.Core.Assemblys.V2;
+using Microsoft.Extensions.Configuration;
 
 namespace Ionta.OSC.Core.Store
 {
     public class DataStore : DbContext, IDataStore
     {
         private readonly Dictionary<string, Type> _entities = new();
+        private readonly IConfiguration _configuration;
         public readonly IAssemblyManager _assemblyManager;
         
-        public DataStore(DbContextOptions<DataStore> options, IAssemblyManager assemblyManager)
+        public DataStore(DbContextOptions<DataStore> options, IAssemblyManager assemblyManager, IConfiguration configuration)
             : base(options)
         { 
             _assemblyManager = assemblyManager;
             _assemblyManager.OnChange += InitEntity;
             _assemblyManager.OnUnloading += OnUnloading;
+            _configuration = configuration;
             Database.EnsureCreated();
         }
 
@@ -38,7 +41,7 @@ namespace Ionta.OSC.Core.Store
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.RegisterAllEntities<BaseEntity>(_assemblyManager.GetAssemblies());
+            modelBuilder.RegisterAllEntities<BaseEntity>(_assemblyManager.GetAssemblies(), _configuration);
             return;
         }
 
