@@ -7,7 +7,6 @@ using System.Reflection;
 using Ionta.OSC.Web.Infrastructure;
 using Ionta.OSC.ToolKit.Store;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Ionta.OSC.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Ionta.OSC.App.Services;
@@ -17,12 +16,11 @@ using Ionta.OSC.Core.ServiceTools;
 using Ionta.OSC.Core.Store;
 using Ionta.OSC.Core.Store.Migration;
 using Ionta.OSC.Core.Auth;
-using Microsoft.Extensions.DependencyInjection;
-using Ionta.OSC.Core.CustomControllers.ControllerHandler;
-using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
 using Ionta.OSC.Web.Extension;
 using Ionta.OSC.Core.AssembliesInformation;
 using Ionta.OSC.Core.Assemblys.V2;
+using Hangfire;
+using Hangfire.PostgreSql;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -95,6 +93,9 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 services.AddScoped<IUserProvider, UserProvider>();
 services.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(builder.Configuration["Secret"]));
+services.AddHangfire(config =>
+                config.UsePostgreSqlStorage(GetOscDatabaseConnectionString(builder.Configuration)));
+
 
 var app = builder.Build();
 
@@ -110,6 +111,9 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
+
+app.UseHangfireDashboard("/mydashboard");
+app.UseHangfireServer();
 
 app.MapControllerRoute(
     name: "default",
