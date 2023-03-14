@@ -1,0 +1,10 @@
+.content{
+    height: 75vh;
+}
+
+.footer {
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+}

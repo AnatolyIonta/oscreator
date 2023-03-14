@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.App.CQRS.Commands.Auth
+namespace Ionta.OSC.App.CQRS.Commands
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, JWTDto>
     {

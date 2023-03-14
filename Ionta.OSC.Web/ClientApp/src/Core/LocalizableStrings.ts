@@ -14,22 +14,34 @@ export const LanguageRu : ILocalizableStrings = {
         deleteModule: "Удалить",
         moduleLoader: "Загрузчик модулей",
         deleteWarnning: "Вы уверены, что хотите удалить модуль?",
+        enter: "Открыть"
     },
     SettingPage:{
-        description: "Сменить пароль",
-        errorExternal: "Ошибка при смене пароля",
-        errorInternal: "Пароли не совпадают",
-        success: "Пароль успешно изменён",
-        newPassword: "Новый пароль",
-        oldPassword: "Старый пароль",
-        passwordRepeat: "Повторите пароль",
-        changePassword: "Сменить пароль",
-        logOut: "Выйти из аккаунта"
+        description:"Сменить пароль",
+        errorExternal:"Ошибка при смене пароля",
+        errorInternal:"Пароли не совпадают",
+        success:"Пароль успешно изменён",
+        newPassword:"Новый пароль",
+        oldPassword:"Старый пароль",
+        passwordRepeat:"Повторите пароль",
+        changePassword:"Сменить пароль",
+        logOut:"Выйти из аккаунта"
     },
     LoginPage:{
         login: "Логин:",
         password: "Пароль:",
         entrance: "Вход"
+    }, 
+    ModulePage:{
+        refresh: "Обновить",
+        moduleTitle: "Модуль",
+        changeNameModule: "Изменить название модуля:",
+        save: "Сохранить",
+        savedSucces: "Изменения успешно сохранены!",
+        savedError: "Произошла ошибка при измении данных",
+        isActive: "(Активен)",
+        isNotActive: "(Не активен)",
+        modulNameCantBeEmpty: "Название модуля не может быть пустым!"
     }
 }
 
@@ -44,11 +56,12 @@ interface ILocalizableAsemblyPage{
     description: string;
     loadButton: string;
     showInformationModule: string;
-    disableModule: string;
-    enambleModule: string;
-    deleteModule: string;
+    disableModule:string;
+    enambleModule:string;
+    deleteModule:string;
     moduleLoader: string;
     deleteWarnning: string;
+    enter: string;
 }
 
 interface ILocalizableSettingPage{
@@ -69,11 +82,24 @@ interface ILocalizableLoginPage{
     entrance: string;
 }
 
+interface IModulePage{
+    refresh: string;
+    moduleTitle: string;
+    changeNameModule: string;
+    save: string;
+    savedSucces: string;
+    savedError: string;
+    isActive: string;
+    isNotActive: string;
+    modulNameCantBeEmpty: string;
+}
+
 interface ILocalizableStrings{
     Nav: ILocalizableNav;
     AsemblyPage: ILocalizableAsemblyPage;
     SettingPage: ILocalizableSettingPage;
     LoginPage: ILocalizableLoginPage;
+    ModulePage: IModulePage;
 }
 
 export class LocalizableStringsManager{
