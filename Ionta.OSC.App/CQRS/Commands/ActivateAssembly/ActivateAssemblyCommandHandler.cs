@@ -1,16 +1,11 @@
-﻿using Ionta.OSC.Core.Assemblys;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ionta.OSC.Core.Assemblys.V2;
 
-namespace Ionta.OSC.App.CQRS.Commands.ActivateAssembly
+namespace Ionta.OSC.App.CQRS.Commands
 {
     public class ActivateAssemblyCommandHandler : IRequestHandler<ActivateAssemblyCommand, bool>
     {

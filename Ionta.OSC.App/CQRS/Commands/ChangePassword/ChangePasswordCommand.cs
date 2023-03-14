@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ionta.OSC.App.Dtos;
-using MediatR;
+﻿using MediatR;
 
-namespace Ionta.OSC.App.CQRS.Commands.ChangePassword
+namespace Ionta.OSC.App.CQRS.Commands
 {
     public class ChangePasswordCommand : IRequest<bool>
     {

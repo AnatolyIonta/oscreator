@@ -8,8 +8,8 @@ import {
 
 import './App.css';
 import {ReactComponent as Library} from "./Icon/library.svg";
-import {ReactComponent as Setting} from "./Icon/settings.svg"
-import {ReactComponent as Info} from "./Icon/info.svg"
+import {ReactComponent as Setting} from "./Icon/settings.svg";
+import {ReactComponent as Info} from "./Icon/info.svg";
 import Strings from './Core/LocalizableStrings';
 
 import LoadAssemblyPage from "./Pages/ModuleLoader/ModuleLoader"
@@ -18,6 +18,7 @@ import loginStore from './Core/LoginStore';
 import { observer } from 'mobx-react-lite';
 import SettingPage from './Pages/SettingPage/SettingPage';
 import AboutPage from './Pages/AboutPage/AboutPage';
+import ModulePage from './Pages/ModulePage/ModulePage';
 import { setAppDomen } from './Core/Configure';
 
 function App() {
@@ -107,6 +108,9 @@ function AdminPanel(){
             </Route>
             <Route path="/about">
               <AboutPage/>
+            </Route>
+            <Route path='/module/:number'>
+              <ModulePage/>
             </Route>
           </Switch>
         </div>

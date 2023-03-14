@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.App.CQRS.Queries.GetAssemblies
+namespace Ionta.OSC.App.CQRS.Queries
 {
     public class GetAssembliesQueryHandler : IRequestHandler<GetAssembliesQuery, DtosList<AssemblyDto>>
     {

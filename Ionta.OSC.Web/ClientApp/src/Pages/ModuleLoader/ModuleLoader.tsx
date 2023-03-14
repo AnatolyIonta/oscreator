@@ -1,20 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
-import Button, { ButtonFileLoad, ButtonStyles } from "../../Controls/Button/Button";
-import Strings from "../../Core/LocalizableStrings";
-import store from "./ModuleLoaderStore";
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { useHistory } from "react-router-dom";
 
 import styles from "./ModuleLoader.module.css";
 import '../../App.css';
 
-import { observer } from "mobx-react-lite";
 import { ApiDomen } from "../../Core/Configure";
-import { Api } from "../../Core/api";
 import loginStore from "../../Core/LoginStore";
-import Modal from "../../Controls/Modal/Modal";
 import { InfoModule } from "./ModalInfoModule/ModalInfoModule";
+import Button, { ButtonFileLoad } from "../../Controls/Button/Button";
+import Strings from "../../Core/LocalizableStrings";
+import store from "./ModuleLoaderStore";
+import ActivateModule from "../../Controls/EditModule/ActivateModule/ActivateModule";
+import { Api } from "../../Core/api";
 
 function LoadAssemblyPage(){
-    useEffect(()=>{
+    useEffect(() => {
         store.load();
     },[]);
 
@@ -31,16 +32,10 @@ function LoadAssemblyToolBar(){
 
     function onChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target!.files![0];
-        let data = new FormData()
-        data.append('file', file);
-        fetch(ApiDomen+'/Assembly/SaveAssembly', {
-            headers: {
-                Authorization: "Bearer " + loginStore.token,
-            },
-            method: 'POST',
-            body: data
-        }).then(_ => store.load());
+        Api.postAuthWithFile('Assembly/SaveAssembly', file)
+        .then(_ => store.load());
     }
+
     
     function ModulOpen(){
         setOpen(true);
@@ -72,81 +67,39 @@ function LoadAssemblyList(props:{data:any[] | null}){
     )
 }
   
-function LoadAssemblyListItem(props:{name:string, id:number, isActive:boolean}){
+function LoadAssemblyListItem(props:{name:string, id:number, isActive:boolean}) {
+    let history = useHistory();
     let className = `${styles.block} row`;
-    if(!props.isActive){
+
+    if (!props.isActive) {
         className = className + " " + styles.blockOff
     }
 
     let classNameDicorateBox = `${styles.dicorateBox}`;
-    if(!props.isActive){
+    if (!props.isActive) {
         classNameDicorateBox = classNameDicorateBox + " " + styles.dicorateBoxOff;
     }
 
-    const [isOpen, setOpen] = useState<boolean>(false)
-    function deleteModulClick(){
-        setOpen(true);
-    }
-    function deleteModulClose(){
-        setOpen(false);
-    }
-
-    function deleteModul(){
-        const data = {assemblyId: props.id, isActive: false};
-        let response = Api.postAuth("Assembly/SetActive", data)
-        .then(e => {
-            const data = {id: props.id};
-            let response2 = Api.postAuth("Assembly/delete", data)
-            .then(c => {
-                store.load(); 
-                deleteModulClose();
-            })
-        });
-    }
-    function enableModul(){
-        const data = {assemblyId: props.id, isActive: !props.isActive};
-        let response = Api.postAuth("Assembly/SetActive", data)
-        .then(e => { 
-            Api.postAuth("Assembly/ApplayMigration",{}); 
-            store.load();
-        });
+    function onModuleClick() {
+        const link = `module/${props.id}`;
+        history.push(link);
     }
 
     return(
         <>
             <div className={className}>
                 <div className='row margin-right alignCenter'>
-                <div className={classNameDicorateBox}/>
-                <span className={styles.nameModul}>{props.name}</span>
+                    <div className={classNameDicorateBox}/>
+                    <span className={styles.nameModul}>{props.name}</span>
                 </div>
                 
                 <div className='row margin-right alignCenter justCenter'>
-                    <Button onClick={enableModul} title={props.isActive ? Strings.AsemblyPage.disableModule : Strings.AsemblyPage.enambleModule}/>
-                    <Button onClick={deleteModulClick} title={Strings.AsemblyPage.deleteModule} buttonStyle={ButtonStyles.red}/>
+                    <Button onClick={onModuleClick} title={Strings.AsemblyPage.enter}/>
+                    <ActivateModule name={props.name} id={props.id.toString()} isActive={props.isActive} isModuleLoaderPage={true}/>
                 </div>
             </div>
-            <DeleteWarnning isOpen={isOpen} onDeleteModul={deleteModul} onDeleteModulClose={deleteModulClose}/>
       </>
     );
-}
-
-interface IDeleteWarnningProps
-{
-    isOpen: boolean;
-    onDeleteModul: () => void;
-    onDeleteModulClose: () => void;
-}
-
-function DeleteWarnning(props:IDeleteWarnningProps){
-    return (
-        <Modal isOpen={props.isOpen}>
-            <span>{Strings.AsemblyPage.deleteWarnning}</span>
-            <menu className={styles.modalContentButton}>
-                <Button title="Подтвердить" onClick={props.onDeleteModul} />
-                <Button title="Отмена" onClick={props.onDeleteModulClose} />
-            </menu>
-        </Modal>
-    )
 }
 
 export default observer(LoadAssemblyPage);

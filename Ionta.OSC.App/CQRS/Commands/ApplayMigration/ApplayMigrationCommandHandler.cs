@@ -1,15 +1,9 @@
-﻿using Ionta.OSC.App.CQRS.Commands.LoadAssembly;
-using Ionta.OSC.Core.Assemblys;
-using Ionta.OSC.Core.Store;
+﻿using Ionta.OSC.Core.Store;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.App.CQRS.Commands.ApplayMigration
+namespace Ionta.OSC.App.CQRS.Commands
 {
     public class ApplayMigrationCommandHandler : IRequestHandler<ApplayMigrationCommand, bool>
     {

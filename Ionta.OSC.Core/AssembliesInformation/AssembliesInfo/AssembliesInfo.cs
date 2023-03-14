@@ -1,15 +1,8 @@
 ﻿using Ionta.OSC.Core.AssembliesInformation.Dtos;
 using Ionta.OSC.Core.Assemblys;
-using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
 using Ionta.OSC.ToolKit.Controllers;
 using Microsoft.Extensions.Caching.Memory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Ionta.OSC.Core.AssembliesInformation
 {

@@ -1,10 +1,7 @@
-﻿using Ionta.OSC.App.CQRS.Commands.ActivateAssembly;
-using Ionta.OSC.App.CQRS.Commands.ApplayMigration;
-using Ionta.OSC.App.CQRS.Commands.DeleteModul;
-using Ionta.OSC.App.CQRS.Commands.LoadAssembly;
-using Ionta.OSC.App.CQRS.Queries.GetAsembliesInfo;
-using Ionta.OSC.App.CQRS.Queries.GetAssemblies;
+﻿using Ionta.OSC.App.CQRS.Commands;
+using Ionta.OSC.App.CQRS.Queries;
 using Ionta.OSC.App.Dtos;
+using Ionta.OSC.Core.AssembliesInformation;
 using Ionta.OSC.Core.AssembliesInformation.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -71,6 +68,39 @@ namespace OpenServiceCreator.Controllers
         [HttpPost("info")]
         public async Task<AssemblyInfoDto> GetInfo([FromBody] GetAsembliesInfoQuery query)
         {
+            return await _mediator.Send(query);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("changeName")]
+        public async Task<bool> ChangeName([FromBody] ChangeNameAssemblyCommand query)
+        {
+            return await _mediator.Send(query);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("infoCurrentAssembly")]
+        public async Task<AssemblyDto> GetInfoCurrentAssembly([FromBody] GetAssemblyQuery query)
+        {
+            return await _mediator.Send(query);
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string), 400)]
+        [HttpPost("refreshModul/{id:int}")]
+        public async Task<bool> RefreshModul(
+            [FromForm(Name = "file")] IFormFile uploadedFile,
+            [FromRoute] int id)
+        {
+            var file = GetBytes(uploadedFile.OpenReadStream());
+            var query = new RefreshModulCommand() 
+            { Name = uploadedFile.FileName, 
+              Data = file,
+              Id = id
+            };
+
             return await _mediator.Send(query);
         }
 

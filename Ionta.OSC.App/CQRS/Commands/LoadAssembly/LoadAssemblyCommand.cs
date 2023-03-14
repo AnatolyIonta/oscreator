@@ -1,12 +1,6 @@
-﻿using Ionta.OSC.App.Dtos;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
-namespace Ionta.OSC.App.CQRS.Commands.LoadAssembly
+namespace Ionta.OSC.App.CQRS.Commands
 {
     public class LoadAssemblyCommand : IRequest<bool>
     {
