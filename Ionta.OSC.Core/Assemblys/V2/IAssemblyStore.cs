@@ -16,8 +16,10 @@ namespace Ionta.OSC.Core.Assemblys.V2
         void Unload(long id);
 
         IEnumerable<T>? Get<T>() where T : class;
+        IEnumerable<T>? Get<T>(Assembly[] assemblies) where T : class;
 
         IEnumerable<U>? GetWithType<T, U>() where T : class where U : class;
+        IEnumerable<U>? GetWithType<T, U>(Assembly[] assemblies) where T : class where U : class;
 
         public IEnumerable<Assembly> GetAllAssembly();
 

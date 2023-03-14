@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
 
@@ -59,19 +60,20 @@ namespace Ionta.OSC.Core.Assemblys.V2
         {
             string contextName = Context[id];
             var context = assebliesContext.FirstOrDefault(e => e.Name == contextName);
+
             if (context == null) return;
+            context.Unload();
+            assebliesContext.Remove(context);
+            Context.Remove(id);
+            
             try
             {
                 OnUnloading?.Invoke(context.Assemblies.ToArray());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            
-            context.Unload();
-            assebliesContext.Remove(context);
-            Context.Remove(id);
         }
 
         private IEnumerable<U>? Get<T,U>(Assembly assembly) 
@@ -125,6 +127,31 @@ namespace Ionta.OSC.Core.Assemblys.V2
                     var data = Get<T, U>(assembly);
                     if (result != null) result = result.Union(data);
                 }
+            }
+            return result;
+        }
+
+        public IEnumerable<T> Get<T>(Assembly[] assemblies) where T : class
+        {
+            IEnumerable<T> result = new List<T>();
+            foreach (var assembly in assemblies)
+            {
+                var data = Get<T, T>(assembly);
+                if (result != null) result = result.Union(data);
+            }
+            return result;
+        }
+
+        public IEnumerable<U>? GetWithType<T, U>(Assembly[] assemblies)
+            where T : class
+            where U : class
+        {
+            IEnumerable<U> result = new List<U>();
+
+            foreach (var assembly in assemblies)
+            {
+                var data = Get<T, U>(assembly);
+                if (result != null) result = result.Union(data);
             }
             return result;
         }

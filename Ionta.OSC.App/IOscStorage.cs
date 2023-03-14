@@ -13,6 +13,7 @@ namespace Ionta.OSC.App
         public DbSet<User> Users { get; set; }
         public DbSet<AssemblyFile> AssemblyFiles { get; set; }
         public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
+        public DbSet<JobInformation> Jobs { get; set; }
 
         public Task SaveChangesAsync();
         void ApplyMigrations();

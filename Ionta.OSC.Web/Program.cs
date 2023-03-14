@@ -19,8 +19,8 @@ using Ionta.OSC.Core.Auth;
 using Ionta.OSC.Web.Extension;
 using Ionta.OSC.Core.AssembliesInformation;
 using Ionta.OSC.Core.Assemblys.V2;
-using Hangfire;
-using Hangfire.PostgreSql;
+using Ionta.OSC.App.Scheduler;
+using Ionta.OSC.App.Services.Scheduler;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -93,8 +93,9 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 services.AddScoped<IUserProvider, UserProvider>();
 services.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(builder.Configuration["Secret"]));
-services.AddHangfire(config =>
-                config.UsePostgreSqlStorage(GetOscDatabaseConnectionString(builder.Configuration)));
+services.AddSingleton<IScheduler, Scheduler>();
+services.AddHostedService<Worker>();
+services.AddLogging();
 
 
 var app = builder.Build();
@@ -111,9 +112,6 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-
-app.UseHangfireDashboard("/mydashboard");
-app.UseHangfireServer();
 
 app.MapControllerRoute(
     name: "default",
