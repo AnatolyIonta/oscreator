@@ -1,4 +1,6 @@
-﻿using Ionta.OSC.App.CQRS.Commands;
+﻿using static Ionta.Utilities.FileUtilite;
+
+using Ionta.OSC.App.CQRS.Commands;
 using Ionta.OSC.App.CQRS.Queries;
 using Ionta.OSC.App.Dtos;
 using Ionta.OSC.Core.AssembliesInformation;
@@ -102,25 +104,6 @@ namespace OpenServiceCreator.Controllers
             };
 
             return await _mediator.Send(query);
-        }
-
-        private byte[] GetBytes(Stream s)
-        {
-            s.Position = 0;
-
-            // Now read s into a byte buffer with a little padding.
-            byte[] bytes = new byte[s.Length + 10];
-            int numBytesToRead = (int)s.Length;
-            int numBytesRead = 0;
-            do
-            {
-                // Read may return anything from 0 to 10.
-                int n = s.Read(bytes, numBytesRead, 10);
-                numBytesRead += n;
-                numBytesToRead -= n;
-            } while (numBytesToRead > 0);
-
-            return bytes;
         }
 
     }

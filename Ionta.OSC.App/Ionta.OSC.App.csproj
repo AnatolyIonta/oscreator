@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ionta.OSC.Core\Ionta.OSC.Core.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />
+    <ProjectReference Include="..\Ionta.Utilities\Ionta.Utilities.csproj" />
     <PackageReference Include="MediatR" Version="11.1.0" />
   </ItemGroup>
 

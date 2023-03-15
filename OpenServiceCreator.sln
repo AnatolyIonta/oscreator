@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Web", "Ionta.OSC.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ionta.OSC.Core", "Ionta.OSC.Core\Ionta.OSC.Core.csproj", "{91A314FC-1B03-4D8D-99AE-51E3548CFA1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ionta.Utilities", "Ionta.Utilities\Ionta.Utilities.csproj", "{FB648F97-CE8F-46BC-80B3-900316021A39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,12 +49,17 @@ Global
 		{91A314FC-1B03-4D8D-99AE-51E3548CFA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91A314FC-1B03-4D8D-99AE-51E3548CFA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91A314FC-1B03-4D8D-99AE-51E3548CFA1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB648F97-CE8F-46BC-80B3-900316021A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB648F97-CE8F-46BC-80B3-900316021A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB648F97-CE8F-46BC-80B3-900316021A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB648F97-CE8F-46BC-80B3-900316021A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{91A314FC-1B03-4D8D-99AE-51E3548CFA1E} = {C8593652-EFB7-4860-9E5C-F32DDDF99613}
+		{FB648F97-CE8F-46BC-80B3-900316021A39} = {C8593652-EFB7-4860-9E5C-F32DDDF99613}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C129C0A4-BAF3-4735-B42E-8CC507C5D38A}

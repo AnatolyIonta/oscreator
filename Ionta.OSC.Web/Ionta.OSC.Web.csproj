@@ -49,6 +49,7 @@
     <ProjectReference Include="..\Ionta.OSC.Core\Ionta.OSC.Core.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Storage\Ionta.OSC.Storage.csproj" />
+    <ProjectReference Include="..\Ionta.Utilities\Ionta.Utilities.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

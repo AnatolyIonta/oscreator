@@ -1,4 +1,4 @@
-﻿using static Ionta.OSC.App.CQRS.ProcessingZipArchive;
+﻿using static Ionta.Utilities.ProcessingZipArchive;
 using Ionta.OSC.Core.Assemblys.V2;
 using Ionta.OSC.Domain;
 

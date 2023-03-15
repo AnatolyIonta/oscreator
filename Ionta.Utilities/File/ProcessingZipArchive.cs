@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.IO;
+﻿using System.IO.Compression;
 
-namespace Ionta.OSC.App.CQRS
+namespace Ionta.Utilities
 {
     public static class ProcessingZipArchive
     {
@@ -19,7 +16,6 @@ namespace Ionta.OSC.App.CQRS
                     if (entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                     {
                         yield return ReadFully(entry.Open()); // .Open will return a stream                                                      
-                        // Process entry data here
                     }
                 }
             }
