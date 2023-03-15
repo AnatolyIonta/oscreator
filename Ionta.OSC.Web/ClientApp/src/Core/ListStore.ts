@@ -18,12 +18,9 @@ class ListStore{
         let result = await Api.postAuth(this.schema+"/list",{});
         if (result.status == 200) {
             let json = await result.json();
-            console.log('json',json);
-            
             this.data = json.dtos;
             this.count = json.count;
         }
-        console.log('data',this.data);
     }
 }
 

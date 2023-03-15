@@ -1,8 +1,14 @@
 import React from 'react';
-
 import Styles from './Input.module.css';
 
-function InputPassword(props:{onChangeValue:(e:string)=>void, value:string, name?:string, id?:string}){
+interface IInputProps{
+    onChangeValue:(e:string)=>void,
+    value:string,
+    name?:string,
+    id?:string
+}
+
+function InputPassword(props: IInputProps){
     
     function onChange(event: React.ChangeEvent<HTMLInputElement>){
         props.onChangeValue(event.target.value);

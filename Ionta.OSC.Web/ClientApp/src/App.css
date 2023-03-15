@@ -119,3 +119,11 @@ html, body{
   color: #7ad663;
   font-size: 17px;
 }
+
+.widthFull {
+  width: 100%;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}

@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.App.CQRS.Queries.GetAsembliesInfo
+namespace Ionta.OSC.App.CQRS.Queries
 {
     public class GetAsembliesInfoQueryHandler : IRequestHandler<GetAsembliesInfoQuery, AssemblyInfoDto>
     {

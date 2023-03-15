@@ -1,5 +1,4 @@
-﻿using Ionta.OSC.App.CQRS.Commands.Auth;
-using Ionta.OSC.App.CQRS.Commands.ChangePassword;
+﻿using Ionta.OSC.App.CQRS.Commands;
 using Ionta.OSC.App.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
