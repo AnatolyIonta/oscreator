@@ -1,26 +1,11 @@
 using Ionta.OSC.App;
 using Ionta.OSC.App.Services.AssemblyInitializer;
-using Ionta.OSC.App.Services.Auth;
-using Ionta.OSC.ToolKit.Auth;
-using MediatR;
-using System.Reflection;
 using Ionta.OSC.Web.Infrastructure;
-using Ionta.OSC.ToolKit.Store;
-using Microsoft.EntityFrameworkCore;
-using Ionta.OSC.Storage;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Ionta.OSC.App.Services;
-
 using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.Core.ServiceTools;
-using Ionta.OSC.Core.Store;
-using Ionta.OSC.Core.Store.Migration;
-using Ionta.OSC.Core.Auth;
 using Ionta.OSC.Web.Extension;
-using Ionta.OSC.Core.AssembliesInformation;
-using Ionta.OSC.Core.Assemblys.V2;
-using Ionta.OSC.App.Scheduler;
-using Ionta.OSC.App.Services.Scheduler;
+
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -42,59 +27,22 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllersWithViews();
 services.AddOptions();
-services.AddSingleton<IAssemblyManager, AssemblyManagerV2>();
-services.AddSingleton<IAssemblyStore, AssembliesStore>();
-services.AddSingleton<IServiceManager, ServiceManager>();
-services.AddSingleton<IMigrationGenerator, MigrationGenerator>();
 services.AddMemoryCache();
-services.AddCustomControllers();
-services.AddScoped<IAssemblyInitializer, AssemblyInitializer>();                                                                                    
-services.AddScoped<IAssembliesInfo, AssembliesInfo>();                                                                                    
-//services.AddTransient<IHashingPasswordService, HashingPasswordService>();
-services.AddScoped<IAuthService, AuthService>();
-services.AddScoped(servicesProvider =>
-{
-    var options = new DbContextOptionsBuilder<DataStore>()
-        .UseNpgsql(GetDatabaseConnectionString(servicesProvider.GetService<IConfiguration>()));
-
-    var assemblyLoader = servicesProvider.GetService<IAssemblyManager>();
-    return (IDataStore)(new DataStore(options.Options, assemblyLoader, builder.Configuration));
-});
-
-var conectionString = GetOscDatabaseConnectionString(builder.Configuration);
-services.AddDbContextPool<IOscStorage, OscStorage>(options =>
-{
-    options.UseNpgsql(conectionString);
-}, 16);
-
-builder.Services.AddMediatR(Assembly.GetExecutingAssembly(), typeof(IOscStorage).Assembly, typeof(IHttpContextAccessor).Assembly,
-                typeof(AuthOptions).Assembly, typeof(IMigrationGenerator).Assembly);
-
-var authOptionsCofiguration = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
-
-services.AddSingleton(authOptionsCofiguration);
-services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
-    AddJwtBearer(options =>
-    {
-        var authOptions = authOptionsCofiguration;
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = authOptions.Issure,
-            ValidateAudience = false,
-            ValidateActor = false,
-            ValidateLifetime = true,
-            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true
-        };
-    }
-    );
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-services.AddScoped<IUserProvider, UserProvider>();
-services.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(builder.Configuration["Secret"]));
-services.AddSingleton<IScheduler, Scheduler>();
-services.AddHostedService<Worker>();
+
+services.AddSingleton<IServiceManager, ServiceManager>();
+
+services.AddAssembliesSystem();
+services.AddCustomControllers();
+services.AddStore(
+    GetOscDatabaseConnectionString(builder.Configuration), 
+    GetDatabaseConnectionString(builder.Configuration), 
+    builder.Configuration);
+services.AddAuthenticationJWT(builder.Configuration);
+services.AddSchuduler();
+
+builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+
 services.AddLogging();
 
 
@@ -119,9 +67,9 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html");
 
-var assemblyManager = app.Services.GetService<IAssemblyManager>();
-var serviceManager = app.Services.GetService<IServiceManager>();
-var Configuration = app.Services.GetService<IConfiguration>();
+var assemblyManager = app.Services.GetRequiredService<IAssemblyManager>();
+var serviceManager = app.Services.GetRequiredService<IServiceManager>();
+var Configuration = app.Services.GetRequiredService<IConfiguration>();
 
 app.UseMiddleware<CustomAuthenticationMiddleware>();
 app.UseMiddleware<Ionta.OSC.Web.Infrastructure.V2.CustomControllerMiddleware>();
@@ -132,31 +80,10 @@ using (var scope = app.Services.CreateScope())
     store.ApplyMigrations();
 }
 
-serviceManager.GlobalCollection.AddScoped((serviceProvider) =>
-{
-    var options = new DbContextOptionsBuilder<DataStore>()
-        .UseNpgsql(GetDatabaseConnectionString(Configuration));
-
-    return (IDataStore)(new DataStore(options.Options, assemblyManager, builder.Configuration));
-});
-
-serviceManager.GlobalCollection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
-
-serviceManager.ConfigurePrivateContainer = (collection) =>
-{
-    collection.AddScoped((serviceProvider) =>
-    {
-        var options = new DbContextOptionsBuilder<DataStore>()
-            .UseNpgsql(GetDatabaseConnectionString(Configuration));
-
-        return (IDataStore)(new DataStore(options.Options, assemblyManager, builder.Configuration));
-    });
-    collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
-    collection.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(Configuration["Secret"]));
-    collection.AddHttpClient();
-};
-
-serviceManager.GlobalServiceBuild();
+serviceManager.Init(
+    assemblyManager,
+    GetDatabaseConnectionString(builder.Configuration),
+    builder.Configuration);
 
 using (var scope = app.Services.CreateScope())
 {
