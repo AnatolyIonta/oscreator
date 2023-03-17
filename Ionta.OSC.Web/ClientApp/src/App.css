@@ -110,6 +110,16 @@ html, body{
   display: none;
 }
 
+.errorPanel{
+  background-color: #dba1a1;
+  font-size: 17px;
+}
+
+.successPanel{
+  background-color: #aed5a4;
+  font-size: 17px;
+}
+
 .errorMessage{
   color: #d66363;
   font-size: 17px;

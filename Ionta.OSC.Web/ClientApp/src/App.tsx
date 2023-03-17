@@ -20,6 +20,7 @@ import SettingPage from './Pages/SettingPage/SettingPage';
 import AboutPage from './Pages/AboutPage/AboutPage';
 import ModulePage from './Pages/ModulePage/ModulePage';
 import { setAppDomen } from './Core/Configure';
+import LoggerPage from './Pages/LoggerPage/Page/LoggerPage';
 
 function App() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -111,6 +112,9 @@ function AdminPanel(){
             </Route>
             <Route path='/module/:number'>
               <ModulePage/>
+            </Route>
+            <Route path='/logs'>
+              <LoggerPage/>
             </Route>
           </Switch>
         </div>
