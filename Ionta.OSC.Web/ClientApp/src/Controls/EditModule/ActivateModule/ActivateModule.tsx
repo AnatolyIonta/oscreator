@@ -81,7 +81,7 @@ function choiceLoadPage(isModuleLoaderPage: boolean) {
     if (isModuleLoaderPage) {
         store.load();
     } else {
-        pageStore.loadModulPageInfo();
+        pageStore.load();
     }
 }
 

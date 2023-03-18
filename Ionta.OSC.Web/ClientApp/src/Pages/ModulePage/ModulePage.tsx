@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { useLocation } from "react-router-dom"; 
+import { useLocation, useParams } from "react-router-dom"; 
 
 import Strings from '../../Core/LocalizableStrings';
 import ChangeNameModule from '../../Controls/EditModule/ChangeNameModule/ChangeNameModule'; 
@@ -19,10 +19,14 @@ interface IModuleInfo {
 
 function ModulePage() {
     let location = useLocation();
+    const params = useParams<{id:string}>();
 
     useEffect(() => {
-        pageStore.loadModulPageInfo();
-    },[]);
+        console.log(params);
+        
+        pageStore.setEntity(Number(params.id))
+        pageStore.load();
+    },[location.pathname]);
 
     function refreshModul(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target!.files![0];
@@ -30,17 +34,19 @@ function ModulePage() {
         const id = url[url.length - 1];
 
         if (file) Api.postAuthWithFile(`Assembly/refreshModul/${id}`, file)
-            .then(_ => pageStore.loadModulPageInfo());
+            .then(_ => pageStore.load());
     }
+
+    if(pageStore.entity == null) return <span>Loading...</span>
 
     return(
         <div>
             <div className={styles.content}>
-                <ModuleInfo name={pageStore?.name} id={pageStore?.id} isActive={pageStore?.isActive}/>
+                <ModuleInfo name={pageStore.entity.name} id={String(pageStore.entity.id)} isActive={pageStore.entity.isActive}/>
             </div>
             <footer className={styles.footer}>
                 <ButtonFileLoad title={Strings.ModulePage.refresh} onChange={refreshModul}/>
-                <ActivateModule name={pageStore?.name} id={pageStore?.id} isActive={pageStore?.isActive} isModuleLoaderPage={false}/>
+                <ActivateModule name={pageStore.entity.name} id={String(pageStore.entity.id)} isActive={pageStore.entity.isActive} isModuleLoaderPage={false}/>
             </footer>
         </div>
     )

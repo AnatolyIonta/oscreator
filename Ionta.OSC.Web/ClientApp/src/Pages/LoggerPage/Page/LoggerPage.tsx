@@ -4,7 +4,7 @@ import '../../../App.css';
 import HeaderPage from '../../../Controls/HeaderPage/HeaderPage';
 import LogBlock from '../Controlls/LogBlock/LogBlock';
 import ILogData from '../Core/LogData';
-import store from './LoggerPageStore';
+import store from '../Core/LoggerPageStore';
 
 function LoggerPage(){
     useEffect(()=>{

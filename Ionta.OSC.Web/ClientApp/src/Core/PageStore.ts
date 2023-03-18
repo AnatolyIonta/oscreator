@@ -3,21 +3,23 @@ import { Api } from "./api";
 
 class PageStore<T extends IEntityStore> {
     url:string;
-    entity: T | null = null;
+    currentId: number | null = null;
+    @observable entity: T | null = null;
 
     constructor(url:string) {
         this.url = url
         makeObservable(this)
     }
 
-    setEntity(entity:T){
-        this.entity = entity;
-        this.loadModulPageInfo();
+    @action
+    setEntity(id:number){
+        this.currentId = id;
+        this.load();
     }
 
     @action
-    async loadModulPageInfo() {
-        const moduleId = {id: this.entity?.id};
+    async load() {
+        const moduleId = {id: this.currentId};
     
         let result = await Api.postAuth(this.url, moduleId);
         if(result.status === 200) {

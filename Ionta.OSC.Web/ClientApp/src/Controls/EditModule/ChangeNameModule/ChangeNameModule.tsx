@@ -29,7 +29,7 @@ export default function ChangeNameModule(props: {id: string}) {
         if (res.ok) {
             setSave(await res.json());
             setError(false);
-            pageStore.loadModulPageInfo();
+            pageStore.load();
         } 
     }
 

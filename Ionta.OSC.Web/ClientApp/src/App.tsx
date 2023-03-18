@@ -118,7 +118,7 @@ function AdminPanel(){
             <Route path="/about">
               <AboutPage/>
             </Route>
-            <Route path='/module/:number'>
+            <Route path='/module/:id'>
               <ModulePage/>
             </Route>
             <Route path='/logs'>
