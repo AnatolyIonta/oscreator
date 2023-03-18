@@ -10,6 +10,7 @@ import './App.css';
 import {ReactComponent as Library} from "./Icon/library.svg";
 import {ReactComponent as Setting} from "./Icon/settings.svg";
 import {ReactComponent as Info} from "./Icon/info.svg";
+import {ReactComponent as Logs} from "./Icon/problem.svg";
 import Strings from './Core/LocalizableStrings';
 
 import LoadAssemblyPage from "./Pages/ModuleLoader/ModuleLoader"
@@ -92,6 +93,13 @@ function AdminPanel(){
             <Info fill='#e4e9ed' stroke='#e4e9ed'/>
             <div className={splitLocation[1] === "about" ? "navItemAactive" : ""}>
               <Link to={"/about"}><span>{Strings.Nav.About}</span></Link>
+            </div>
+          </div>
+
+          <div className='navItem'>
+            <Logs fill='#e4e9ed' stroke='#e4e9ed'/>
+            <div className={splitLocation[1] === "logs" ? "navItemAactive" : ""}>
+              <Link to={"/logs"}><span>{Strings.Nav.Logs}</span></Link>
             </div>
           </div>
         </div>

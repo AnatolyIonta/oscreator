@@ -72,15 +72,8 @@ var serviceManager = app.Services.GetRequiredService<IServiceManager>();
 var Configuration = app.Services.GetRequiredService<IConfiguration>();
 var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
 
-loggerFactory.AddProvider(new DataBaseLoggerProvider(app.Services));
-
 app.UseMiddleware<CustomAuthenticationMiddleware>();
 app.UseMiddleware<Ionta.OSC.Web.Infrastructure.V2.CustomControllerMiddleware>();
-
-var logger = app.Services.GetRequiredService<ILogger<Program>>();
-
-logger.LogError("Ужассс!!");
-
 
 using (var scope = app.Services.CreateScope())
 {
@@ -98,6 +91,13 @@ using (var scope = app.Services.CreateScope())
     var initializer = scope.ServiceProvider.GetService<IAssemblyInitializer>();
     initializer.Initialize();
 }
+
+loggerFactory.AddProvider(new DataBaseLoggerProvider(app.Services));
+
+#if DEBUG
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogError("Hello world");
+#endif
 
 app.Run();
 

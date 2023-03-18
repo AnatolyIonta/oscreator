@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ionta.OSC.Storage.Migrations
 {
     [DbContext(typeof(OscStorage))]
-    [Migration("20230317055418_addLogs")]
-    partial class addLogs
+    [Migration("20230318063630_addMigration")]
+    partial class addMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,11 +104,11 @@ namespace Ionta.OSC.Storage.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("text");
 
-                    b.Property<string>("Module")
-                        .HasColumnType("text");
-
                     b.Property<string>("StackTace")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");

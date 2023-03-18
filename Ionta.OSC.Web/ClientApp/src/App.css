@@ -120,6 +120,11 @@ html, body{
   font-size: 17px;
 }
 
+.warrningPanel{
+  background-color: #d5d1a4;
+  font-size: 17px;
+}
+
 .errorMessage{
   color: #d66363;
   font-size: 17px;

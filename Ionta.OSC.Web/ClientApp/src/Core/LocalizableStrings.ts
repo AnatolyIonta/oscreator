@@ -3,7 +3,8 @@ export const LanguageRu : ILocalizableStrings = {
         Setting: "Настройки",
         Libary: "Модули",
         Marketplace: "Маркетплейс",
-        About: "О создателях"
+        About: "О создателях",
+        Logs:"Логи",
     },
     AsemblyPage:{
         description: "Выберете файл в формате .dll" ,
@@ -50,6 +51,7 @@ interface ILocalizableNav{
     Libary: string;
     Marketplace: string;
     About: string;
+    Logs: string;
 }
 
 interface ILocalizableAsemblyPage{

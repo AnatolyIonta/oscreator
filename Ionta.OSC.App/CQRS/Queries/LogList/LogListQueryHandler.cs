@@ -19,8 +19,8 @@ namespace Ionta.OSC.App.CQRS.Queries.LogList
         }
         public async Task<DtosList<LogDto>> Handle(LogListQuery request, CancellationToken cancellationToken)
         {
-            var data = _storage.Logs.Select(l => 
-            new LogDto { Message = l.Message, Module = l.Module, Type = l.Type, StackTace = l.StackTace });
+            var data = _storage.Logs.OrderByDescending(l => l.Time).Select(l => 
+            new LogDto { Message = l.Message, Date = l.Time, Type = l.Type, StackTace = l.StackTace });
 
             var result = new DtosList<LogDto>()
             {

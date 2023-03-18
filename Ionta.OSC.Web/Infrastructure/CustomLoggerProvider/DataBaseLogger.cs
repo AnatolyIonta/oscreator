@@ -29,7 +29,6 @@ namespace Ionta.OSC.Web.Infrastructure.CustomLoggerProvider
 
             if (logType == null) return;
 
-            MethodBase m = (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod();
             using (var scoped = _services.CreateScope())
             {
                 var _storage = scoped.ServiceProvider.GetRequiredService<IOscStorage>();
@@ -38,7 +37,7 @@ namespace Ionta.OSC.Web.Infrastructure.CustomLoggerProvider
                     Type = logType,
                     Message = formatter(state, exception),
                     StackTace = exception?.StackTrace,
-                    Module = DateTime.UtcNow.ToString()
+                    Time = DateTime.UtcNow,
                 });
                 _storage.SaveChangesAsync().Wait();
             }

@@ -1,10 +1,9 @@
+import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import '../../../App.css';
-import Button from '../../../Controls/Button/Button';
 import HeaderPage from '../../../Controls/HeaderPage/HeaderPage';
 import LogBlock from '../Controlls/LogBlock/LogBlock';
 import ILogData from '../Core/LogData';
-import LogType from '../Core/LogType';
 import store from './LoggerPageStore';
 
 function LoggerPage(){
@@ -26,9 +25,9 @@ function LogList(props:{data:ILogData[] | null}){
 
     return(
         <div className='column gap'>
-            {data.map((d,i) => <LogBlock key={d.module+i} module={d.module} message={d.message} type={d.type} stackTace={d.stackTace}/>)}
+            {data.map((d,i) => <LogBlock key={"Logs"+i} module={new Date(d.date).toLocaleString()} message={d.message} type={d.type} stackTace={d.stackTace}/>)}
         </div>
     )
 }
 
-export default LoggerPage;
+export default observer(LoggerPage);

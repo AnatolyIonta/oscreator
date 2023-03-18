@@ -21,11 +21,14 @@ function LogBlock(props:ILogBlock){
     else if(props.type == LogType.Seccses){
         classNames += "successPanel";
     }
+    else if(props.type == LogType.Warrning){
+        classNames += "warrningPanel";
+    }
 
     return(
         <div className={classNames} onClick={()=> setOpen(!isOpen)}>
             <div>{props.module}:  {props.message}</div>
-            <div hidden={!isOpen}>{props.stackTace}</div>
+            <div hidden={!isOpen} className={styles.stack}><pre>{props.stackTace}</pre></div>
         </div>
     )
 }

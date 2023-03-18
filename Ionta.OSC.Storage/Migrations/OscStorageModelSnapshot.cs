@@ -101,11 +101,11 @@ namespace Ionta.OSC.Storage.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("text");
 
-                    b.Property<string>("Module")
-                        .HasColumnType("text");
-
                     b.Property<string>("StackTace")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");

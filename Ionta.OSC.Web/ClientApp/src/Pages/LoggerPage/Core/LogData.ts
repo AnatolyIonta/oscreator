@@ -1,6 +1,6 @@
 interface ILogData{
     type:number,
-    module: string,
+    date: string,
     message: string,
     stackTace?:string,
 }
