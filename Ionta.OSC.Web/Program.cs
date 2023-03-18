@@ -6,6 +6,7 @@ using Ionta.OSC.Core.ServiceTools;
 using Ionta.OSC.Web.Extension;
 
 using MediatR;
+using Ionta.OSC.Web.Infrastructure.CustomLoggerProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -45,7 +46,6 @@ builder.Services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
 
 services.AddLogging();
 
-
 var app = builder.Build();
 
 app.UseAuthentication();
@@ -70,9 +70,17 @@ app.MapFallbackToFile("index.html");
 var assemblyManager = app.Services.GetRequiredService<IAssemblyManager>();
 var serviceManager = app.Services.GetRequiredService<IServiceManager>();
 var Configuration = app.Services.GetRequiredService<IConfiguration>();
+var loggerFactory = app.Services.GetRequiredService<ILoggerFactory>();
+
+loggerFactory.AddProvider(new DataBaseLoggerProvider(app.Services));
 
 app.UseMiddleware<CustomAuthenticationMiddleware>();
 app.UseMiddleware<Ionta.OSC.Web.Infrastructure.V2.CustomControllerMiddleware>();
+
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+logger.LogError("Ужассс!!");
+
 
 using (var scope = app.Services.CreateScope())
 {

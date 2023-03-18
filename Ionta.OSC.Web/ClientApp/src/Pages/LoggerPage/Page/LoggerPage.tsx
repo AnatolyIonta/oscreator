@@ -1,75 +1,29 @@
+import { useEffect } from 'react';
 import '../../../App.css';
 import Button from '../../../Controls/Button/Button';
 import HeaderPage from '../../../Controls/HeaderPage/HeaderPage';
 import LogBlock from '../Controlls/LogBlock/LogBlock';
 import ILogData from '../Core/LogData';
 import LogType from '../Core/LogType';
-
-const testData : ILogData[] = [
-    {
-        module: "test",
-        message:"Hello world",
-        type: 0,
-    },
-    {
-        module: "test3",
-        message:"Hello world",
-        type: 1,
-    },
-    {
-        module: "test3",
-        message:"Hello worldas sa dada d",
-        type: 1,
-        stackTace: "1234adas das das d asdas das das da s das da s"
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 0,
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 1,
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 1,
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 1,
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 1,
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 1,
-    },
-    {
-        module: "test",
-        message:"Hello world",
-        type: 0,
-    },
-]
+import store from './LoggerPageStore';
 
 function LoggerPage(){
+    useEffect(()=>{
+        store.load();
+    },[])
     return(
         <div>
             <HeaderPage title='Логи'/>
-            <LogList data={testData}/>
+            <LogList data={store.data}/>
         </div>
     )
 }
 
-function LogList(props:{data:ILogData[]}){
+function LogList(props:{data:ILogData[] | null}){
     const data = props.data;
+
+    if(data == null) return <span>Loading...</span>
+
     return(
         <div className='column gap'>
             {data.map((d,i) => <LogBlock key={d.module+i} module={d.module} message={d.message} type={d.type} stackTace={d.stackTace}/>)}

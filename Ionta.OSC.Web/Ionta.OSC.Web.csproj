@@ -39,12 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Infrastructure\CustomControllerMiddleware1.cs" />
-    <None Include="Infrastructure\CustomServiceRegister.cs" />
-    <None Include="Infrastructure\ICustomServiceRegister.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Ionta.OSC.App\Ionta.OSC.App.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Core\Ionta.OSC.Core.csproj" />
     <ProjectReference Include="..\Ionta.OSC.Domain\Ionta.OSC.Domain.csproj" />

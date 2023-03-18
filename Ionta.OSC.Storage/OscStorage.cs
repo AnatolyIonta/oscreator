@@ -19,6 +19,7 @@ namespace Ionta.OSC.Storage
         public DbSet<AssemblyFile> AssemblyFiles { get; set; }
         public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
         public DbSet<JobInformation> Jobs { get; set; }
+        public DbSet<LogData> Logs { get; set; }
 
         public OscStorage(DbContextOptions options) : base(options) 
         {
