@@ -1,13 +1,10 @@
-﻿using Ionta.OSC.App.Services.AssemblyInitializer;
-using Ionta.OSC.Core.AssembliesInformation;
-using Ionta.OSC.Core.Assemblys.V2;
-using Ionta.OSC.Core.Assemblys;
+﻿using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.Core.Store.Migration;
 using Ionta.OSC.Core.Store;
-using Ionta.OSC.App.Services.Auth;
 using Ionta.OSC.App;
 using Ionta.OSC.Storage;
 using Ionta.OSC.ToolKit.Store;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Ionta.OSC.Web.Extension

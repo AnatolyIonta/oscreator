@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ionta.OSC.App.Services.AssemblyInitializer
+﻿namespace Ionta.OSC.App.Services.AssemblyInitializer
 {
     public interface IAssemblyInitializer
     {

@@ -3,6 +3,7 @@ using Ionta.OSC.App.Services.Auth;
 using Ionta.OSC.Core.Auth;
 using Ionta.OSC.ToolKit.Auth;
 using Ionta.OSC.Web.Infrastructure;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Ionta.OSC.Web.Extension

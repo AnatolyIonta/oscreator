@@ -1,7 +1,9 @@
-﻿using Ionta.OSC.Core.Assemblys.V2;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using Ionta.OSC.Core.Assemblys.V2;
 using Ionta.OSC.Core.Data;
 using Ionta.OSC.Domain;
-using Microsoft.Extensions.DependencyInjection;
+
 using System;
 using System.Collections.Concurrent;
 using System.Linq;

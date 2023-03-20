@@ -1,10 +1,12 @@
-﻿using Ionta.OSC.App;
-using Ionta.OSC.App.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
 using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using Microsoft.EntityFrameworkCore;
+
+using Ionta.OSC.App;
+using Ionta.OSC.App.Dtos;
+
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ionta.OSC.Core.AssembliesInformation
 {

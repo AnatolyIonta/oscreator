@@ -1,9 +1,11 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MediatR;
+
+using Ionta.OSC.Core.Assemblys.V2;
+
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ionta.OSC.Core.Assemblys.V2;
 
 namespace Ionta.OSC.App.CQRS.Commands
 {

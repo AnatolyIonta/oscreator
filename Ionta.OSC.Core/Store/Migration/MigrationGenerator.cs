@@ -1,15 +1,13 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Text;
 using System.Reflection;
+
 using Ionta.OSC.Core.Assemblys;
-using Microsoft.Extensions.Configuration;
-using Npgsql;
-using System.Linq;
-using System.Xml.Linq;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Ionta.OSC.ToolKit.Store;
+
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+
+using Npgsql;
 
 namespace Ionta.OSC.Core.Store.Migration
 {

@@ -1,11 +1,9 @@
-﻿using Ionta.OSC.Core.Assemblys;
-using Ionta.OSC.Core.CustomControllers;
+﻿using Ionta.OSC.Core.CustomControllers;
 using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
 using Ionta.OSC.Core.Exeption;
-using Ionta.OSC.Core.ServiceTools;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
+
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
