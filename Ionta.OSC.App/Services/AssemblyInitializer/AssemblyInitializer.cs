@@ -1,7 +1,7 @@
-﻿using Ionta.OSC.App.Scheduler;
-using Ionta.OSC.App.Services.Scheduler;
+﻿using Ionta.OSC.App.Services.Scheduler;
 using Ionta.OSC.Core.Assemblys.V2;
 using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Linq;
 using System.Reflection;

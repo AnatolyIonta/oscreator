@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Ionta.OSC.Core.Assemblys;
-using Ionta.OSC.Core.Assemblys.V2;
+﻿using Ionta.OSC.Core.Assemblys;
 using Ionta.OSC.Core.CustomControllers.ControllerHandler;
 using Ionta.OSC.ToolKit.Controllers;
+
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Ionta.OSC.Core.CustomControllers.ControllerLoaderService

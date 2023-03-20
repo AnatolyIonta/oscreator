@@ -1,6 +1,6 @@
 ﻿using Ionta.OSC.Core.CustomControllers.ControllerLoaderService;
 using Ionta.OSC.ToolKit.Auth;
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.Net.Http.Headers;
 
 namespace Ionta.OSC.Web.Infrastructure

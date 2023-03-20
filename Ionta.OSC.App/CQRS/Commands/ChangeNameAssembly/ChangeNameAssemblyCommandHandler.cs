@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+
 using System;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 

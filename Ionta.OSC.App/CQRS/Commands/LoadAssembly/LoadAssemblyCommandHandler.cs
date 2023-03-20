@@ -19,7 +19,7 @@ namespace Ionta.OSC.App.CQRS.Commands
         public async Task<bool> Handle(LoadAssemblyCommand request, CancellationToken cancellationToken)
         {
             var AllFilese = GetZipeFile(request.Data);
-            var package = new AssemblyPackage() { Assembly = new List<AssemblyFile>(), Name = request.Name};
+            var package = new AssemblyPackage() { Assembly = new List<AssemblyFile>(), Name = request.Name.Replace(".zip","") };
             foreach (var file in AllFilese)
             {
                 var AssemblyFile = new AssemblyFile() { AssemblyName = Guid.NewGuid().ToString(), Data = file };

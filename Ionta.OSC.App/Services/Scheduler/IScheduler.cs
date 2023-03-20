@@ -1,5 +1,4 @@
-﻿
-using Ionta.OSC.Core.Data;
+﻿using Ionta.OSC.Core.Data;
 using System.Threading.Tasks;
 
 namespace Ionta.OSC.App.Services.Scheduler
