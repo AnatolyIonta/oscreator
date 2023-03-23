@@ -22,6 +22,7 @@ import AboutPage from './Pages/AboutPage/AboutPage';
 import ModulePage from './Pages/ModulePage/ModulePage';
 import { setAppDomen } from './Core/Configure';
 import LoggerPage from './Pages/LoggerPage/Page/LoggerPage';
+import UsersSetting from './Pages/SettingPage/settings/users/usersSetting';
 
 function App() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -112,8 +113,11 @@ function AdminPanel(){
             <Route path="/additions">
               <LoadAssemblyPage/>
             </Route>
-            <Route path="/settings">
+            <Route path="/settings" exact={true}>
               <SettingPage/>
+            </Route>
+            <Route path="/settings/users" exact={true}>
+              <UsersSetting/>
             </Route>
             <Route path="/about">
               <AboutPage/>

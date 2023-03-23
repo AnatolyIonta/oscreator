@@ -7,58 +7,41 @@ import {Api} from "../../Core/api"
 import "../../App.css";
 import loginStore from "../../Core/LoginStore";
 import Strings from "../../Core/LocalizableStrings";
+import ISetting from "../../Core/ISetting";
+import { useHistory } from "react-router-dom";
+import settings from "./data/Settings";
 
-interface ILoginData{
-    password: string,
-    passwordReturn: string,
-    oldPassword: string,
-    valid: ()=> boolean,
-    secses: boolean | null,
-}
+import styles from "./SettingPage.module.css";
+import HeaderPage from "../../Controls/HeaderPage/HeaderPage";
 
-const loginData : ILoginData = observable<ILoginData>({
-    password: "",
-    passwordReturn: "",
-    oldPassword: "",
-    valid: () => loginData.password == loginData.passwordReturn,
-    secses: null,
-})
+
 
 function SettingPage(){
-    const f = loginData;
-    async function onClick(){
-        if(f.valid()){
-            let data = {
-                password: f.password,
-                oldPassword: f.oldPassword
-            }
-            var response = await Api.postAuth("user/сhangepassword", data);
-            f.secses = response.status == 200;
-        }
-    }
+    const items:ISetting[] = settings;
      return(
-        <div className="gap column">
-            <h2>{Strings.SettingPage.description}</h2>
-            <span className="errorMessage" hidden={f.secses || f.secses === null}>{Strings.SettingPage.errorExternal}</span>
-            <span className="successMessage" hidden={!f.secses}>{Strings.SettingPage.success}</span>
-            <span className="errorMessage" hidden={f.valid()}>{Strings.SettingPage.errorInternal}</span>
-            <label>
-                <span>{Strings.SettingPage.newPassword}</span>
-                <br/>
-                <InputPassword onChangeValue={e => f.password = e} value={f.password}/>
-            </label>
-            <label>
-                <span>{Strings.SettingPage.passwordRepeat}</span>
-                <br/>
-                <InputPassword onChangeValue={e => f.passwordReturn = e} value={f.passwordReturn}/>
-            </label>
-            <label>
-                <span>{Strings.SettingPage.oldPassword}</span>
-                <br/>
-                <InputPassword onChangeValue={e => f.oldPassword = e} value={f.oldPassword}/>
-            </label>
-            <Button onClick={onClick} title={Strings.SettingPage.changePassword}/>
-            <Button onClick={()=>loginStore.logOut()} title={Strings.SettingPage.logOut}/>
+        <>
+            <HeaderPage title="Настройки">
+                
+            </HeaderPage>
+            <div className="gap row">
+                {items.map(i => <SettingItem {...i} />)}
+            </div>
+        </>
+        
+    )
+}
+
+function SettingItem(props:ISetting){
+    const history = useHistory();
+
+    function onClick(){
+        history.push("settings/"+props.url);
+    }
+    
+    return(
+        <div className={`column content ${styles.body}`} onClick={onClick}>
+            {props.icon}
+            {props.caption}
         </div>
     )
 }
