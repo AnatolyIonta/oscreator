@@ -88,7 +88,7 @@ function choiceLoadPage(isModuleLoaderPage: boolean) {
 export function DeleteWarnning(props:IDeleteWarnningProps) {
     return (
         <Modal isOpen={props.isOpen}>
-            <span>Вы уверены, что хотите удалить модуль?</span>
+            <span>{Strings.AsemblyPage.deleteWarnning}</span>
             <menu className={styles.modalContentButton}>
                 <Button title="Подтвердить" onClick={props.onDeleteModul} />
                 <Button title="Отмена" onClick={props.onDeleteModulClose} />
