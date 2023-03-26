@@ -31,7 +31,8 @@ export const LanguageRu : ILocalizableStrings = {
     LoginPage:{
         login: "Логин:",
         password: "Пароль:",
-        entrance: "Вход"
+        entrance: "Вход",
+        incorrectLoginOrPassword: "Вы ввели неверный логин или пароль!"
     }, 
     ModulePage:{
         refresh: "Обновить",
@@ -82,6 +83,7 @@ interface ILocalizableLoginPage{
     login: string;
     password: string;
     entrance: string;
+    incorrectLoginOrPassword: string;
 }
 
 interface IModulePage{
