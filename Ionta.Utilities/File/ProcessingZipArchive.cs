@@ -1,4 +1,5 @@
 ﻿using System.IO.Compression;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Ionta.Utilities
 {
@@ -16,6 +17,25 @@ namespace Ionta.Utilities
                     if (entry.FullName.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                     {
                         yield return ReadFully(entry.Open()); // .Open will return a stream                                                      
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<byte[]> GetFilesFromFolder(byte[] zip, string foleder, string extension)
+        {
+            using var fileInMemory = new MemoryStream(zip);
+            using (var archive = new ZipArchive(fileInMemory))
+            {
+                // Выбор всех файлов с расширением .html из папки Section
+                var htmlFiles = archive.Entries.Where(entry => entry.FullName.StartsWith($"{foleder}/") && entry.FullName.EndsWith(extension));
+
+                // Проход по каждому файлу и сохранение его содержимого в новой CustomPage
+                foreach (var file in htmlFiles)
+                {
+                    using (var stream = file.Open())
+                    {
+                        yield return ReadFully(stream);
                     }
                 }
             }

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.Domain
+namespace Ionta.OSC.App.Dtos
 {
-    public class CustomPage : BaseEntity
+    public class CustomPageDto
     {
-        public string Name { get; set; }
         public string Url { get; set; }
         public string Html { get; set; }
+        public string Name { get; set; }
     }
 }

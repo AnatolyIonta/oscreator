@@ -3,6 +3,7 @@ using System;
 using Ionta.OSC.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ionta.OSC.Storage.Migrations
 {
     [DbContext(typeof(OscStorage))]
-    partial class OscStorageModelSnapshot : ModelSnapshot
+    [Migration("20230325153357_workspace")]
+    partial class workspace
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,9 +97,6 @@ namespace Ionta.OSC.Storage.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AssemblyPackageId");
-
-                    b.HasIndex("Url")
-                        .IsUnique();
 
                     b.ToTable("CustomPages");
                 });

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ionta.OSC.Domain
+namespace Ionta.OSC.App.Services.CustomPage
 {
-    public class Workspace
+    public class CustomPageService
     {
-        public List<CustomPage> Pages { get; set; }
+        
     }
 }
