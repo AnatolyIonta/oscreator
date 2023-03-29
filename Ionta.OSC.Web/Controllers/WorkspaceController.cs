@@ -1,4 +1,5 @@
 ﻿using Ionta.OSC.App.CQRS.Queries.GetCustomPage;
+using Ionta.OSC.App.CQRS.Queries.GetCustomPageList;
 using Ionta.OSC.App.Dtos;
 using Ionta.OSC.ToolKit.Auth;
 using MediatR;
@@ -20,6 +21,11 @@ namespace Ionta.OSC.Web.Controllers
         }
         [HttpPost("getpage")]
         public Task<CustomPageDto> GetCustomPage(GetCustomPageQuery query)
+        {
+            return _mediator.Send(query);
+        }
+        [HttpPost("getpages")]
+        public Task<DtosList<CustomPageDto>> GetPages(GetCustomPageListQuery query)
         {
             return _mediator.Send(query);
         }
