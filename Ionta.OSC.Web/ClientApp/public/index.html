@@ -71,4 +71,9 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script>
+    function getJWT(){
+      return window.localStorage.getItem('jwt');
+    }
+  </script>
 </html>
