@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom"
+import Button, { ButtonStyles } from "../../Controls/Button/Button";
 import { Api } from "../../Core/api";
 
 function CustomPage(){
@@ -42,9 +43,11 @@ function CustomPage(){
     }
 
     return(
-        <div ref={ref}>
+        <>
+            <div ref={ref}>
 
-        </div>
+            </div>
+        </>
     )
 }
 
