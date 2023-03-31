@@ -22,18 +22,21 @@ namespace Ionta.OSC.Web.Infrastructure.V2
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var requestInfo = new RequestInfo(context.Request.Path, context.Request.Method, context.Request.Body, context.Request.Query);
-            var executeInfo = await _controllerLoader.FindController(requestInfo);
-            if (executeInfo != null)
+            try
             {
-                try { 
+                var requestInfo = new RequestInfo(context.Request.Path, context.Request.Method, context.Request.Body, context.Request.Query);
+                var executeInfo = await _controllerLoader.FindController(requestInfo);
+                if (executeInfo != null)
+                {
                     await Execute(context, executeInfo);
                     return;
                 }
-                catch (ManyParameters ex) { await SendError(context, ex.Message, 400); }
-                catch (MethodNotFound ex) { await SendError(context, ex.Message, 405); }
-                catch (MethodsNotMatch) { await SendError(context, "", 404); }
             }
+            catch (ManyParameters ex) { await SendError(context, ex.Message, 400); return; }
+            catch (MethodNotFound ex) { await SendError(context, ex.Message, 405); return; }
+            catch (MethodsNotMatch ex) { await SendError(context, "", 404); return; }
+
+
             await _next.Invoke(context);
         }
 
