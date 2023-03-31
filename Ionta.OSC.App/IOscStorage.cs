@@ -11,6 +11,7 @@ namespace Ionta.OSC.App
         public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
         public DbSet<JobInformation> Jobs { get; set; }
         public DbSet<LogData> Logs { get; set; }
+        public DbSet<CustomPage> CustomPages { get; set; }
 
         public Task SaveChangesAsync();
         void ApplyMigrations();

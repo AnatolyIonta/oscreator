@@ -18,11 +18,12 @@ namespace Ionta.OSC.App.CQRS.Commands
 
         public async Task<bool> Handle(DeleteModulCommand request, CancellationToken cancellationToken)
         {
-            var module = _storage.AssemblyPackages.Include(e => e.Assembly).First(a => a.Id == request.Id);
+            var module = _storage.AssemblyPackages.Include(e => e.Assembly).Include(a => a.customPages).First(a => a.Id == request.Id);
 
             if (module.IsActive) throw new Exception("Модуль активирован, его не возможно удалить! Для удаления деактивируйте модуль");
 
             _storage.AssemblyFiles.RemoveRange(module.Assembly);
+            _storage.CustomPages.RemoveRange(module.customPages);
             _storage.AssemblyPackages.Remove(module);
             await _storage.SaveChangesAsync();
 

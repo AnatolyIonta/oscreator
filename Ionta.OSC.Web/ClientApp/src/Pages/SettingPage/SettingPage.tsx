@@ -20,7 +20,7 @@ function SettingPage(){
     const items:ISetting[] = settings;
      return(
         <>
-            <HeaderPage title="Настройки">
+            <HeaderPage title={Strings.SettingPage.title}>
                 
             </HeaderPage>
             <div className="gap row">

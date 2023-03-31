@@ -1,6 +1,6 @@
 ﻿using Ionta.OSC.App.CQRS.Queries.LogList;
 using Ionta.OSC.App.Dtos;
-
+using Ionta.OSC.ToolKit.Auth;
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ionta.OSC.Web.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("[controller]")]
     public class LogsController
     {

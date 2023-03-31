@@ -14,6 +14,7 @@ namespace Ionta.OSC.Storage
         public DbSet<AssemblyPackage> AssemblyPackages { get; set; }
         public DbSet<JobInformation> Jobs { get; set; }
         public DbSet<LogData> Logs { get; set; }
+        public DbSet<CustomPage> CustomPages { get; set; }
 
         public OscStorage(DbContextOptions options) : base(options) 
         {
@@ -30,6 +31,7 @@ namespace Ionta.OSC.Storage
                 Password = HashingPasswordService.Hash("Password"),
                 Email = "Admin@OSC.ru"
             });
+            modelBuilder.Entity<CustomPage>().HasIndex(c => c.Url).IsUnique();
         }
 
         public async Task SaveChangesAsync()

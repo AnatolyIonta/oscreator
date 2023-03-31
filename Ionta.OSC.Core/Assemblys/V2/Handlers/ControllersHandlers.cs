@@ -32,7 +32,8 @@ namespace Ionta.OSC.Core.Assemblys.V2.Handlers
                         ),
                         Path = ((ControllerAttribute)controller.GetCustomAttribute(typeof(ControllerAttribute)))?.Prefix,
                         Type = controller,
-                        Authorize = controller.GetCustomAttribute(typeof(AuthorizeAttribute)) != null
+                        Authorize = controller.GetCustomAttribute(typeof(AuthorizeAttribute)) != null,
+                        InternalAuthorize = controller.GetCustomAttribute(typeof(InternalAuthorizeAttribute)) != null
                     };
 
                 }

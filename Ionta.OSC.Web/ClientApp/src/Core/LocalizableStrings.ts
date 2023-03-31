@@ -18,6 +18,8 @@ export const LanguageRu : ILocalizableStrings = {
         enter: "Открыть"
     },
     SettingPage:{
+        users:"Пользователи",
+        title:"Настройки",
         description:"Сменить пароль",
         errorExternal:"Ошибка при смене пароля",
         errorInternal:"Пароли не совпадают",
@@ -68,6 +70,8 @@ interface ILocalizableAsemblyPage{
 }
 
 interface ILocalizableSettingPage{
+    users:string;
+    title:string;
     description: string;
     errorInternal: string;
     errorExternal: string;
