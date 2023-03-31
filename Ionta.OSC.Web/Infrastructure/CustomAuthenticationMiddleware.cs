@@ -22,6 +22,8 @@ namespace Ionta.OSC.Web.Infrastructure
         {
             var controller = await _controllerLoader.GetControllerInfoFromPath(context.Request.Path);
 
+            if(controller == null) await _next.Invoke(context);
+
             using (var scoped = _serviceProvider.CreateScope())
             {
                 var _userProvider = scoped.ServiceProvider.GetRequiredService<IUserProvider>();
