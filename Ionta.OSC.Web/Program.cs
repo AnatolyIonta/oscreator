@@ -94,11 +94,6 @@ using (var scope = app.Services.CreateScope())
 
 loggerFactory.AddProvider(new DataBaseLoggerProvider(app.Services));
 
-#if DEBUG
-var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogError("Hello world");
-#endif
-
 app.Run();
 
 

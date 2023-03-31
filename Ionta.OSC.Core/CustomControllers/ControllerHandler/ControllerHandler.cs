@@ -54,7 +54,8 @@ namespace Ionta.OSC.Core.CustomControllers.ControllerHandler
         {
             var constructorInfo = controller.Type.GetConstructors().First();
 
-            var services = constructorInfo.GetParameters()
+            var parametrs = constructorInfo.GetParameters().ToArray();
+            var services = parametrs
                 .Select(p => _services.GetService(p.ParameterType, controller.Type.Assembly))
                 .ToArray();
 

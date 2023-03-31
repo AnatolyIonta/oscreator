@@ -21,7 +21,7 @@ namespace Ionta.OSC.Web.Extension
                 return (IDataStore)(new DataStore(options.Options, assemblyManager, configuration));
             });
 
-            serviceManager.GlobalCollection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
+            serviceManager.GlobalCollection.AddSingleton(serviceProvider => (ToolKit.ServiceProvider.IServiceProvider)serviceManager);
 
             serviceManager.ConfigurePrivateContainer = (collection) =>
             {
@@ -32,7 +32,7 @@ namespace Ionta.OSC.Web.Extension
 
                     return (IDataStore)(new DataStore(options.Options, assemblyManager, configuration));
                 });
-                collection.AddSingleton(serviceProvider => (IServiceProvider)serviceManager);
+                collection.AddSingleton(serviceProvider => (ToolKit.ServiceProvider.IServiceProvider)serviceManager);
                 collection.AddSingleton(serviceProvider => (IAuthenticationService)new AuthenticationService(configuration["Secret"]));
                 collection.AddHttpClient();
             };
