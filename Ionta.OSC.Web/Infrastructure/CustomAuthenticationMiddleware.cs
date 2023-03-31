@@ -22,25 +22,26 @@ namespace Ionta.OSC.Web.Infrastructure
         {
             var controller = await _controllerLoader.GetControllerInfoFromPath(context.Request.Path);
 
-            if(controller == null) await _next.Invoke(context);
-
-            using (var scoped = _serviceProvider.CreateScope())
+            if (controller != null)
             {
-                var _userProvider = scoped.ServiceProvider.GetRequiredService<IUserProvider>();
-                if (_userProvider.GetCurrentId() == null && controller.InternalAuthorize)
+                using (var scoped = _serviceProvider.CreateScope())
                 {
-                    context.Response.StatusCode = 401;
-                    return;
+                    var _userProvider = scoped.ServiceProvider.GetRequiredService<IUserProvider>();
+                    if (_userProvider.GetCurrentId() == null && controller.InternalAuthorize)
+                    {
+                        context.Response.StatusCode = 401;
+                        return;
+                    }
                 }
-            }
-            
-            if (controller != null && controller.Authorize)
-            {
-                var accessToken = context.Request.Headers[HeaderNames.Authorization];
-                if (!_authentication.ValidateToken(accessToken.ToString().Replace("Bearer ", "")))
+
+                if (controller != null && controller.Authorize)
                 {
-                    context.Response.StatusCode = 401;
-                    return;
+                    var accessToken = context.Request.Headers[HeaderNames.Authorization];
+                    if (!_authentication.ValidateToken(accessToken.ToString().Replace("Bearer ", "")))
+                    {
+                        context.Response.StatusCode = 401;
+                        return;
+                    }
                 }
             }
             await _next.Invoke(context);

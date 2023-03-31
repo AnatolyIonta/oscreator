@@ -6,6 +6,7 @@ import Strings from "../../../../Core/LocalizableStrings";
 import loginStore from "../../../../Core/LoginStore";
 import { observable } from "mobx";
 import { Api } from "../../../../Core/api";
+import { observer } from "mobx-react-lite";
 
 interface ILoginData{
     password: string,
@@ -64,4 +65,4 @@ function UsersSetting(){
     );
 }
 
-export default UsersSetting;
+export default observer(UsersSetting);
