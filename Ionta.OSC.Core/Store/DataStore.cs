@@ -86,6 +86,11 @@ namespace Ionta.OSC.Core.Store
         {
             await base.SaveChangesAsync();
         }
+
+        public async Task ExecuteSql(string sql) 
+        {
+            await Database.ExecuteSqlInterpolatedAsync($"{sql}");
+        }
     }
 
     public class DynamicModelCacheKeyFactory : IModelCacheKeyFactory

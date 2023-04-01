@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
 using Npgsql;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ionta.OSC.Core.Store.Migration
 {
@@ -16,12 +18,14 @@ namespace Ionta.OSC.Core.Store.Migration
         private readonly IAssemblyManager _assemblyManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger<MigrationGenerator> _logger;
+        private readonly IServiceProvider _serviceProvider;
         private List<DataLink> manyAndManyBuffer = new List<DataLink>();
-        public MigrationGenerator(IAssemblyManager assemblyManager, IConfiguration configuration, ILogger<MigrationGenerator> logger)
+        public MigrationGenerator(IAssemblyManager assemblyManager, IConfiguration configuration, ILogger<MigrationGenerator> logger, IServiceProvider serviceProvider)
         {
             _assemblyManager = assemblyManager;
             _configuration = configuration;
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
         public void ApplayMigrations()
@@ -117,6 +121,11 @@ namespace Ionta.OSC.Core.Store.Migration
 
         private IEnumerable<ColumnInfo> GetTableInfo(string tableName)
         {
+            using (var scoped = _serviceProvider.CreateScope())
+            {
+                var dataBase = scoped.ServiceProvider.GetRequiredService<IDataStore>();
+            }
+
             using var conn = new NpgsqlConnection(GetDatabaseConnectionString(_configuration));
             try
             {
@@ -148,16 +157,13 @@ namespace Ionta.OSC.Core.Store.Migration
 
         private void ExecuteSqlCommand(string sql)
         {
-            using var conn = new NpgsqlConnection(GetDatabaseConnectionString(_configuration));
             try
             {
-                conn.Open();
-                using var cmd = new NpgsqlCommand
+                using(var scoped = _serviceProvider.CreateScope())
                 {
-                    Connection = conn,
-                    CommandText = sql
-                };
-                cmd.ExecuteNonQuery();
+                    var dataBase = scoped.ServiceProvider.GetRequiredService<IDataStore>();
+                    dataBase.ExecuteSql(sql);
+                }
             }
             catch (Exception ex)
             {
@@ -165,7 +171,7 @@ namespace Ionta.OSC.Core.Store.Migration
             }
             finally
             {
-                conn.Close();
+
             }
         }
 
