@@ -35,6 +35,11 @@ namespace Ionta.OSC.App.CQRS.Commands
                 var data = Encoding.Default.GetString(customPage).Split(@"/*&*\",3);
                 package.customPages.Add(new CustomPage() { Html = data[2], Name = data[0], Url = Regex.Replace(data[1], @"[\n\r]", "") });
             }
+            
+            if(package.customPages.Count == 0 && package.Assembly.Count == 0)
+            {
+                return false;
+            }
             _storage.AssemblyPackages.Add(package);
             await _storage.SaveChangesAsync();
             return true;

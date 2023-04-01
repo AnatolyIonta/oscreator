@@ -28,11 +28,20 @@ namespace OpenServiceCreator.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(string), 400)]
         [HttpPost("SaveAssembly")]
-        public Task<bool> SaveAssembly([FromForm(Name = "file")] IFormFile uploadedFile)
+        public async Task<ActionResult> SaveAssembly([FromForm(Name = "file")] IFormFile uploadedFile)
         {
             var file = GetBytes(uploadedFile.OpenReadStream());
             var query = new LoadAssemblyCommand() {Name = uploadedFile.FileName, Data = file };
-            return _mediator.Send(query);
+            var result = await _mediator.Send(query);
+            if (result)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+            
         }
 
         [ProducesResponseType(200)]
