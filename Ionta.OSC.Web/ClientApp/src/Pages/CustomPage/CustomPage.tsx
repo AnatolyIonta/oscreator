@@ -1,4 +1,6 @@
+import { log } from "console";
 import { useEffect, useRef, useState } from "react";
+import ReactDOM from 'react-dom/client';
 import { useLocation } from "react-router-dom"
 import Button, { ButtonStyles } from "../../Controls/Button/Button";
 import { Api } from "../../Core/api";
@@ -17,34 +19,40 @@ function CustomPage(){
 
     useEffect(()=>{
         ref.current!.innerHTML = html;
+        
+        let script = ref.current?.getElementsByTagName("script")[0];
+		let templates = ref.current?.getElementsByTagName("template");
+		
+        console.log(templates);
+        
 
-        var script = ref.current?.getElementsByTagName("script")[0];
+		for(let i = 0; i < (templates?.length ?? 0); i++){
+            let item = templates!.item(i)!.content;
+            let scriptTemplate = item.querySelector("script");
+            if(scriptTemplate){
+                let newScript = updateJs(scriptTemplate);
+                item.removeChild(scriptTemplate);
+                item.appendChild(newScript);
+            }
+        }
+		
         if(script){
-            updateJs(script);
+            var newScript = updateJs(script);
             ref.current?.removeChild(script);
+            document.body.appendChild(newScript);
         }
     },[html])
 
     function updateJs(script:HTMLScriptElement){
-        var docScripts = document.body.getElementsByTagName("script");
-        
-        for(let i = 0; i < docScripts.length; i++){
-            try{
-                document.body.removeChild(docScripts[i]);
-            }
-            catch{
-
-            }
-        }
-
         let script1 = document.createElement('script');
+        script1.setAttribute("type", script.type);
         script1.text = script.text;
-        document.body.appendChild(script1);
+        return script1;
     }
 
     return(
         <>
-            <div ref={ref}>
+            <div ref={ref} id={"workspace"} style={{height:"100%"}}>
 
             </div>
         </>

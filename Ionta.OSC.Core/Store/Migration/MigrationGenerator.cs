@@ -121,11 +121,6 @@ namespace Ionta.OSC.Core.Store.Migration
 
         private IEnumerable<ColumnInfo> GetTableInfo(string tableName)
         {
-            using (var scoped = _serviceProvider.CreateScope())
-            {
-                var dataBase = scoped.ServiceProvider.GetRequiredService<IDataStore>();
-            }
-
             using var conn = new NpgsqlConnection(GetDatabaseConnectionString(_configuration));
             try
             {
@@ -157,13 +152,16 @@ namespace Ionta.OSC.Core.Store.Migration
 
         private void ExecuteSqlCommand(string sql)
         {
+            using var conn = new NpgsqlConnection(GetDatabaseConnectionString(_configuration));
             try
             {
-                using(var scoped = _serviceProvider.CreateScope())
+                conn.Open();
+                using var cmd = new NpgsqlCommand
                 {
-                    var dataBase = scoped.ServiceProvider.GetRequiredService<IDataStore>();
-                    dataBase.ExecuteSql(sql);
-                }
+                    Connection = conn,
+                    CommandText = sql
+                };
+                cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -171,7 +169,7 @@ namespace Ionta.OSC.Core.Store.Migration
             }
             finally
             {
-
+                conn.Close();
             }
         }
 

@@ -89,7 +89,7 @@ namespace Ionta.OSC.Core.Store
 
         public async Task ExecuteSql(string sql) 
         {
-            await Database.ExecuteSqlInterpolatedAsync($"{sql}");
+            //await Database.ExecuteSqlInterpolatedAsync($"{sql}");
         }
     }
 
